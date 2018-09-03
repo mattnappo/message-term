@@ -1,7 +1,8 @@
 #include <string>
 #include <iostream>
-
+#include <fstream>
 using namespace std;
+
 
 class Handler {
 public:
@@ -11,6 +12,20 @@ public:
         } else {
             cout << "error installing" << endl;
         }
+    }
+    int write(string filename, string text) {
+        try {
+            ofstream file;
+            file.open(filename);
+            file << text;
+            file.close();
+            return 0;
+        } catch (int e) {
+            cout << "error writing to file. error code: " << e << endl;
+            return 1;
+        }
+        
+        
     }
     int install() {
         system("bash install.sh");
@@ -23,9 +38,9 @@ public:
         cout << "sent '" << message << "' to '" << number << "'" << endl;
         return 0;
     }
-    int recieve(string id, string message) {
-        cout << "ID: " << id << endl;
-        cout << "MESSAGE: " << message << endl;
+    int recieve(string name, string message) {
+        string chat = "NAME: " + name + "\nMESSAGE: " + message;
+        write("~/Desktop/" + message + ".log", chat);
         return 0;
     }
 

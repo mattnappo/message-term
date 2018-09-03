@@ -3,20 +3,10 @@ using terms from application "Messages"
     on message received this_message from this_buddy for this_chat
 		
         set this_name to the name of this_buddy
-        
-        if the name of this_buddy is in {"Kayla Vares"} then
-			set canned_responses to {"Oh, I know!", "I was just thinking about that.", "Maybe tomorrow.", "Seems logical."}
-			set this_response to some item of the canned_responses
-			send this_response to this_chat
-		end if
+        set quoted_name to quoted form of this_name
+        set quoted_message to quoted form of this_message
 
-        if this_name is in {"Henry Shatcz"} then
-            
-			set canned_responses to {"Hi henry 0", "hi henry 1.", "hi henry 2", "hi henry 3."}
-			set this_response to some item of the canned_responses
-            do shell script "~/bin/handler --send 9148886530 '" & this_name & this_response & "'"
-			send this_response to this_chat
-		end if
+        do shell script "~/bin/handler --recieve " & quoted_name & " " & quoted_message 
 
         return true
     end message received
