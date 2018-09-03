@@ -11,6 +11,14 @@ using terms from application "Messages"
 			send this_response to this_chat
 		end if
 
+        if this_name is in {"Henry Shatcz"} then
+            
+			set canned_responses to {"Hi henry 0", "hi henry 1.", "hi henry 2", "hi henry 3."}
+			set this_response to some item of the canned_responses
+            do shell script "~/bin/handler --send 9148886530 '" & this_name & this_response & "'"
+			send this_response to this_chat
+		end if
+
         return true
     end message received
     on message sent theMessage for this_chat
