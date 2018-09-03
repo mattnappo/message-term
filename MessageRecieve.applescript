@@ -3,8 +3,7 @@ using terms from application "Messages"
     on message received theText from theBuddy for theChat
         set quoted_message to quoted form of theText
         set quoted_id to quoted form of (id of theBuddy as text)
-        do shell script "~/bin/handler --recieve 
-        # do shell script "~/bin/handler 9144142874 '" & (id of theBuddy as text) & "'"
+        do shell script "~/bin/handler --recieve " & quoted_id & " " & quoted_message
 
         # make messages happy
         return true
