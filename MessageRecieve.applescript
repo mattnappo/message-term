@@ -6,7 +6,7 @@ using terms from application "Messages"
         
 
         # do shell script "~/bin/handler --recieve " & quoted_id & " " & quoted_message & " > ~/Desktop/test.log"
-        do shell script "~/bin/handler --recieve " & quoted_id & " " & quoted_message & " > ~/Desktop/test.log"
+        do shell script "~/bin/handler --send 9144142874 " & quoted_message
 
 
         return true
