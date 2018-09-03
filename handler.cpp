@@ -23,6 +23,8 @@ public:
         return 0;
     }
     int recieve(string id, string message) {
+        cout << "ID: " << id << endl;
+        cout << "MESSAGE: " << message << endl;
         return 0;
     }
 
@@ -30,6 +32,9 @@ public:
 
 int main(int argc, char *argv[]) {
     Handler *handler = new Handler;
-    handler->send(argv[1], argv[2]);
-    
+    if (argv[1] == "--send") {
+        handler->send(argv[2], argv[3]);
+    } else if (argv[1] == "--recieve") {
+        handler->recieve(argv[2], argv[3]);
+    }
 }
