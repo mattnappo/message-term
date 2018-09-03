@@ -36,10 +36,9 @@ int main(int argc, char *argv[]) {
     //     cout << i << ": " << argv[i] << endl;
     // }
     Handler *handler = new Handler;
-    if (argv[1] == "--send") {
-        cout << "WORKING" << endl;
+    if (strcmp(argv[1], "--send") == 0) {
         handler->send(argv[2], argv[3]);
-    } else if (argv[1] == "--recieve") {
+    } else if (strcmp(argv[1], "--recieve") == 0) {
         handler->recieve(argv[2], argv[3]);
     }
 }
