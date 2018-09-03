@@ -7,7 +7,7 @@ using terms from application "Messages"
         set quoted_message to quoted form of this_message
 
         do shell script "~/bin/handler --recieve " & quoted_name & " " & quoted_message 
-
+        
         return true
     end message received
     on message sent theMessage for this_chat

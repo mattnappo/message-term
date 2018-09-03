@@ -21,6 +21,7 @@ public:
             file.open(filename);
             file << text;
             file.close();
+            cout << "wrote to file" << endl;
             return 0;
         } catch (int e) {
             cout << "error writing to file. error code: " << e << endl;
@@ -46,7 +47,7 @@ public:
     }
     int recieve(string name, string message) {
         string chat = "NAME: " + name + "\nMESSAGE: " + message;
-        write("~/Desktop/" + message + ".log", chat);
+        write("./test.log", chat);
         return 0;
     }
 
@@ -59,5 +60,8 @@ int main(int argc, char *argv[]) {
         handler->send(argv[2], argv[3]);
     } else if (strcmp(argv[1], "--recieve") == 0) {
         handler->recieve(argv[2], argv[3]);
+    } else {
+        cout << "usage:\n handler --send <recipient phone number> <message>" << endl;
+        cout << "handler --recieve <sender name> <message>" << endl;
     }
 }
