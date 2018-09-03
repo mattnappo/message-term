@@ -33,6 +33,7 @@ public:
             return 0;
         } catch (int e) {
             cout << "installation failed. error code: " << e << endl;
+            return 1;
         }
         
     }
