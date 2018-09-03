@@ -1,2 +1,2 @@
 send: send.c
-    gcc -o $@ $^
+	gcc -o bin/$@ $^
