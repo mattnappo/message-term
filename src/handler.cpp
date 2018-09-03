@@ -25,8 +25,13 @@ public:
         }
     }
     int install() {
-        system("bash install.sh");
-        return 0;
+        try {
+            system("bash install.sh");
+            return 0;
+        } catch (int e) {
+            cout << "installation failed. error code: " << e << endl;
+        }
+        
     }
     int send(string number, string message) {
         cout << "send being called" << endl;
