@@ -1,29 +1,19 @@
-#include <stdlib.h>
-#include <string.h>
+#include <string>
+#include <iostream>
 
-char *concat(const char *s1, const char *s2) {
-    char *result = malloc(strlen(s1) + strlen(s2) + 1);
-    strcpy(result, s1);strcat(result, s2);
-    return result;
-}
+using namespace std;
 
 int main(int argc, char *argv[]) {
     if (argc == 3) {
-        // system("bash install.sh");
-        // printf("installed\n");
-
-        for (int i = 0; i < 3; i++) {
-            printf("%s\n", argv[i]);
-        }
+        system("bash install.sh");
+        cout << " -- INSTALLED -- " << endl;
         
-        //const char phone_num = argv[1];
-        //const char *message = (char *)argv[2];
+        string phone_num = argv[1];
+        string message = argv[2];
         
-        //const *command = "./SendMessage.sh \"%s\" \"%s\"", *argv[1], *argv[2];
-        //printf("%s", command);
-        // char *command = "./SendMessage.sh " + *number + " " + *message + "";
-
-        // system("bash " + *command);
+        string command = "bash SendMessage.sh \"" + phone_num + "\" \"" + message + "\"";
+        
+        system(command);
     } else {
         printf("usage: send <phone number> <message>\n");
         return 1;
