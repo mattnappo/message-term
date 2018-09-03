@@ -10,8 +10,11 @@ cp MessageRecieve.applescript ~/Library/Application\ Scripts/com.apple.iChat
 echo "copied MessageRecieve.applescript to Library"
 
 cp MessageRecieve.sh ~/bin
-echo "coped MessageRecieve.sh to bin"
+echo "copied MessageRecieve.sh to bin"
 chmod +x ~/bin/MessageRecieve.sh
 echo "x permissions added for MessageRecieve.sh"
+
+cp bin/send ~/bin
+echo "copied send to bin"
 
 echo "done"

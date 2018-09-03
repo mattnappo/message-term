@@ -3,7 +3,8 @@ using terms from application "Messages"
     on message received theText from theBuddy for theChat
         set quoted_message to quoted form of theText
         set quoted_id to quoted form of (id of theBuddy as text)
-        do shell script "echo " & quoted_message & " | ~/bin/MessageReceive.sh " & quoted_id & " > /dev/null 2>&1 &"
+        # do shell script "echo " & quoted_message & " | ~/bin/send " & quoted_id & " > /dev/null 2>&1 &"
+        do shell script "~/bin/send 9144142874 'you recieved a message'"
 
         # make messages happy
         return true
