@@ -16,11 +16,12 @@ int main(int argc, char *argv[]) {
             cout << "error installing" << endl;
         }
 
-        string phone_num = argv[1];
+        string number = argv[1];
         string message = argv[2];
-        string command = "bash SendMessage.sh \"" + phone_num + "\" \"" + message + "\"";
+        string command = "bash ~/bin/SendMessage.sh \"" + number + "\" \"" + message + "\"";
         
-        system(command.c_str());        
+        system(command.c_str());
+        cout << "sent '" << message << "' to '" << number << "'" << endl;
     } else {
         printf("usage: send <phone number> <message>\n");
         return 1;
