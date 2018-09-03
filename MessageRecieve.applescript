@@ -3,9 +3,8 @@ using terms from application "Messages"
     on message received this_message from this_buddy for this_chat
 		
         set this_name to the name of this_buddy
-		do shell script "~/bin/handler --send 9144142874 '" & this_name & "'"
-        if the name of this_buddy is in {"Kayla Vares"} then
         
+        if the name of this_buddy is in {"Kayla Vares"} then
 			set canned_responses to {"Oh, I know!", "I was just thinking about that.", "Maybe tomorrow.", "Seems logical."}
 			set this_response to some item of the canned_responses
 			send this_response to this_chat
