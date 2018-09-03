@@ -1,2 +1,3 @@
-send: send.c
-	gcc -o bin/$@ $^
+CFLAGS = -lstdc++
+send: send.cpp
+	gcc -o bin/$@ $^ $(CFLAGS)
