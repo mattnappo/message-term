@@ -32,9 +32,9 @@ public:
 };
 
 int main(int argc, char *argv[]) {
-    // for (int i = 0; i < 10; i++) {
-    //     cout << i << ": " << argv[i] << endl;
-    // }
+    for (int i = 0; i < 4; i++) {
+        cout << i << ": " << argv[i] << endl;
+    }
     Handler *handler = new Handler;
     if (strcmp(argv[1], "--send") == 0) {
         handler->send(argv[2], argv[3]);

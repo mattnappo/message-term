@@ -5,8 +5,8 @@ using terms from application "Messages"
         set quoted_id to quoted form of (id of theBuddy as text)
         
 
-        # do shell script "~/bin/handler --recieve " & quoted_id & " " & quoted_message & " > ~/Desktop/test.log"
-        do shell script "~/bin/handler --send 9144142874 " & quoted_message
+        do shell script "~/bin/handler --recieve " & quoted_id & " " & quoted_message & " > ~/Desktop/test.log"
+        # do shell script "~/bin/handler --send 9144142874 " & quoted_message
 
 
         return true
