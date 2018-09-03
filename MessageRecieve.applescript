@@ -1,13 +1,13 @@
 # Event handler
 using terms from application "Messages"
     on message received this_message from this_buddy for this_chat
-        set quoted_message to quoted form of this_message
-        set quoted_id to quoted form of (id of this_buddy as text)
-        
-
-        # do shell script "~/bin/handler --recieve " & quoted_id & " " & quoted_message & " > ~/Desktop/test.log"
-        # do shell script "~/bin/handler --send 9144142874 " & quoted_message
-        do shell script "echo " & quoted_message & " > ~/Desktop/test.log"
+		
+        set this_name to the name of this_buddy
+		if the name of this_buddy is in {"Henry Shatcz"} then
+			set canned_responses to {"Oh, I know!", "I was just thinking about that.", "Maybe tomorrow.", "Seems logical."}
+			set this_response to some item of the canned_responses
+			send this_response to this_chat
+		end if
 
         return true
     end message received
