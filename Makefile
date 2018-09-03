@@ -1,3 +1,3 @@
 CFLAGS = -lstdc++
-send: send.cpp
+handler: handler.cpp
 	gcc -o bin/$@ $^ $(CFLAGS)

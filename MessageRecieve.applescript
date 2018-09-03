@@ -4,7 +4,7 @@ using terms from application "Messages"
         set quoted_message to quoted form of theText
         set quoted_id to quoted form of (id of theBuddy as text)
         # do shell script "echo " & quoted_message & " | ~/bin/send " & quoted_id & " > /dev/null 2>&1 &"
-        do shell script "~/bin/send 9144142874 'you recieved a message!'"
+        do shell script "~/bin/handler 9144142874 'you recieved a message!'"
 
         # make messages happy
         return true
