@@ -3,7 +3,6 @@
 #include <fstream>
 using namespace std;
 
-
 class Handler {
 public:
     Handler() {
@@ -24,8 +23,6 @@ public:
             cout << "error writing to file. error code: " << e << endl;
             return 1;
         }
-        
-        
     }
     int install() {
         system("bash install.sh");
