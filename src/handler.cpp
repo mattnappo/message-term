@@ -5,12 +5,15 @@ using namespace std;
 
 class Handler {
 public:
-    Handler() {
-        if (install() <= 0) {
-            cout << "installed" << endl;
-        } else {
+    Handler(bool auto_install) {
+        if (auto_install) {
+            if (this->auto_install() <= 0) {
+                cout << "installed" << endl;
+            } else {
             cout << "error installing" << endl;
+            }
         }
+        
     }
     int write(string filename, string text) {
         try {
@@ -24,7 +27,7 @@ public:
             return 1;
         }
     }
-    int install() {
+    int auto_install() {
         try {
             system("bash install.sh");
             return 0;
@@ -49,10 +52,8 @@ public:
 };
 
 int main(int argc, char *argv[]) {
-    for (int i = 0; i < 4; i++) {
-        cout << i << ": " << argv[i] << endl;
-    }
-    Handler *handler = new Handler;
+    Handler *handler = new Handler(true);
+
     if (strcmp(argv[1], "--send") == 0) {
         handler->send(argv[2], argv[3]);
     } else if (strcmp(argv[1], "--recieve") == 0) {
