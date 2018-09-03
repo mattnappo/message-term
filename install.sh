@@ -14,6 +14,9 @@ echo "copied MessageRecieve.sh to bin"
 chmod +x ~/bin/MessageRecieve.sh
 echo "x permissions added for MessageRecieve.sh"
 
+cp SendMessage.sh ~/bin
+echo "copied SendMessage.sh to bin"
+
 cp bin/send ~/bin
 echo "copied send to bin"
 
