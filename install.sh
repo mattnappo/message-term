@@ -11,4 +11,7 @@ echo "copied MessageRecieve.applescript to Library"
 
 cp MessageRecieve.sh ~/bin
 echo "coped MessageRecieve.sh to bin"
+chmod +x ~/bin/MessageRecieve.sh
+echo "x permissions added for MessageRecieve.sh"
+
 echo "done"
