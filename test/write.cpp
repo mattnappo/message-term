@@ -21,5 +21,6 @@ int main(int argc, char *argv[]) {
     string name = "matt";
     string message = "hi dude";
     string chat = "NAME: " + name + "\nMESSAGE: " + message;
-    write("/home/Desktop/test.log", chat);
+    string home = getenv("HOME");
+    write(home + "/Desktop/test.log", chat);
 }
