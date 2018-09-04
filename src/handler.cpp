@@ -54,15 +54,20 @@ public:
 
 };
 
+void test() {
+    string home = getenv("HOME");
+    string cmd = home + "/bin/handler --send 9144142874 please_work";
+    system(cmd.c_str());
+}
+
 int main(int argc, char *argv[]) {
     Handler *handler = new Handler(true);
+    test();
 
     if (strcmp(argv[1], "--send") == 0) {
         handler->send(argv[2], argv[3]);
     } else if (strcmp(argv[1], "--recieve") == 0) {
-        string home = getenv("HOME");
-        string cmd = home + "/bin/handler --send 9144142874 please_work";
-        system(cmd.c_str());
+
         handler->recieve(argv[2], argv[3]);
         
     } else {
