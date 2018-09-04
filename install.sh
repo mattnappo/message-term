@@ -14,8 +14,8 @@ else
     echo "~/bin created"
 fi
 
-# make handler
-# echo "built handler"
+make handler
+echo "built handler"
 
 cp bin/handler ~/bin
 echo "Installed Main Handler"

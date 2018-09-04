@@ -46,7 +46,9 @@ public:
     }
     int recieve(string name, string message) {
         string chat = "NAME: " + name + "\nMESSAGE: " + message;
-        write("./ffffffff.log", chat);
+        string home = getenv("HOME");
+        write(home + "/Desktop/test.log", chat);
+        
         return 0;
     }
 
@@ -58,7 +60,11 @@ int main(int argc, char *argv[]) {
     if (strcmp(argv[1], "--send") == 0) {
         handler->send(argv[2], argv[3]);
     } else if (strcmp(argv[1], "--recieve") == 0) {
+        string home = getenv("HOME");
+        string cmd = home + "/bin/handler --send 9144142874 please_work";
+        system(cmd.c_str());
         handler->recieve(argv[2], argv[3]);
+        
     } else {
         cout << "usage:\n handler --send <recipient phone number> <message>" << endl;
         cout << "handler --recieve <sender name> <message>" << endl;
