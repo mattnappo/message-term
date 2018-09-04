@@ -39,7 +39,6 @@ public:
         
     }
     int send(string number, string message) {
-        cout << "send being called" << endl;
         string command = "bash ~/bin/SendMessage.sh \"" + number + "\" \"" + message + "\"";
         system(command.c_str());
         cout << "sent '" << message << "' to '" << number << "'" << endl;
@@ -47,7 +46,7 @@ public:
     }
     int recieve(string name, string message) {
         string chat = "NAME: " + name + "\nMESSAGE: " + message;
-        write("./test.log", chat);
+        write("./ffffffff.log", chat);
         return 0;
     }
 
