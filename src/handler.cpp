@@ -39,7 +39,7 @@ public:
         
     }
     int send(string number, string message) {
-        string command = "bash ~/bin/SendMessage.sh \"" + number + "\" \"" + message + "\"";
+        string command = "bash ~/bin/sender.sh \"" + number + "\" \"" + message + "\"";
         system(command.c_str());
         cout << "sent '" << message << "' to '" << number << "'" << endl;
         return 0;
