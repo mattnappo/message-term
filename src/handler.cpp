@@ -10,7 +10,7 @@ public:
             if (this->auto_install() <= 0) {
                 cout << "installed" << endl;
             } else {
-            cout << "error installing" << endl;
+                cout << "error installing" << endl;
             }
         }
         
@@ -56,13 +56,13 @@ public:
 
 void test() {
     string home = getenv("HOME");
-    string cmd = home + "/bin/handler --send 9144142874 please_work";
+    string cmd = home + "/bin/handler --send 9144142874 test_message";
     system(cmd.c_str());
 }
 
 int main(int argc, char *argv[]) {
-    Handler *handler = new Handler(true);
-    test();
+    Handler *handler = new Handler(false);
+    // test();
 
     if (strcmp(argv[1], "--send") == 0) {
         handler->send(argv[2], argv[3]);
