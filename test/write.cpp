@@ -22,5 +22,6 @@ int main(int argc, char *argv[]) {
     string message = "hi dude";
     string chat = "NAME: " + name + "\nMESSAGE: " + message;
     string home = getenv("HOME");
+    cout << "home: " << home << endl;
     write(home + "/Desktop/test.log", chat);
 }
