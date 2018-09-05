@@ -4,6 +4,12 @@
 #include <string>
 using namespace std;
 
+// ----- TEST FUNC -----
+
+void test();
+
+// ----- MESSAGE CLASS: message.cpp -----
+
 class Message {
 private:
     string sender;
@@ -15,6 +21,8 @@ public:
     int deserialize(string path);
 };
 
+// ----- HANDLER CLASS: handler.cpp -----
+
 class Handler {
 public:
     Handler(bool auto_install);
@@ -25,3 +33,4 @@ public:
 };
 
 #endif
+
