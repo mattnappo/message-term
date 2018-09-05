@@ -15,6 +15,13 @@ public:
     int deserialize(string path);
 };
 
-
+class Handler {
+public:
+    Handler(bool auto_install);
+    int write(string filename, string text);
+    int auto_install();
+    int send(string number, string message);
+    int recieve(string name, string message);
+};
 
 #endif
