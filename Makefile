@@ -9,4 +9,4 @@ handler: $(SRC) $(H)
 	$(CC) $(BIN)$@ $(SRC) $(CFLAGS)
 
 message: $(SRC) $(H)
-	$(CC) $(BIN)$@ $(CFLAGS)
+	$(CC) $(BIN)$@ $(SRC) $(CFLAGS)

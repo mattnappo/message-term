@@ -59,19 +59,3 @@ void test() {
     string cmd = home + "/bin/handler --send 9144142874 test_message";
     system(cmd.c_str());
 }
-
-int main(int argc, char *argv[]) {
-    Handler *handler = new Handler(false);
-    // test();
-
-    if (strcmp(argv[1], "--send") == 0) {
-        handler->send(argv[2], argv[3]);
-    } else if (strcmp(argv[1], "--recieve") == 0) {
-
-        handler->recieve(argv[2], argv[3]);
-        
-    } else {
-        cout << "usage:\n handler --send <recipient phone number> <message>" << endl;
-        cout << "handler --recieve <sender name> <message>" << endl;
-    }
-}
