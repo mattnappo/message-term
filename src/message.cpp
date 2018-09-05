@@ -1,22 +1,21 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <string>
-#include "json.hpp"
+#include "vendor/json.hpp"
 #include "message_term.h"
-
 using namespace std;
 using nlohmann::json;
-
 
 Message::Message(string _sender, string _message) {
     sender = _sender;
     message = _message;
 }
+
 void Message::print_message() {
     cout << "Sender: " << sender << endl;
     cout << "Message: " << message << endl;
 }
+
 int Message::serialize(string path) {
     json new_msg;
     new_msg["sender"] = sender;
@@ -25,6 +24,7 @@ int Message::serialize(string path) {
     out << setw(4) << new_msg << endl;
     return 0;
 }
+
 int Message::deserialize(string path) {
     ifstream in(path);
     json new_msg;
