@@ -20,10 +20,11 @@ echo "built handler"
 cp bin/handler ~/bin
 echo "Installed Main Handler"
 
-cp src/Handler.applescript ~/Library/Application\ Scripts/com.apple.iChat
+cp src/core/Handler.applescript ~/Library/Application\ Scripts/com.apple.iChat
 echo "Installed AppleScript Handler"
 
-cp src/sender.sh ~/bin
+cp src/core/sender.sh ~/bin
 echo "Installed Send Script"
+
 chmod +x ~/bin/sender.sh
 echo "Permissions to Send Script"
