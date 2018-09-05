@@ -9,9 +9,10 @@ using nlohmann::json;
 
 class Message {
 private:
+    string s = "";
+public:
     string sender;
     string message;
-public:
     Message(string _sender, string _message) {
         sender = _sender;
         message = _message;
@@ -43,8 +44,7 @@ public:
 
 int main() {
     Message *message = new Message("bobby", "hi dude");
-    message->print_message();
     message->serialize("./message.json");
-
-    
+    message->deserialize("./message.json");
+    message->print_message();
 }
