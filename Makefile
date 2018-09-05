@@ -1,7 +1,8 @@
 CC = g++
 BIN = -o bin/
+MAIN = message_term.cpp
 SOURCEDIR = ./src
-SRC := $(shell find $(SOURCEDIR) -name '*.cpp' -not -name 'message_term.cpp')
+SRC := $(shell find $(SOURCEDIR) -name '*.cpp' -not -name '$(MAIN)')
 H = $(wildcard *.h)
 CFLAGS = -std=c++11
 
