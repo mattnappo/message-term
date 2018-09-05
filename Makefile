@@ -4,4 +4,4 @@ handler: src/handler.cpp
 test: test/write.cpp
 	gcc -o bin/$@ $^ $(CFLAGS)
 message: src/message.cpp
-	gcc -o bin/$@ $^ $(CFLAGS)
+	g++ -o bin/$@ $^ -std=c++11
