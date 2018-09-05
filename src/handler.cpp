@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "message_term.h"
 using namespace std;
 
 void test() {
@@ -9,7 +10,7 @@ void test() {
     system(cmd.c_str());
 }
 
-Handler(bool auto_install) {
+Handler::Handler(bool auto_install) {
     if (auto_install) {
         if (this->auto_install() <= 0) {
             cout << "installed" << endl;
@@ -19,7 +20,8 @@ Handler(bool auto_install) {
     }
     
 }
-int write(string filename, string text) {
+
+int Handler::write(string filename, string text) {
     try {
         ofstream file;
         file.open(filename);
@@ -32,7 +34,8 @@ int write(string filename, string text) {
         return 1;
     }
 }
-int auto_install() {
+
+int Handler::auto_install() {
     try {
         system("bash install.sh");
         return 0;
@@ -42,16 +45,17 @@ int auto_install() {
     }
     
 }
-int send(string number, string message) {
+
+int Handler::send(string number, string message) {
     string command = "bash ~/bin/sender.sh \"" + number + "\" \"" + message + "\"";
     system(command.c_str());
     cout << "sent '" << message << "' to '" << number << "'" << endl;
     return 0;
 }
-int recieve(string name, string message) {
+
+int Handler::recieve(string name, string message) {
     string chat = "NAME: " + name + "\nMESSAGE: " + message;
     string home = getenv("HOME");
     write(home + "/Desktop/test.log", chat);
-    
     return 0;
 }
