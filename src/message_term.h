@@ -17,7 +17,7 @@ private:
 public:
     Message(string _sender, string _message);
     void print_message();
-    int serialize(string path);
+    json serialize(string path);
     json deserialize(string path);
 };
 
