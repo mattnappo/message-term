@@ -14,10 +14,10 @@ else
     echo "~/bin created"
 fi
 
-make handler
-echo "built handler"
+make message_term
+echo "Built Main Handler"
 
-cp bin/handler ~/bin
+cp bin/message_term ~/bin
 echo "Installed Main Handler"
 
 cp src/core/Handler.applescript ~/Library/Application\ Scripts/com.apple.iChat
