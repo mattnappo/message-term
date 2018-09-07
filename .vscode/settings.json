@@ -6,6 +6,9 @@
         "system_error": "cpp",
         "__locale": "cpp",
         "ios": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "stdexcept": "cpp",
+        "string": "cpp",
+        "algorithm": "cpp"
     }
 }

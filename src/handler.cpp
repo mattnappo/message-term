@@ -53,13 +53,8 @@ int Handler::send(string number, string message) {
 }
 
 int Handler::recieve(string name, string message) {
-    string chat = "NAME: " + name + "\nMESSAGE: " + message;
+    Message m("", "");
     string home = getenv("HOME");
-    string num = to_string(rand() % 1000);
-    string filename = home + "/Desktop/" + num + message + ".log";
-    write(filename, chat);
-    string link = "https://www.google.com/search?q=" + chat;
-    string test_command = "/usr/bin/open -a \"/Applications/Google Chrome.app\" '" + link + "'";
-    system(test_command.c_str());
+    
     return 0;
 }
