@@ -2,7 +2,9 @@
 #define MESSAGE_TERM_H
 
 #include <string>
+#include "vendor/json.hpp"
 using namespace std;
+using nlohmann::json;
 
 // ----- TEST FUNC -----
 
