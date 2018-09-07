@@ -9,6 +9,8 @@
         "bitset": "cpp",
         "stdexcept": "cpp",
         "string": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "__split_buffer": "cpp",
+        "vector": "cpp"
     }
 }

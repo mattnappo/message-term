@@ -18,12 +18,10 @@ void Message::print_message() {
     cout << "Message: " << message << endl;
 }
 
-
 inline bool exists(const string &name) {
     struct stat buffer;
     return (stat(name.c_str(), &buffer) == 0); 
 }
-
 
 json Message::serialize(string path) {
     json new_msg;
@@ -37,13 +35,12 @@ json Message::serialize(string path) {
         out << setw(4) << msg_array << endl;
         return new_msg;
     } else {
-        json previous_messages = deserialize(path);
-        cout << previous_messages << endl;
-        json msg_array;
-        msg_array.push_back(new_msg);
+        json messages = deserialize(path);
+        cout << messages << endl;
+        messages.push_back(new_msg);
         
         ofstream out(path);
-        out << setw(4) << msg_array << endl;
+        out << setw(4) << messages << endl;
     }
     
     return new_msg;
@@ -53,13 +50,11 @@ json Message::deserialize(string path) {
     ifstream in(path);
     json new_msg;
     in >> new_msg;
-    sender = new_msg["sender"];
-    message = new_msg["message"];
     return new_msg;
 }
 
 int main() {
-    Message msg("bobasdad", "four");
+    Message msg("at bob five", "five");
     json j = msg.serialize("./messages.json");
     cout << j << endl;
 
