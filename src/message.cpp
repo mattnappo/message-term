@@ -21,11 +21,12 @@ int Message::serialize(string path) {
     new_msg["sender"] = sender;
     new_msg["message"] = message;
     
-    string append_to = deserialize(path).dump();
-    string new_msg_s = new_msg.dump();
+    string new_msg_s = new_msg.dump(4);
+    string append_to_s = deserialize(path).dump(4);
+    string new_json_s = new_msg_s + ",\n" + append_to_s;
 
     ofstream out(path);
-    out << setw(4) << new_msg << endl;
+    out << setw(4) << json::parse(new_json_s) << endl;
     
     return 0;
 }
