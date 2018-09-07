@@ -30,8 +30,21 @@ json Message::serialize(string path) {
     new_msg["sender"] = sender;
     new_msg["message"] = message;
     
-    json previous_messages = deserialize(path);
-    cout << previous_messages << endl;
+    if (exists(path) == 0) { // If the file doesn't already exist
+        json msg_array;
+        msg_array.push_back(new_msg);
+        ofstream out(path);
+        out << setw(4) << msg_array << endl;
+        return new_msg;
+    } else {
+        json previous_messages = deserialize(path);
+        cout << previous_messages << endl;
+        json msg_array;
+        msg_array.push_back(new_msg);
+        
+        ofstream out(path);
+        out << setw(4) << msg_array << endl;
+    }
     
     return new_msg;
 }
@@ -46,7 +59,7 @@ json Message::deserialize(string path) {
 }
 
 int main() {
-    Message msg("matt", "hello world");
+    Message msg("bobasdad", "four");
     json j = msg.serialize("./messages.json");
     cout << j << endl;
 
