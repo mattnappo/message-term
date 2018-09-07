@@ -20,16 +20,21 @@ int Message::serialize(string path) {
     json new_msg;
     new_msg["sender"] = sender;
     new_msg["message"] = message;
+    
+    string append_to = deserialize(path).dump();
+    string new_msg_s = new_msg.dump();
+
     ofstream out(path);
     out << setw(4) << new_msg << endl;
+    
     return 0;
 }
 
-int Message::deserialize(string path) {
+json Message::deserialize(string path) {
     ifstream in(path);
     json new_msg;
     in >> new_msg;
     sender = new_msg["sender"];
     message = new_msg["message"];
-    return 0;
+    return new_msg
 }

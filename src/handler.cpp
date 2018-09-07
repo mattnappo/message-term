@@ -18,7 +18,6 @@ Handler::Handler(bool auto_install) {
             cout << "error installing" << endl;
         }
     }
-    
 }
 
 int Handler::write(string filename, string text) {
@@ -46,15 +45,17 @@ int Handler::auto_install() {
 }
 
 int Handler::send(string number, string message) {
-    string command = "bash ~/bin/sender.sh \"" + number + "\" \"" + message + "\"";
+    string command = "bash ~/.msgterm/sender.sh \"" + number + "\" \"" + message + "\"";
     system(command.c_str());
     cout << "sent '" << message << "' to '" << number << "'" << endl;
     return 0;
 }
 
 int Handler::recieve(string name, string message) {
-    Message m("", "");
+    Message msg(name, message);
     string home = getenv("HOME");
-    
+    string path = home + ".msgterm/" + "messages.json";
+    msg.serialize(path);
+
     return 0;
 }

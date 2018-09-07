@@ -18,7 +18,7 @@ public:
     Message(string _sender, string _message);
     void print_message();
     int serialize(string path);
-    int deserialize(string path);
+    json deserialize(string path);
 };
 
 // ----- HANDLER CLASS: handler.cpp -----
