@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <sys/stat.h>
+
 #include "vendor/json.hpp"
 #include "message_term.h"
 using namespace std;
@@ -16,20 +18,22 @@ void Message::print_message() {
     cout << "Message: " << message << endl;
 }
 
+
+inline bool exists(const string &name) {
+    struct stat buffer;
+    return (stat(name.c_str(), &buffer) == 0); 
+}
+
+
 json Message::serialize(string path) {
     json new_msg;
     new_msg["sender"] = sender;
     new_msg["message"] = message;
     
-    string new_msg_s = new_msg.dump(4);
-    string append_to_s = deserialize(path).dump(4);
-    string new_json_s = new_msg_s + ",\n" + append_to_s;
-    json final_json = json::parse(new_json_s);
-
-    ofstream out(path);
-    out << setw(4) << final_json << endl;
+    json previous_messages = deserialize(path);
+    cout << previous_messages << endl;
     
-    return final_json;
+    return new_msg;
 }
 
 json Message::deserialize(string path) {
@@ -43,7 +47,8 @@ json Message::deserialize(string path) {
 
 int main() {
     Message msg("matt", "hello world");
-    msg.serialize("./messages.json");
+    json j = msg.serialize("./messages.json");
+    cout << j << endl;
 
     return 0;
 }
