@@ -5,6 +5,7 @@
         "iostream": "cpp",
         "system_error": "cpp",
         "__locale": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "bitset": "cpp"
     }
 }

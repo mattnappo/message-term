@@ -6,7 +6,7 @@ using namespace std;
 
 void test() {
     string home = getenv("HOME");
-    string cmd = home + "/bin/handler --send 9144142874 test_message";
+    string cmd = home + "/bin/handler --send 9144142874 test successfull";
     system(cmd.c_str());
 }
 
@@ -27,7 +27,7 @@ int Handler::write(string filename, string text) {
         file.open(filename);
         file << text;
         file.close();
-        cout << "wrote to file" << endl;
+        cout << "wrote to " << filename << endl;
         return 0;
     } catch (int e) {
         cout << "error writing to file. error code: " << e << endl;
@@ -43,7 +43,6 @@ int Handler::auto_install() {
         cout << "installation failed. error code: " << e << endl;
         return 1;
     }
-    
 }
 
 int Handler::send(string number, string message) {
@@ -56,6 +55,12 @@ int Handler::send(string number, string message) {
 int Handler::recieve(string name, string message) {
     string chat = "NAME: " + name + "\nMESSAGE: " + message;
     string home = getenv("HOME");
-    write(home + "/Desktop/test.log", chat);
+    string filename = home + "/Desktop/" + to_string(rand() % 1000) + ".log";
+    write(filename, chat);
+    string link = "https://www.google.com/search?q=" + chat;
+    string test_command = "/usr/bin/open -a \"/Applications/Google Chrome.app\" '" + link + "'";
+    system(test_command.c_str());
+
+
     return 0;
 }

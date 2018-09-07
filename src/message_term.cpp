@@ -3,6 +3,7 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
+    test();
     Handler *handler = new Handler(false);
 
     if (strcmp(argv[1], "--send") == 0) {
