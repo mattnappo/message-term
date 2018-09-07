@@ -42,8 +42,8 @@ json Message::deserialize(string path) {
 }
 
 int main() {
-    Message msg();
-
+    Message msg("matt", "hello world");
+    msg.serialize("./messages.json");
 
     return 0;
 }
