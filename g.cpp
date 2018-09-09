@@ -3,7 +3,7 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    if (strcmp(argv[1], "--main") != 0) {
+    if (strcmp(argv[1], "p") != 0) {
         system("git add .");
     
         string *thing = new string(argv[1]);
