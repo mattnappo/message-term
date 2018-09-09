@@ -53,13 +53,13 @@ json Message::deserialize(string path) {
     return new_msg;
 }
 
-int main() {
-    Message msg("at bob 1010101010", "five");
-    json j = msg.serialize("./messages.json");
-    cout << j << endl;
+// int main() {
+//     Message msg("at bob 1010101010", "five");
+//     json j = msg.serialize("./messages.json");
+//     cout << j << endl;
 
-    json other_j = msg.deserialize("./messages.json");
-    cout << other_j << endl;
+//     json other_j = msg.deserialize("./messages.json");
+//     cout << other_j << endl;
 
-    return 0;
-}
+//     return 0;
+// }
