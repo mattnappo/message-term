@@ -6,10 +6,6 @@
 using namespace std;
 using nlohmann::json;
 
-// ----- TEST FUNC -----
-
-void test();
-
 // ----- MESSAGE CLASS: message.cpp -----
 
 class Message {

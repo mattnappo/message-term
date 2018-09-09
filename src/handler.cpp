@@ -4,12 +4,6 @@
 #include "message_term.h"
 using namespace std;
 
-void test() {
-    string home = getenv("HOME");
-    string cmd = home + "/bin/handler --send 9144142874 test successfull";
-    system(cmd.c_str());
-}
-
 Handler::Handler(bool auto_install) {
     if (auto_install) {
         if (this->auto_install() <= 0) {
