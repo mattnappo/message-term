@@ -54,9 +54,12 @@ json Message::deserialize(string path) {
 }
 
 int main() {
-    Message msg("at bob five", "five");
+    Message msg("at bob 1010101010", "five");
     json j = msg.serialize("./messages.json");
     cout << j << endl;
+
+    json other_j = msg.deserialize("./messages.json");
+    cout << other_j << endl;
 
     return 0;
 }
