@@ -2,11 +2,9 @@
 #define MESSAGE_TERM_H
 
 #include <string>
+#include "vendor/json.hpp"
 using namespace std;
-
-// ----- TEST FUNC -----
-
-void test();
+using nlohmann::json;
 
 // ----- MESSAGE CLASS: message.cpp -----
 
@@ -14,11 +12,10 @@ class Message {
 private:
     string sender;
     string message;
+    json deserialize(string path);
 public:
     Message(string _sender, string _message);
-    void print_message();
-    int serialize(string path);
-    int deserialize(string path);
+    json serialize(string path);
 };
 
 // ----- HANDLER CLASS: handler.cpp -----

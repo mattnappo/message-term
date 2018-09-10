@@ -1,35 +1,51 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <sys/stat.h>
+
 #include "vendor/json.hpp"
 #include "message_term.h"
 using namespace std;
 using nlohmann::json;
+
+inline bool exists(const string &name) {
+    struct stat buffer;
+    return (stat(name.c_str(), &buffer) == 0); 
+}
 
 Message::Message(string _sender, string _message) {
     sender = _sender;
     message = _message;
 }
 
-void Message::print_message() {
-    cout << "Sender: " << sender << endl;
-    cout << "Message: " << message << endl;
-}
-
-int Message::serialize(string path) {
+json Message::serialize(string path) {
     json new_msg;
     new_msg["sender"] = sender;
     new_msg["message"] = message;
-    ofstream out(path);
-    out << setw(4) << new_msg << endl;
-    return 0;
+
+    if (exists(path) == 0) { // If the file doesn't already exist
+        json msg_array;
+        msg_array.push_back(new_msg);
+        ofstream out(path);
+        out << setw(4) << msg_array << endl;
+        return new_msg;
+    } else {
+        json messages = deserialize(path);
+        messages.push_back(new_msg);
+        ofstream out(path);
+        out << setw(4) << messages << endl;
+    }
+    return new_msg;
 }
 
-int Message::deserialize(string path) {
+json Message::deserialize(string path) {
     ifstream in(path);
     json new_msg;
     in >> new_msg;
-    sender = new_msg["sender"];
-    message = new_msg["message"];
-    return 0;
+    return new_msg;
+}
+
+int main() {
+    Message *msg = new Message("billy", "hi");
+    msg->serialize("./messages.json");
 }
