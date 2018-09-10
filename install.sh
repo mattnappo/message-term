@@ -26,6 +26,9 @@ echo "Permissions to Main Handler"
 cp src/core/Handler.applescript ~/Library/Application\ Scripts/com.apple.iChat
 echo "Installed AppleScript Handler"
 
+cp stocks/grab.py ~/.msgterm
+echo "Installed Python Handler"
+
 cp src/core/sender.sh ~/.msgterm
 echo "Installed Send Script"
 
