@@ -1,11 +1,11 @@
 # Event handler
 using terms from application "Messages"
     
-    do shell script "open /Applications/XAMPP/"
+    
     do shell script "python ~/.msgterm/grab.py 'Price goog'"
     
     on message received theText from theBuddy for theChat
-
+        do shell script "open /Applications/XAMPP/"
         set quoted_message to quoted form of theText
         set quoted_id to quoted form of (id of theBuddy as text)
 

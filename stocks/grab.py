@@ -37,9 +37,6 @@ class Grab:
         else:
             bash("~/.msgterm/message_term --send " + self.number + " \"Oops. It looks like the ticker '" + self.ticker.upper() + "' is invalid!\"")
 
-with open("./SUCCESS", "w") as f:
-    f.write("SUCCESS")
-
 Grab(
     "GDJIXVNNXQGHSD7A",
     sys.argv[1],
