@@ -45,7 +45,7 @@ int Handler::send(string number, string message) {
     return 0;
 }
 
-int Handler::recieve(string message) {
+int Handler::recieve(string name, string message) {
     string home = getenv("HOME");
     string command = "python3 " + home + "/.msgterm/" + "grab.py \"" + message + "\"";
     system(command.c_str());
