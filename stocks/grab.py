@@ -35,7 +35,7 @@ class Grab:
             price = "Price of " + self.ticker + ": \$" + money
             bash("~/.msgterm/message_term --send " + self.number + " '" + price + "'")
         else:
-            bash("~/.msgterm/message_term --send " + self.number + " \"Oops. It looks like the ticker '" + self.ticker + "' is invalid!\"")
+            bash("~/.msgterm/message_term --send " + self.number + " \"Oops. It looks like the ticker '" + self.ticker.upper() + "' is invalid!\"")
 
 with open("./SUCCESS", "w") as f:
     f.write("SUCCESS")
