@@ -8,7 +8,7 @@ class Grab:
         self.data = None
         self.ticker = ""
 
-        self.api_key = key
+        self.api_key = api_key
         self.message = message
         self.number = number
         self.handle()
@@ -21,13 +21,12 @@ class Grab:
         self.get_current_price()
 
     def get_current_price(self):
-        request = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + self.ticker + "&apikey=" + self.key
+        request = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + self.ticker + "&apikey=" + self.api_key
         self.data = requests.get(request)
         self.data = self.data.json()
         self.parse()
 
     def parse(self):
-        print(str(self.data["Global Quote"]))
         if self.data["Global Quote"] != {}:
             raw_price = self.data["Global Quote"]["05. price"]
             money = raw_price[:-2]
