@@ -6,9 +6,6 @@
 using namespace std;
 using nlohmann::json;
 
-// ----- PRINT FUNC: message.cpp -----
-
-void print(string msg);
 
 // ----- MESSAGE CLASS: message.cpp -----
 
@@ -16,11 +13,10 @@ class Message {
 private:
     string sender;
     string message;
+    json deserialize(string path);
 public:
     Message(string _sender, string _message);
-    void print_message();
     json serialize(string path);
-    json deserialize(string path);
 };
 
 // ----- HANDLER CLASS: handler.cpp -----
