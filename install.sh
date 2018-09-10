@@ -20,11 +20,14 @@ echo "Built Main Handler"
 cp bin/message_term ~/.msgterm
 echo "Installed Main Handler"
 
+chmod +x ~/.msgterm/message_term
+echo "Permissions to Main Handler"
+
 cp src/core/Handler.applescript ~/Library/Application\ Scripts/com.apple.iChat
 echo "Installed AppleScript Handler"
 
 cp src/core/sender.sh ~/.msgterm
 echo "Installed Send Script"
 
-chmod +x ~/bin/sender.sh
+chmod +x ~/.msgterm/sender.sh
 echo "Permissions to Send Script"

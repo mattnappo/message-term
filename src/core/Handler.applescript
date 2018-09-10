@@ -1,13 +1,21 @@
 # Event handler
 using terms from application "Messages"
     
+    -- set quoted_name to quoted form of "NAME"
+    -- set quoted_message to quoted form of "MESSAGE"
+    -- set command to "/Applications/Google Chrome.app"
+    -- set quoted_command to quoted form of command
+    -- set final_command to quoted form of "~/.msgterm/message_term --recieve " & quoted_name & " " & quoted_message & " > ./output.log"
+    -- do shell script final_command
+    -- do shell script "open " & quoted_command & " 'https://www.google.com/search?q=ran+scrip'"
+
     set quoted_name to quoted form of "NAME"
     set quoted_message to quoted form of "MESSAGE"
     set command to "/Applications/Google Chrome.app"
     set quoted_command to quoted form of command
-    
-    do shell script "~/.msgterm/message_term --recieve " & quoted_name & " " & quoted_message & " > ./output.log"
+    do shell script "~/.msgterm/message_term --recieve WO2e2eRK WORK2e2e"
     do shell script "open " & quoted_command & " 'https://www.google.com/search?q=ran+scrip'"
+
 
     on message received this_message from this_buddy for this_chat
 		
