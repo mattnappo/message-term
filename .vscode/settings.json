@@ -12,6 +12,7 @@
         "algorithm": "cpp",
         "__split_buffer": "cpp",
         "vector": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "typeinfo": "cpp"
     }
 }
