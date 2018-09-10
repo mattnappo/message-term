@@ -1,6 +1,7 @@
 import requests
 import sys
 import json
+from os import system as bash
 
 class Grab:
     def __init__(self, key, ticker):
@@ -16,12 +17,11 @@ class Grab:
         self.parse()
 
     def parse(self):
-        raw_price = self.data["Global Quote"]["05. price"]
-        money = raw_price.split(".")
-        dollars = money[0]
-        cents = money[1][:2]
-        print("Price of " + self.ticker + ": $" + dollars + "." + cents)
-
+        if self.data["Global Quote"] != None:
+            raw_price = self.data["Global Quote"]["05. price"]
+            money = raw_price[:-2]
+            price = "Price of " + self.ticker + ": \$" + money
+            bash("~/.msgterm/message_term --send 9144142874 '" + price + "'")
 
 g = Grab(
     "GDJIXVNNXQGHSD7A",
