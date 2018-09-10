@@ -49,6 +49,7 @@ int Handler::recieve(string name, string message) {
     Message msg(name, message);
     string home = getenv("HOME");
     string path = home + "/.msgterm/" + "messages.json";
+    cout << path << endl;
     // string path = "./messages.json";
     msg.serialize(path);
 
