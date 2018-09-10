@@ -29,6 +29,9 @@ echo "Installed AppleScript Handler"
 cp stocks/grab.py ~/.msgterm
 echo "Installed Python Handler"
 
+chmod +x ~/.msgterm/grab.py
+echo "Permissions to Python Handler"
+
 cp src/core/sender.sh ~/.msgterm
 echo "Installed Send Script"
 

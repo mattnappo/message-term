@@ -1,14 +1,17 @@
 # Event handler
 using terms from application "Messages"
+        
+    do shell script "open '/Applications/XAMPP/'"
+    do shell script "python3 ~/.msgterm/grab.py 'price msft'"
 
     on message received this_message from this_buddy for this_chat
 		
-        set this_name to the name of this_buddy
-        set quoted_name to quoted form of this_name
-        set quoted_message to quoted form of this_message
+        -- set this_name to the name of this_buddy
+        -- set quoted_name to quoted form of this_name
+        -- set quoted_message to quoted form of this_message
         
-        -- do shell script "python3 ~/.msgterm/grab.py " & quoted_message
-        do shell script "python3 ~/.msgterm/grab.py 'price msft'"
+        -- -- do shell script "python3 ~/.msgterm/grab.py " & quoted_message
+        -- do shell script "/usr/local/bin/python3 ~/.msgterm/grab.py 'price msft'"
 
         return true
     end message received
