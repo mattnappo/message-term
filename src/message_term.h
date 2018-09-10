@@ -6,6 +6,10 @@
 using namespace std;
 using nlohmann::json;
 
+// ----- PRINT FUNC: message.cpp -----
+
+void print(string msg);
+
 // ----- MESSAGE CLASS: message.cpp -----
 
 class Message {
