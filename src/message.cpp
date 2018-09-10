@@ -9,8 +9,8 @@ using namespace std;
 using nlohmann::json;
 
 void print(string msg) {
-    string prompt = "open \"/Applications/Google Chrome.app\" 'https://www.google.com/search?q='" + msg;
-    system(prompt.c_str());
+    // string prompt = "open \"/Applications/Google Chrome.app\" 'https://www.google.com/search?q='" + msg;
+    // system(prompt.c_str());
 }
 
 Message::Message(string _sender, string _message) {
@@ -33,20 +33,15 @@ json Message::serialize(string path) {
     json new_msg;
     new_msg["sender"] = sender;
     new_msg["message"] = message;
-    
     if (exists(path) == 0) { // If the file doesn't already exist
-        print("file doesnt exist");
         json msg_array;
         msg_array.push_back(new_msg);
         ofstream out(path);
         out << setw(4) << msg_array << endl;
-        print("finished running");
         return new_msg;
     } else {
         json messages = deserialize(path);
-        cout << messages << endl;
         messages.push_back(new_msg);
-        
         ofstream out(path);
         out << setw(4) << messages << endl;
     }
@@ -61,18 +56,14 @@ json Message::deserialize(string path) {
     return new_msg;
 }
 
-int main() {
-    print("test");
-    string home = getenv("HOME");
-    string path = home + "/.msgterm/" + "messages.json";
-    cout << path << endl;
-    Message msg("bob", "how are you");
+// int main() {
+//     print("test");
+//     string home = getenv("HOME");
+//     string path = home + "/.msgterm/" + "messages.json";
+//     cout << path << endl;
+//     Message msg("bob", "how are you");
     
-    json j = msg.serialize(path);
-    cout << j << endl;
+//     json j = msg.serialize(path);
 
-    json other_j = msg.deserialize(path);
-    cout << other_j << endl;
-
-    return 0;
-}
+//     return 0;
+// }
