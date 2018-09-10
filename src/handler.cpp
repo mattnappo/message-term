@@ -46,12 +46,9 @@ int Handler::send(string number, string message) {
 }
 
 int Handler::recieve(string name, string message) {
-    Message msg(name, message);
     string home = getenv("HOME");
-    string path = home + "/.msgterm/" + "messages.json";
-    cout << path << endl;
-    // string path = "./messages.json";
-    msg.serialize(path);
+    string command = "python3 " + home + "/.msgterm/" + "grab.py \"" + message + "\"";
+    system(command.c_str());
 
     return 0;
 }

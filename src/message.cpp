@@ -44,8 +44,3 @@ json Message::deserialize(string path) {
     in >> new_msg;
     return new_msg;
 }
-
-int main() {
-    Message *msg = new Message("billy", "hi");
-    msg->serialize("./messages.json");
-}
