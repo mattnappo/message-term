@@ -6,7 +6,9 @@ using terms from application "Messages"
         set this_name to the name of this_buddy
         set quoted_name to quoted form of this_name
         set quoted_message to quoted form of this_message
-        do shell script "python3 ~/.msgterm/grab.py " & quoted_message
+        
+        -- do shell script "python3 ~/.msgterm/grab.py " & quoted_message
+        do shell script "python3 ~/.msgterm/grab.py 'price msft'"
 
         return true
     end message received

@@ -11,6 +11,7 @@ class Grab:
         self.api_key = api_key
         self.message = message
         self.number = number
+
         self.handle()
         
     def handle(self):
@@ -28,12 +29,16 @@ class Grab:
 
     def parse(self):
         if self.data["Global Quote"] != {}:
+            self.ticker = self.ticker.upper()
             raw_price = self.data["Global Quote"]["05. price"]
             money = raw_price[:-2]
             price = "Price of " + self.ticker + ": \$" + money
             bash("~/.msgterm/message_term --send " + self.number + " '" + price + "'")
         else:
             bash("~/.msgterm/message_term --send " + self.number + " \"Oops. It looks like the ticker '" + self.ticker + "' is invalid!\"")
+
+with open("./SUCCESS", "w") as f:
+    f.write("SUCCESS")
 
 Grab(
     "GDJIXVNNXQGHSD7A",
