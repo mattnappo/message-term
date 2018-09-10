@@ -33,6 +33,7 @@ json Message::serialize(string path) {
     json new_msg;
     new_msg["sender"] = sender;
     new_msg["message"] = message;
+    // } catch (int e) {
     if (exists(path) == 0) { // If the file doesn't already exist
         json msg_array;
         msg_array.push_back(new_msg);
