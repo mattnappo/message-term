@@ -6,6 +6,13 @@
         "system_error": "cpp",
         "__locale": "cpp",
         "ios": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "stdexcept": "cpp",
+        "string": "cpp",
+        "algorithm": "cpp",
+        "__split_buffer": "cpp",
+        "vector": "cpp",
+        "locale": "cpp",
+        "typeinfo": "cpp"
     }
 }

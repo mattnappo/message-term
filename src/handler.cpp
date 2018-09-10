@@ -4,12 +4,6 @@
 #include "message_term.h"
 using namespace std;
 
-void test() {
-    string home = getenv("HOME");
-    string cmd = home + "/bin/handler --send 9144142874 test successfull";
-    system(cmd.c_str());
-}
-
 Handler::Handler(bool auto_install) {
     if (auto_install) {
         if (this->auto_install() <= 0) {
@@ -18,7 +12,6 @@ Handler::Handler(bool auto_install) {
             cout << "error installing" << endl;
         }
     }
-    
 }
 
 int Handler::write(string filename, string text) {
@@ -46,20 +39,19 @@ int Handler::auto_install() {
 }
 
 int Handler::send(string number, string message) {
-    string command = "bash ~/bin/sender.sh \"" + number + "\" \"" + message + "\"";
+    string command = "bash ~/.msgterm/sender.sh \"" + number + "\" \"" + message + "\"";
     system(command.c_str());
     cout << "sent '" << message << "' to '" << number << "'" << endl;
     return 0;
 }
 
 int Handler::recieve(string name, string message) {
-    string chat = "NAME: " + name + "\nMESSAGE: " + message;
+    Message msg(name, message);
     string home = getenv("HOME");
-    string num = to_string(rand() % 1000);
-    string filename = home + "/Desktop/" + num + message + ".log";
-    write(filename, chat);
-    string link = "https://www.google.com/search?q=" + chat;
-    string test_command = "/usr/bin/open -a \"/Applications/Google Chrome.app\" '" + link + "'";
-    system(test_command.c_str());
+    string path = home + "/.msgterm/" + "messages.json";
+    cout << path << endl;
+    // string path = "./messages.json";
+    msg.serialize(path);
+
     return 0;
 }
