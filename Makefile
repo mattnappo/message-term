@@ -1,5 +1,6 @@
 CC = g++
-BIN = -o bin/
+BINDIR = bin/
+BIN = -o $(BINDIR)
 MAIN = message_term.cpp
 SOURCEDIR = ./src
 # WITH MULTIPLE MAINS, I COULD NAME THE FILES FILE.MAIN.CPP AND JUST EXCLUDE ALL .MAIN.CPP FILES
@@ -15,3 +16,5 @@ handler: $(SRC) $(H)
 
 message: $(SRC) $(H)
 	$(CC) $(BIN)$@ $(SRC) $(CFLAGS)
+clean:
+	rm bin/*
