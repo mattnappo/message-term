@@ -26,7 +26,7 @@ public:
     int write(string filename, string text);
     int auto_install();
     int send(string number, string message);
-    int recieve(string name, string message);
+    int recieve(string message);
 };
 
 #endif
