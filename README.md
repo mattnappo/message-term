@@ -9,8 +9,10 @@ iMessage client for your Unix terminal.
 
 3. Select 'Handler.applescript' from the 'AppleScript Handler' dropdown menu.
 
-## Uninstalling
+## Disabling / Uninstalling
 
-If you ever want to uninstall Message Term, just run `rm -rf ~/.msgterm/`
+If you want to temporarily disable the Message Term Handler, just select 'None' in the iMessages AppleScript configuration (described above).
+
+To Completely uninstall Message Term, just run `rm -rf ~/.msgterm/`
 
 This will delete all files related to Message Term.
