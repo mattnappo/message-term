@@ -5,10 +5,12 @@
   "main": "src/main.js",
   "dependencies": {},
   "devDependencies": {
-    "osa-imessage": "^2.4.2"
+    "osa-imessage": "^2.4.2",
+    "blessed": "^0.1.81"
   },
   "scripts": {
-    "test": "node src/main.js"
+    "msg": "node src/msg_test.js",
+    "curses": "node src/curses_test.js"
   },
   "repository": {
     "type": "git",
