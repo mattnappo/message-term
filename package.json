@@ -10,6 +10,7 @@
   },
   "scripts": {
     "msg": "node src/msg_test.js",
+    "start": "node src/main.js",
     "curses": "node src/curses_test.js"
   },
   "repository": {
