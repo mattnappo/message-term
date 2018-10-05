@@ -82,6 +82,26 @@ function incoming_message(message, sender) {
         message: message,
         sender: sender
     };
+   
+    var new_message = blessed.box({
+        parent: message_window,
+        left: "center",
+        top: 5,
+        height: 3,
+        width: "90%",
+        content: "{center}" + sender + "{/center}",
+        tags: true,
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: "#f0f0f0"
+            },
+            fg: "black",
+            bg: "magenta"
+        }
+    });
 
     // var box = blessed.box({
     //     top: "center",
