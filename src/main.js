@@ -142,14 +142,21 @@ function open_chat() {
     console.log("chat opened");
 }
 
+var top = 0;
+
 function incoming_message(message, sender) {
+    if (message_count == 1) {
+        top = 0;
+    } else {
+        top += 3;
+    }
     var new_message = blessed.box({
         parent: message_window,
         left: "center",
-        top: 1 + message_count * 3,
+        top: top,
         height: 3,
         width: "90%",
-        content: "{center}" + sender + "{/center}",
+        content: "{center}{bold}" + sender + "{/bold}: " + message + "{/center}",
         tags: true,
         border: {
             type: "line"
@@ -174,17 +181,18 @@ function incoming_message(message, sender) {
 
 init_scr();
 
-incoming_message("my message\nhi", "sender");
-message_count += 1;
+// incoming_message("my message\nhi", "sender");
+// message_count += 1;
 
 imessage.listen().on("message", (msg) => {
-    var name_object = imessage.nameForHandle(msg.handle);
-    message_count += 1;
-    name_object.then(function(result) {
-        incoming_message(msg.text, result);
-        
-    });
-    
+    // if (!msg.fromMe) {
+        var name_object = imessage.nameForHandle(msg.handle);
+        message_count += 1;
+        name_object.then(function(result) {
+            incoming_message(msg.text, result);
+            
+        });
+    // }
 });
 
 screen.render();
