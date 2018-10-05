@@ -19,7 +19,7 @@ function init_scr() {
         top: 0,
         height: 3,
         width: "100%",
-        content: "{center}Message Term{/center}",
+        content: "{center}{bold}Message Term{/bold}{/center}",
         tags: true,
         border: {
             type: "line"
@@ -33,48 +33,47 @@ function init_scr() {
         }
     });
 
-    // message_window = blessed.box({
-    //     top: "10%",
-    //     width: "50%",
-    //     height: "100%",
-    //     content: "{center}Messages{/center}",
-    //     tags: true,
-    //     border: {
-    //         type: "line"
-    //     },
-    //     style: {
-    //         border: {
-    //             fg: "#f0f0f0"
-    //         },
-    //         fg: "black",
-    //         bg: "magenta"
-    //     }
-    // });
+    message_window = blessed.box({
+        top: 3,
+        width: "50%",
+        height: "100%",
+        content: "{center}{bold}Messages{/bold}{/center}",
+        tags: true,
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: "#f0f0f0"
+            },
+            fg: "black",
+            bg: "magenta"
+        }
+    });
 
-    // chat_window = blessed.box({
-    //     top: "10%",
-    //     left: "50%",
-    //     width: "50%",
-    //     height: "100%",
-    //     content: "{center}Chats{/center}",
-    //     tags: true,
-    //     border: {
-    //         type: "line"
-    //     },
-    //     style: {
-    //         border: {
-    //             fg: "#f0f0f0"
-    //         },
-    //         fg: "black",
-    //         bg: "magenta"
-    //     }
-    // });
+    chat_window = blessed.box({
+        top: 3,
+        left: "50%",
+        width: "50%",
+        height: "100%",
+        content: "{center}{bold}Chats{/bold}{/center}",
+        tags: true,
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: "#f0f0f0"
+            },
+            fg: "black",
+            bg: "magenta"
+        }
+    });
 
-    // screen.append(header);
-    // screen.append(message_window);
-    // screen.append(chat_window);
-    
     screen.append(header);
+    screen.append(message_window);
+    screen.append(chat_window);
+    
 
 }
 
