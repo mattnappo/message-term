@@ -5,6 +5,11 @@ var screen;
 var message_window;
 var chat_window;
 
+var settings = {
+    foreground: "#45ff30",
+    background: "black"
+};
+
 function init_scr() {
     screen = blessed.screen({
         smartCSR: true
@@ -26,14 +31,14 @@ function init_scr() {
         },
         style: {
             border: {
-                fg: "#f0f0f0"
+                fg: settings.foreground
             },
-            fg: "black",
-            bg: "magenta"
+            fg: settings.foreground,
+            bg: settings.background
         }
     });
 
-    message_window = blessed.box({
+    message_window = blessed.list({
         top: 3,
         width: "50%",
         height: "100%",
@@ -44,10 +49,10 @@ function init_scr() {
         },
         style: {
             border: {
-                fg: "#f0f0f0"
+                fg: settings.foreground
             },
-            fg: "black",
-            bg: "magenta"
+            fg: settings.foreground,
+            bg: settings.background
         }
     });
 
@@ -63,10 +68,10 @@ function init_scr() {
         },
         style: {
             border: {
-                fg: "#f0f0f0"
+                fg: settings.foreground
             },
-            fg: "black",
-            bg: "magenta"
+            fg: settings.foreground,
+            bg: settings.background
         }
     });
 
@@ -78,15 +83,10 @@ function init_scr() {
 }
 
 function incoming_message(message, sender) {
-    var msg = {
-        message: message,
-        sender: sender
-    };
-   
     var new_message = blessed.box({
         parent: message_window,
         left: "center",
-        top: 5,
+        top: 1,
         height: 3,
         width: "90%",
         content: "{center}" + sender + "{/center}",
@@ -96,41 +96,17 @@ function incoming_message(message, sender) {
         },
         style: {
             border: {
-                fg: "#f0f0f0"
+                fg: settings.foreground
             },
-            fg: "black",
-            bg: "magenta"
+            fg: settings.foreground,
+            bg: settings.background
         }
     });
 
-    // var box = blessed.box({
-    //     top: "center",
-
-    //     width: "100%",
-    //     height: "5%",
-    //     content: msg.sender,
-    //     tags: true,
-    //     style: {
-    //         fg: "white",
-    //         bg: "magenta",
-    //         border: {
-
-    //             fg: "#f0f0f0"
-    //         },
-    //         hover: {
-    //             bg: "green"
-    //         }
-    //     }
-    // });
-    // screen.append(box);
-
-    // box.on("click", function(data) {
-    //     box.setContent(msg.message);
-    //     screen.render();
-    // });
-
-    // box.focus();
-    return msg;
+    new_message.on('click', function(data) {
+        new_message.setContent('{center}Some different {red-fg}content{/red-fg}.{/center}');
+        screen.render();
+    });
 
 }
 
