@@ -11,6 +11,7 @@ var no_messages;
 var no_chats;
 
 var current_chat;
+var clicked_chat = false;
 
 var settings = {
     foreground: "#45ff30",
@@ -148,8 +149,7 @@ function init_scr() {
 // ----- HANDLING -----
 
 function open_chat(message) {
-    console.log(current_chat);
-    chat_window.label = "Label";
+    chat_window.label = "Conversations: " + message.sender;
     var new_message = blessed.box({
         parent: chat_window,
         top: 0,
@@ -199,6 +199,7 @@ function incoming_message(message, sender) {
     });
     
     new_message.on("click", function(data) {
+        if (!clicked_chat) hide_element(no_chats);
         current_chat = sender;
         open_chat({
             content: message,
@@ -213,10 +214,10 @@ function incoming_message(message, sender) {
 // ----- MAIN CODE -----
 
 init_scr();
+chat_window.label = "Conversations: Matt";
 
 message_count += 1;
 incoming_message("my message", "sender");
-
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
