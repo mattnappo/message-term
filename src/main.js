@@ -119,7 +119,9 @@ function init_scr() {
                 bg: settings.background
             }
         });
+    }
 
+    if (!clicked_chat) {  
         no_chats = blessed.box({
             parent: chat_window,
             left: "center",
@@ -214,7 +216,6 @@ function incoming_message(message, sender) {
 // ----- MAIN CODE -----
 
 init_scr();
-chat_window.label = "Conversations: Matt";
 
 message_count += 1;
 incoming_message("my message", "sender");
