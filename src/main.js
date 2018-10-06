@@ -75,7 +75,7 @@ function init_scr() {
         left: "50%",
         width: "50%",
         height: "100%",
-        label: "{" + settings.foreground + "-fg}{bold}Chats{/bold}",
+        label: "{" + settings.foreground + "-fg}{bold}Conversations{/bold}",
         tags: true,
         border: {
             type: "line"
@@ -116,7 +116,7 @@ function init_scr() {
             top: "center",
             height: 3,
             width: "90%",
-            content: "{center}No current chats{/center}",
+            content: "{center}No active conversations{/center}",
             tags: true,
             border: {
                 type: "line"
@@ -151,6 +151,7 @@ var top = 0;
 function incoming_message(message, sender) {
     if (message_count == 1) {
         top = 0;
+        hide_element(no_messages);
     } else {
         top += 3;
     }
