@@ -1,7 +1,7 @@
 // ----- INIT CODE -----
 
 const imessage = require("osa-imessage");
-var blessed = require("blessed");
+const blessed = require("blessed");
 
 var screen;
 var message_window;
@@ -10,9 +10,12 @@ var chat_window;
 var no_messages;
 var no_chats;
 
+var current_chat;
+
 var settings = {
     foreground: "#45ff30",
-    background: "black"
+    background: "black",
+    blue: "#0072c6"
 };
 
 var message_count = 0;
@@ -22,6 +25,11 @@ var message_count = 0;
 process.on("unhandledRejection", error => {
     console.log("unhandledRejection", error.message);
 });
+
+function hide_element(element) {
+    element.content = "";
+    element.border.type = "none";
+}
 
 function init_scr() {
     screen = blessed.screen({
@@ -138,13 +146,27 @@ function init_scr() {
 
 // ----- HANDLING -----
 
-function hide_element(element) {
-    element.content = "";
-    element.border.type = "none";
-}
-
-function open_chat() {
-    console.log("chat opened");
+function open_chat(message) {
+    console.log(current_chat);
+    chat_window.label = "Label";
+    var new_message = blessed.box({
+        parent: chat_window,
+        top: 0,
+        height: message.lines + 2,
+        width: "50%",
+        content: "{left}" + message.content + "{/left}",
+        tags: true,
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: settings.foreground
+            },
+            fg: settings.foreground,
+            bg: settings.background
+        }
+    });
 }
 
 var top = 0;
@@ -176,7 +198,12 @@ function incoming_message(message, sender) {
     });
     
     new_message.on("click", function(data) {
-        open_chat();
+        current_chat = sender;
+        open_chat({
+            content: message,
+            sender: sender,
+            lines: message.split(/\r\n|\r|\n/).length
+        });
         screen.render();
     });
     screen.render();
@@ -186,8 +213,9 @@ function incoming_message(message, sender) {
 
 init_scr();
 
-// incoming_message("my message\nhi", "sender");
-// message_count += 1;
+message_count += 1;
+incoming_message("my message", "sender");
+
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
