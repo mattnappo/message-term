@@ -150,24 +150,24 @@ function init_scr() {
 
 // ----- HANDLING -----
 
-function open_chat(message) {
-    chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: {/bold}" + message.sender);
+function add_message(message) {
+    chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + message.sender + "{/bold}");
     chat_window.render();
     var new_message = blessed.box({
         parent: chat_window,
         top: 0,
         height: message.lines + 2,
         width: "50%",
-        content: "{left}" + message.content + "{/left}",
+        content: "{" + message.place + "}" + message.content + "{/" + message.place + "}",
         tags: true,
         border: {
             type: "line"
         },
         style: {
             border: {
-                fg: settings.white
+                fg: message.color
             },
-            fg: settings.white,
+            fg: message.color,
             bg: settings.background
         }
     });
@@ -204,10 +204,12 @@ function incoming_message(message, sender) {
     new_message.on("click", function(data) {
         if (!clicked_chat) hide_element(no_chats);
         current_chat = sender;
-        open_chat({
+        add_message({
             content: message,
             sender: sender,
-            lines: message.split(/\r\n|\r|\n/).length
+            lines: message.split(/\r\n|\r|\n/).length,
+            place: "left",
+            color: settings.white
         });
         screen.render();
     });
