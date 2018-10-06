@@ -36,9 +36,9 @@ function hide_element(element) {
 function init_scr() {
     screen = blessed.screen({
         smartCSR: true,
-        debug: true
+        debug: true,
+        title: "Message Term"
     });
-    screen.title = "Message Term";
 
     screen.key(["C-x"], function(ch, key) {
         return process.exit(0);
@@ -151,7 +151,8 @@ function init_scr() {
 // ----- HANDLING -----
 
 function open_chat(message) {
-    chat_window.label = "Conversations: " + message.sender;
+    chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: {/bold}" + message.sender);
+    chat_window.render();
     var new_message = blessed.box({
         parent: chat_window,
         top: 0,
