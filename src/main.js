@@ -4,14 +4,13 @@ const imessage = require("osa-imessage");
 const blessed = require("blessed");
 
 var screen;
-var message_window;
+var people_window;
 var chat_window;
 
 var no_messages;
 var no_chats;
 
 var current_chat;
-var clicked_chat = false;
 
 var settings = {
     foreground: "#45ff30",
@@ -21,6 +20,8 @@ var settings = {
 };
 
 var message_count = 0;
+var clicked_chat = false;
+var people = [];
 
 // ----- SETUP -----
 
@@ -62,11 +63,11 @@ function init_scr() {
         }
     });
 
-    message_window = blessed.list({
+    people_window = blessed.list({
         top: 3,
         width: "50%",
         height: "100%",
-        label: "{" + settings.foreground + "-fg}{bold}Messages{/bold}",
+        label: "{" + settings.foreground + "-fg}{bold}People{/bold}",
         tags: true,
         border: {
             type: "line"
@@ -101,7 +102,7 @@ function init_scr() {
 
     if (message_count <= 0) {
         no_messages = blessed.box({
-            parent: message_window,
+            parent: people_window,
             left: "center",
             top: "center",
             height: 3,
@@ -144,11 +145,11 @@ function init_scr() {
     }
     
     screen.append(header);
-    screen.append(message_window);
+    screen.append(people_window);
     screen.append(chat_window);
 }
 
-// ----- HANDLING -----
+// ----- UI -----
 
 function add_message(message) {
     chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + message.sender + "{/bold}");
@@ -174,7 +175,7 @@ function add_message(message) {
 }
 
 var top = 0;
-function incoming_message(message, sender) {
+function new_sender(message, sender) {
     if (message_count == 1) {
         top = 0;
         hide_element(no_messages);
@@ -182,12 +183,12 @@ function incoming_message(message, sender) {
         top += 3;
     }
     var new_message = blessed.box({
-        parent: message_window,
+        parent: people_window,
         left: "center",
         top: top,
         height: 3,
         width: "90%",
-        content: "{center}{bold}" + sender + "{/bold}: " + message + "{/center}",
+        content: "{center}{bold}" + sender + "{/bold}{/center}",
         tags: true,
         border: {
             type: "line"
@@ -220,16 +221,25 @@ function incoming_message(message, sender) {
 
 init_scr();
 
-message_count += 1;
-incoming_message("my message", "sender");
+// message_count += 1;
+// new_sender("my message", "sender");
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
         var name_object = imessage.nameForHandle(msg.handle);
         message_count += 1;
         name_object.then(function(result) {
-            incoming_message(msg.text, result);
-            
+            var contains = false;
+            for (var i = 0; i < people.length; i++) {
+                if (people[i] == result) {
+                    contains = true;
+                    break;
+                }
+            }
+            if (!contains) {
+                people.push(result);
+                new_sender(msg.text, result);
+            }
         });
     // }
 });
