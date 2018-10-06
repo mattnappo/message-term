@@ -2,6 +2,7 @@
 
 const imessage = require("osa-imessage");
 const blessed = require("blessed");
+const fs = require('fs');
 
 var screen;
 var people_window;
@@ -21,7 +22,9 @@ var settings = {
 
 var message_count = 0;
 var clicked_chat = false;
-var people = [];
+var people = [ ];
+
+var conversations = { };
 
 // ----- SETUP -----
 
@@ -42,6 +45,7 @@ function init_scr() {
     });
 
     screen.key(["C-x"], function(ch, key) {
+        
         return process.exit(0);
     });
 
@@ -174,6 +178,14 @@ function add_message(message) {
     });
 }
 
+function update_mesages() {
+    var messages = conversations[current_chat];
+    for (var i = 0; i < messages.length; i++) {
+        add_message(messages[i]);
+    }
+       
+}
+
 var top = 0;
 function new_sender(message, sender) {
     if (message_count == 1) {
@@ -205,14 +217,17 @@ function new_sender(message, sender) {
     new_message.on("click", function(data) {
         if (!clicked_chat) hide_element(no_chats);
         current_chat = sender;
-        add_message({
+        screen.render();
+
+        conversations[sender].append({
             content: message,
             sender: sender,
             lines: message.split(/\r\n|\r|\n/).length,
             place: "left",
             color: settings.white
         });
-        screen.render();
+
+        // update_mesages();
     });
     screen.render();
 }
@@ -223,8 +238,14 @@ init_scr();
 
 // message_count += 1;
 // new_sender("my message", "sender");
-
+var counter = 0;
 imessage.listen().on("message", (msg) => {
+    counter += 1;
+    if (counter == 3) {
+        fs.writeFile('./myjsonfile.json', JSON.stringify(conversations), 'utf8', function() {
+            console.log("ok");
+        });
+    }
     // if (!msg.fromMe) {
         var name_object = imessage.nameForHandle(msg.handle);
         message_count += 1;
