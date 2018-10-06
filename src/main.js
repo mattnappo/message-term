@@ -15,7 +15,8 @@ var current_chat;
 var settings = {
     foreground: "#45ff30",
     background: "black",
-    blue: "#0072c6"
+    blue: "#429bf4",
+    white: "#e0e0e0",
 };
 
 var message_count = 0;
@@ -161,9 +162,9 @@ function open_chat(message) {
         },
         style: {
             border: {
-                fg: settings.foreground
+                fg: settings.white
             },
-            fg: settings.foreground,
+            fg: settings.white,
             bg: settings.background
         }
     });
