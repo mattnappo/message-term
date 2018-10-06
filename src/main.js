@@ -90,7 +90,7 @@ function init_scr() {
     });
 
     if (message_count <= 0) {
-        var no_messages = blessed.box({
+        no_messages = blessed.box({
             parent: message_window,
             left: "center",
             top: "center",
@@ -110,7 +110,7 @@ function init_scr() {
             }
         });
 
-        var no_chats = blessed.box({
+        no_chats = blessed.box({
             parent: chat_window,
             left: "center",
             top: "center",
@@ -138,12 +138,16 @@ function init_scr() {
 
 // ----- HANDLING -----
 
+function hide_element(element) {
+    element.content = "";
+    element.border.type = "none";
+}
+
 function open_chat() {
     console.log("chat opened");
 }
 
 var top = 0;
-
 function incoming_message(message, sender) {
     if (message_count == 1) {
         top = 0;
