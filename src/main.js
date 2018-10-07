@@ -156,7 +156,6 @@ function init_scr() {
 // ----- UI -----
 
 function add_message(message) {
-    console.log("added");
     chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + message.sender + "{/bold}");
     chat_window.render();
     var new_message = blessed.box({
@@ -179,6 +178,7 @@ function add_message(message) {
     });
     screen.append(new_message);
     chat_window.render();
+    screen.render();
 }
 
 function update_mesages() {
@@ -220,8 +220,8 @@ function new_person(person) {
     person_box.on("click", function(data) {
         if (!clicked_chat) hide_element(no_chats);
         current_chat = person;
-        screen.render();
         update_mesages();
+        // screen.render();
     });
     screen.render();
 }
