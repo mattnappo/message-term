@@ -70,7 +70,7 @@ function init_scr() {
     people_window = blessed.list({
         top: 3,
         width: "50%",
-        height: "100%",
+        height: screen.height - 3,
         label: "{" + settings.foreground + "-fg}{bold}People{/bold}",
         tags: true,
         border: {
@@ -85,34 +85,25 @@ function init_scr() {
         }
     });
 
-    chat_window = blessed.box({
+    chat_window = blessed.log({
         top: 3,
         left: "50%",
         width: "50%",
-        height: "100%",
+        height: screen.height - 7,
         label: "{" + settings.foreground + "-fg}{bold}Conversations{/bold}",
         tags: true,
         border: {
             type: "line"
         },
-        style: {
-            border: {
-                fg: settings.foreground
+        scrollback: 100,
+        scrollbar: {
+            ch: ' ',
+            track: {
+                bg: 'yellow'
             },
-            fg: settings.foreground,
-            bg: settings.background
-        }
-    });
-
-    chat_window = blessed.box({
-        top: 3,
-        left: "50%",
-        width: "50%",
-        height: "100%",
-        label: "{" + settings.foreground + "-fg}{bold}Conversations{/bold}",
-        tags: true,
-        border: {
-            type: "line"
+            style: {
+                inverse: true
+            }
         },
         style: {
             border: {
@@ -124,16 +115,12 @@ function init_scr() {
     });
     
     input_window = blessed.form({
-        keys: true
-    });
-
-    var input_box = blessed.textbox({
-        parent: input_window,
-        inputOnFocus: true,
-        top: 15,
+        parent: screen,
+        keys: true,
+        top: screen.height - 4,
         left: "50%",
         width: "50%",
-        height: 3,
+        height: 4,
         label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
         tags: true,
         border: {
@@ -147,13 +134,37 @@ function init_scr() {
             bg: settings.background
         }
     });
-    
-    input_window.key(["enter"], function(ch, key) { 
-        console.log("submitted!");
-        console.log(input_box.readInput());
+
+    var input_box = blessed.textbox({
+        parent: input_window,
+        inputOnFocus: true,
+        top: screen.height - 4,
+        left: "50%",
+        width: "50%",
+        height: 4,
+        label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
+        tags: true,
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: settings.foreground
+            },
+            fg: settings.foreground,
+            bg: settings.background
+        }
     });
 
-    input_window.focus();
+    chat_window.on('submit', function (data) {
+        console.log(data.input_box);
+    });
+    
+    input_window.key(["enter"], function(ch, key) { 
+        input_window.submit();
+    });
+
+    // input_window.focus();
 
     if (message_count <= 0) {
         no_messages = blessed.box({
