@@ -176,12 +176,14 @@ function add_message(message) {
             bg: settings.background
         }
     });
+    screen.append(new_message);
 }
 
 function update_mesages() {
     var messages = conversations[current_chat];
     for (var i = 0; i < messages.length; i++) {
         add_message(messages[i]);
+        console.log("added");
     }
        
 }
@@ -218,10 +220,20 @@ function new_person(person) {
         if (!clicked_chat) hide_element(no_chats);
         current_chat = person;
         screen.render();
-        // update_mesages();
+        update_mesages();
     });
     screen.render();
 }
+
+function count(obj) {
+    var count=0;
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            ++count;
+        }
+    }
+    return count;
+ }
 
 // ----- MAIN CODE -----
 
@@ -247,12 +259,30 @@ imessage.listen().on("message", (msg) => {
                 people.push(name);
                 new_person(name);
             }
-            conversations[name] = {};
-            conversations[name].content = msg.text;
-            conversations[name].sender = name;
-            conversations[name].lines = msg.text.split(/\r\n|\r|\n/).length;
-            conversations[name].place = "left";
-            conversations[name].color = settings.white;
+
+            for (var i = 0; i < count(conversations); i++) {
+
+            }
+
+
+
+            if (conversations.hasOwnProperty(name)) {
+                var conversation = conversations[name];
+                var len = conversation.length;
+
+                conversation[len] = {};
+                conversation[len].content = msg.text;
+                conversation[len].sender = name;
+                conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
+                conversation[len].place = "left";
+                conversation[len].color = settings.white;
+                
+                console.log(JSON.stringify(conversation));
+                
+            } else {
+                conversation = [];
+            }
+            
         });
     // }
 });
