@@ -114,6 +114,8 @@ function init_scr() {
         }
     });
     
+    chat_window.focus();
+    
     input_window = blessed.form({
         parent: screen,
         keys: true,
@@ -170,8 +172,8 @@ function init_scr() {
         no_messages = blessed.box({
             parent: people_window,
             left: "center",
-            top: "center",
             height: 3,
+            top: people_window.height / 2 - 4,
             width: "90%",
             content: "{center}No new messages{/center}",
             tags: true,
