@@ -176,7 +176,7 @@ function add_message(message) {
             bg: settings.background
         }
     });
-    screen.append(new_message);
+
     chat_window.render();
     screen.render();
 }
