@@ -185,7 +185,6 @@ function update_mesages() {
     var messages = conversations[current_chat];
     for (var i = 0; i < messages.length; i++) {
         add_message(messages[i]);
-        
     }
        
 }
@@ -247,22 +246,13 @@ init_scr();
 var counter = 0;
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
-        var name_object = imessage.nameForHandle(msg.handle);
         message_count += 1;
+        var name_object = imessage.nameForHandle(msg.handle);
         name_object.then(function(name) {
-            var contains = false;
-            for (var i = 0; i < people.length; i++) {
-                if (people[i] == name) {
-                    contains = true;
-                    break;
-                }
-            }
-            if (!contains) {
-                people.push(name);
-                new_person(name);
-            }
 
             if (!conversations.hasOwnProperty(name)) {
+                people.push(name);
+                new_person(name);
                 conversations[name] = [];
             }
 
@@ -275,8 +265,6 @@ imessage.listen().on("message", (msg) => {
             conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
             conversation[len].place = "left";
             conversation[len].color = settings.white;
-            
-            console.log(JSON.stringify(conversation));
             
         });
     // }
