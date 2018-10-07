@@ -1,7 +1,7 @@
 {
   "name": "message-term",
   "version": "1.0.0",
-  "description": "iMessage client for your Unix terminal.",
+  "description": "iMessage client for your terminal.",
   "main": "src/main.js",
   "dependencies": {},
   "devDependencies": {
@@ -9,9 +9,11 @@
     "blessed": "^0.1.81"
   },
   "scripts": {
-    "msg": "node src/msg_test.js",
-    "start": "node src/main.js",
-    "curses": "node src/curses_test.js"
+    "msg": "node src/tests/msg_test.js",
+    "curses": "node src/tests/curses_test.js",
+    "test": "node --experimental-modules src/tests/main.mjs",
+    "start": "node src/main.js"
+    
   },
   "repository": {
     "type": "git",

@@ -2,7 +2,6 @@
 
 const imessage = require("osa-imessage");
 const blessed = require("blessed");
-const fs = require('fs');
 
 var screen;
 var people_window;
@@ -11,7 +10,7 @@ var chat_window;
 var no_messages;
 var no_chats;
 
-var current_chat;
+var input_window;
 
 var settings = {
     foreground: "#45ff30",
@@ -19,6 +18,8 @@ var settings = {
     blue: "#429bf4",
     white: "#e0e0e0",
 };
+
+var current_chat;
 
 var message_count = 0;
 var clicked_chat = false;
@@ -44,8 +45,7 @@ function init_scr() {
         title: "Message Term"
     });
 
-    screen.key(["C-x"], function(ch, key) {
-        
+    screen.key(["C-x"], function(ch, key) { 
         return process.exit(0);
     });
 
@@ -104,6 +104,57 @@ function init_scr() {
         }
     });
 
+    chat_window = blessed.box({
+        top: 3,
+        left: "50%",
+        width: "50%",
+        height: "100%",
+        label: "{" + settings.foreground + "-fg}{bold}Conversations{/bold}",
+        tags: true,
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: settings.foreground
+            },
+            fg: settings.foreground,
+            bg: settings.background
+        }
+    });
+    
+    input_window = blessed.form({
+        keys: true
+    });
+
+    var input_box = blessed.textbox({
+        parent: input_window,
+        inputOnFocus: true,
+        top: 15,
+        left: "50%",
+        width: "50%",
+        height: 3,
+        label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
+        tags: true,
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: settings.foreground
+            },
+            fg: settings.foreground,
+            bg: settings.background
+        }
+    });
+    
+    input_window.key(["enter"], function(ch, key) { 
+        console.log("submitted!");
+        console.log(input_box.readInput());
+    });
+
+    input_window.focus();
+
     if (message_count <= 0) {
         no_messages = blessed.box({
             parent: people_window,
@@ -151,6 +202,7 @@ function init_scr() {
     screen.append(header);
     screen.append(people_window);
     screen.append(chat_window);
+    screen.append(input_window);
 }
 
 // ----- UI -----
@@ -162,7 +214,7 @@ function add_message(message, top) {
         parent: chat_window,
         top: top,
         height: message.lines + 2,
-        width: "50%",
+        width: "45%",
         content: "{" + message.place + "}" + message.content + "{/" + message.place + "}",
         tags: true,
         border: {
