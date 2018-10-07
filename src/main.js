@@ -187,20 +187,20 @@ function update_mesages() {
 }
 
 var top = 0;
-function new_sender(message, sender) {
+function new_person(person) {
     if (message_count == 1) {
         top = 0;
         hide_element(no_messages);
     } else {
         top += 3;
     }
-    var new_message = blessed.box({
+    var person_box = blessed.box({
         parent: people_window,
         left: "center",
         top: top,
         height: 3,
         width: "90%",
-        content: "{center}{bold}" + sender + "{/bold}{/center}",
+        content: "{center}{bold}" + person + "{/bold}{/center}",
         tags: true,
         border: {
             type: "line"
@@ -214,19 +214,10 @@ function new_sender(message, sender) {
         }
     });
     
-    new_message.on("click", function(data) {
+    person_box.on("click", function(data) {
         if (!clicked_chat) hide_element(no_chats);
-        current_chat = sender;
+        current_chat = person;
         screen.render();
-
-        conversations[sender].append({
-            content: message,
-            sender: sender,
-            lines: message.split(/\r\n|\r|\n/).length,
-            place: "left",
-            color: settings.white
-        });
-
         // update_mesages();
     });
     screen.render();
@@ -237,30 +228,31 @@ function new_sender(message, sender) {
 init_scr();
 
 // message_count += 1;
-// new_sender("my message", "sender");
+// new_person("my message", "sender");
+
 var counter = 0;
 imessage.listen().on("message", (msg) => {
-    counter += 1;
-    if (counter == 3) {
-        fs.writeFile('./myjsonfile.json', JSON.stringify(conversations), 'utf8', function() {
-            console.log("ok");
-        });
-    }
     // if (!msg.fromMe) {
         var name_object = imessage.nameForHandle(msg.handle);
         message_count += 1;
-        name_object.then(function(result) {
+        name_object.then(function(name) {
             var contains = false;
             for (var i = 0; i < people.length; i++) {
-                if (people[i] == result) {
+                if (people[i] == name) {
                     contains = true;
                     break;
                 }
             }
             if (!contains) {
-                people.push(result);
-                new_sender(msg.text, result);
+                people.push(name);
+                new_person(name);
             }
+            conversations[name] = {};
+            conversations[name].content = msg.text;
+            conversations[name].sender = name;
+            conversations[name].lines = msg.text.split(/\r\n|\r|\n/).length;
+            conversations[name].place = "left";
+            conversations[name].color = settings.white;
         });
     // }
 });
