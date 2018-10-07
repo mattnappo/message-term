@@ -50,6 +50,7 @@ function init_scr() {
     });
 
     var header = blessed.box({
+        parent: screen,
         top: 0,
         height: 3,
         width: "100%",
@@ -68,6 +69,7 @@ function init_scr() {
     });
 
     people_window = blessed.list({
+        parent: screen,
         top: 3,
         width: "50%",
         height: screen.height - 3,
@@ -86,6 +88,7 @@ function init_scr() {
     });
 
     chat_window = blessed.box({
+        parent: screen,
         top: 3,
         left: "50%",
         width: "50%",
@@ -97,6 +100,7 @@ function init_scr() {
         },
         mouse: true,
         scrollable: true,
+        alwaysScroll: true,
         scrollback: 100,
         scrollbar: {
             ch: ' ',
@@ -115,18 +119,18 @@ function init_scr() {
             bg: settings.background
         }
     });
-    screen.render();
-    
     
     input_window = blessed.form({
         parent: screen,
         keys: true,
+        mouse: true,
         top: screen.height - 4,
         left: "50%",
         width: "50%",
         height: 4,
         label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
         tags: true,
+        name: "message",
         border: {
             type: "line"
         },
@@ -147,6 +151,7 @@ function init_scr() {
         width: "50%",
         height: 4,
         label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
+        text: ">sreufywb4fuwefihjkx ",
         tags: true,
         border: {
             type: "line"
@@ -161,7 +166,7 @@ function init_scr() {
     });
 
     chat_window.on('submit', function (data) {
-        console.log(data.input_box);
+        console.log(data.message);
     });
     
     input_window.key(["enter"], function(ch, key) { 
@@ -214,10 +219,6 @@ function init_scr() {
         });
     }
     
-    screen.append(header);
-    screen.append(people_window);
-    screen.append(chat_window);
-    screen.append(input_window);
 }
 
 // ----- UI -----
