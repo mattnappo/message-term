@@ -249,7 +249,7 @@ imessage.listen().on("message", (msg) => {
         message_count += 1;
         var name_object = imessage.nameForHandle(msg.handle);
         name_object.then(function(name) {
-
+            
             if (!conversations.hasOwnProperty(name)) {
                 people.push(name);
                 new_person(name);
@@ -266,6 +266,10 @@ imessage.listen().on("message", (msg) => {
             conversation[len].place = "left";
             conversation[len].color = settings.white;
             
+            if (current_chat == name) {
+                update_mesages();
+            }
+
         });
     // }
 });
