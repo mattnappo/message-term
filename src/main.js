@@ -163,7 +163,7 @@ function init_scr() {
             bg: settings.background
         }
     });
-    
+
     input_box.on('focus', function() {
         input_box.readInput();
     });
@@ -232,9 +232,10 @@ function add_message(message, top) {
     var new_message = blessed.box({
         parent: chat_window,
         top: top,
+        left: message.left,
         height: message.lines + 2,
         width: "45%",
-        content: "{" + message.place + "}" + message.content + "{/" + message.place + "}",
+        content: "{left}" + message.content + "{/left}",
         tags: true,
         border: {
             type: "line"
@@ -333,12 +334,20 @@ imessage.listen().on("message", (msg) => {
             var conversation = conversations[name];
             var len = conversation.length;
 
+            // conversation[len] = {};
+            // conversation[len].content = msg.text;
+            // conversation[len].sender = name;
+            // conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
+            // conversation[len].color = settings.white;
+
             conversation[len] = {};
             conversation[len].content = msg.text;
             conversation[len].sender = name;
             conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
-            conversation[len].place = "left";
-            conversation[len].color = settings.white;
+            // conversation[len].left = "53%";
+            // conversation[len].left = chat_window.width / 2 - 3;
+            console.log(conversation[len].left);
+            conversation[len].color = settings.blue;
             
             if (current_chat == name) {
                 update_mesages();
