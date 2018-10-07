@@ -85,7 +85,7 @@ function init_scr() {
         }
     });
 
-    chat_window = blessed.log({
+    chat_window = blessed.box({
         top: 3,
         left: "50%",
         width: "50%",
@@ -96,6 +96,7 @@ function init_scr() {
             type: "line"
         },
         mouse: true,
+        scrollable: true,
         scrollback: 100,
         scrollbar: {
             ch: ' ',
@@ -115,6 +116,7 @@ function init_scr() {
         }
     });
     screen.render();
+    
     
     input_window = blessed.form({
         parent: screen,

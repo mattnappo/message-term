@@ -11,6 +11,7 @@
   "scripts": {
     "msg": "node src/tests/msg_test.js",
     "curses": "node src/tests/curses_test.js",
+    "scrollbar": "node src/tests/scrollbar_test.js",
     "test": "node --experimental-modules src/tests/main.mjs",
     "start": "node src/main.js"
     
