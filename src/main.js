@@ -145,7 +145,6 @@ function init_scr() {
 
     var input_box = blessed.textbox({
         parent: input_window,
-        inputOnFocus: true,
         top: screen.height - 4,
         left: "50%",
         width: "50%",
@@ -164,7 +163,11 @@ function init_scr() {
             bg: settings.background
         }
     });
-
+    
+    input_box.on('focus', function() {
+        input_box.readInput();
+    });
+    
     chat_window.on('submit', function (data) {
         console.log(data.message);
     });
