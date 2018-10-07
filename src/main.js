@@ -155,12 +155,12 @@ function init_scr() {
 
 // ----- UI -----
 
-function add_message(message) {
+function add_message(message, top) {
     chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + message.sender + "{/bold}");
     chat_window.render();
     var new_message = blessed.box({
         parent: chat_window,
-        top: 0,
+        top: top,
         height: message.lines + 2,
         width: "50%",
         content: "{" + message.place + "}" + message.content + "{/" + message.place + "}",
@@ -179,12 +179,15 @@ function add_message(message) {
 
     chat_window.render();
     screen.render();
+    return message.lines + 2;
 }
 
 function update_mesages() {
     var messages = conversations[current_chat];
+    var total_lines = 0;
     for (var i = 0; i < messages.length; i++) {
-        add_message(messages[i]);
+        if (i > 0) total_lines += messages[i].lines + 2;
+        add_message(messages[i], total_lines);
     }
        
 }
