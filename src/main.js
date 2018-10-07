@@ -156,6 +156,7 @@ function init_scr() {
 // ----- UI -----
 
 function add_message(message) {
+    console.log("added");
     chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + message.sender + "{/bold}");
     chat_window.render();
     var new_message = blessed.box({
@@ -177,13 +178,14 @@ function add_message(message) {
         }
     });
     screen.append(new_message);
+    chat_window.render();
 }
 
 function update_mesages() {
     var messages = conversations[current_chat];
     for (var i = 0; i < messages.length; i++) {
         add_message(messages[i]);
-        console.log("added");
+        
     }
        
 }
@@ -260,28 +262,21 @@ imessage.listen().on("message", (msg) => {
                 new_person(name);
             }
 
-            for (var i = 0; i < count(conversations); i++) {
-
+            if (!conversations.hasOwnProperty(name)) {
+                conversations[name] = [];
             }
 
+            var conversation = conversations[name];
+            var len = conversation.length;
 
-
-            if (conversations.hasOwnProperty(name)) {
-                var conversation = conversations[name];
-                var len = conversation.length;
-
-                conversation[len] = {};
-                conversation[len].content = msg.text;
-                conversation[len].sender = name;
-                conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
-                conversation[len].place = "left";
-                conversation[len].color = settings.white;
-                
-                console.log(JSON.stringify(conversation));
-                
-            } else {
-                conversation = [];
-            }
+            conversation[len] = {};
+            conversation[len].content = msg.text;
+            conversation[len].sender = name;
+            conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
+            conversation[len].place = "left";
+            conversation[len].color = settings.white;
+            
+            console.log(JSON.stringify(conversation));
             
         });
     // }
