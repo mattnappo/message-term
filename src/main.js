@@ -95,6 +95,7 @@ function init_scr() {
         border: {
             type: "line"
         },
+        mouse: true,
         scrollback: 100,
         scrollbar: {
             ch: ' ',
@@ -113,8 +114,7 @@ function init_scr() {
             bg: settings.background
         }
     });
-    
-    chat_window.focus();
+    screen.render();
     
     input_window = blessed.form({
         parent: screen,
