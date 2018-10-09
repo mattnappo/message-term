@@ -26,6 +26,7 @@ var clicked_chat = false;
 var people = [ ];
 
 var conversations = { };
+var chat_messages = [ ];
 
 // ----- SETUP -----
 
@@ -48,6 +49,12 @@ function init_scr() {
     screen.key(["C-x"], function(ch, key) { 
         return process.exit(0);
     });
+
+    screen.key(["C-a"], function(ch, key) { 
+        clear_chats();
+    });
+
+    // clear_chats();
 
     var header = blessed.box({
         parent: screen,
@@ -251,17 +258,24 @@ function add_message(message, top) {
 
     chat_window.render();
     screen.render();
-    return message.lines + 2;
+    return new_message;
+}
+
+function clear_chats() {
+    for (var i = 0; i < chat_messages.length; i++) {
+        hide_element(chat_messages[i]);
+    }
 }
 
 function update_mesages() {
+    // clear_chats();
     var messages = conversations[current_chat];
     var total_lines = 0;
     for (var i = 0; i < messages.length; i++) {
         if (i > 0) total_lines += messages[i].lines + 2;
-        add_message(messages[i], total_lines);
+        var msg = add_message(messages[i], total_lines);
+        chat_messages.push(msg);
     }
-       
 }
 
 var top = 0;
@@ -318,6 +332,28 @@ init_scr();
 // message_count += 1;
 // new_person("my message", "sender");
 
+function forge_message(name, message) {
+    message_count += 1;
+    if (!conversations.hasOwnProperty(name)) {
+        people.push(name);
+        new_person(name);
+        conversations[name] = [];
+    }
+
+    var conversation = conversations[name];
+    var len = conversation.length;
+
+    conversation[len] = {};
+    conversation[len].content = msg.text;
+    conversation[len].sender = name;
+    conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
+    conversation[len].color = settings.white;
+
+    if (current_chat == name) {
+        update_mesages();
+    }
+}
+
 var counter = 0;
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
@@ -334,20 +370,20 @@ imessage.listen().on("message", (msg) => {
             var conversation = conversations[name];
             var len = conversation.length;
 
-            // conversation[len] = {};
-            // conversation[len].content = msg.text;
-            // conversation[len].sender = name;
-            // conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
-            // conversation[len].color = settings.white;
-
             conversation[len] = {};
             conversation[len].content = msg.text;
             conversation[len].sender = name;
             conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
-            // conversation[len].left = "53%";
-            // conversation[len].left = chat_window.width / 2 - 3;
-            console.log(conversation[len].left);
-            conversation[len].color = settings.blue;
+            conversation[len].color = settings.white;
+
+            // conversation[len] = {};
+            // conversation[len].content = msg.text;
+            // conversation[len].sender = name;
+            // conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
+            // // conversation[len].left = "53%";
+            // // conversation[len].left = chat_window.width / 2 - 3;
+            // // console.log(conversation[len].left);
+            // conversation[len].color = settings.blue;
             
             if (current_chat == name) {
                 update_mesages();
