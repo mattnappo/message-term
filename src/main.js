@@ -352,22 +352,8 @@ forge_message("Bob", "sup\nhi");
 forge_message("Bob", "sup");
 
 forge_message("Alice", "It's Alice.");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
-forge_message("Alice", "alice");
+forge_message("Alice", "Yeah.");
+
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
