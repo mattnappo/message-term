@@ -261,7 +261,7 @@ function clear_chats() {
     }
 }
 
-function update_mesages() {
+function update_messages() {
     clear_chats();
     var messages = conversations[current_chat];
     var total_lines = 0;
@@ -303,7 +303,7 @@ function new_person(person) {
     person_box.on("click", function(data) {
         if (!clicked_chat) hide_element(no_chats);
         current_chat = person;
-        update_mesages();
+        update_messages();
         // screen.render();
     });
     screen.render();
@@ -344,7 +344,7 @@ function forge_message(name, message) {
     conversation[len].color = settings.white;
 
     if (current_chat == name) {
-        update_mesages();
+        update_messages();
     }
 }
 
@@ -386,7 +386,7 @@ imessage.listen().on("message", (msg) => {
             // conversation[len].color = settings.blue;
             
             if (current_chat == name) {
-                update_mesages();
+                update_messages();
             }
 
         });
