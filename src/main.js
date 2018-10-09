@@ -50,12 +50,6 @@ function init_scr() {
         return process.exit(0);
     });
 
-    screen.key(["C-a"], function(ch, key) { 
-        clear_chats();
-    });
-
-    // clear_chats();
-
     var header = blessed.box({
         parent: screen,
         top: 0,
@@ -268,7 +262,7 @@ function clear_chats() {
 }
 
 function update_mesages() {
-    // clear_chats();
+    clear_chats();
     var messages = conversations[current_chat];
     var total_lines = 0;
     for (var i = 0; i < messages.length; i++) {
@@ -344,9 +338,9 @@ function forge_message(name, message) {
     var len = conversation.length;
 
     conversation[len] = {};
-    conversation[len].content = msg.text;
+    conversation[len].content = message;
     conversation[len].sender = name;
-    conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
+    conversation[len].lines = message.split(/\r\n|\r|\n/).length;
     conversation[len].color = settings.white;
 
     if (current_chat == name) {
@@ -354,7 +348,27 @@ function forge_message(name, message) {
     }
 }
 
-var counter = 0;
+forge_message("Bob", "sup\nhi");
+forge_message("Bob", "sup");
+
+forge_message("Alice", "It's Alice.");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+forge_message("Alice", "alice");
+
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
         message_count += 1;
