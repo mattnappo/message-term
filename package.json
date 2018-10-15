@@ -1,0 +1,31 @@
+{
+  "name": "message-term",
+  "version": "1.0.0",
+  "description": "iMessage client for your terminal.",
+  "main": "src/main.js",
+  "dependencies": {},
+  "devDependencies": {
+    "osa-imessage": "^2.4.2",
+    "blessed": "^0.1.81"
+  },
+  "scripts": {
+    "msg": "node src/tests/msg_test.js",
+    "curses": "node src/tests/curses_test.js",
+    "scrollbar": "node src/tests/scrollbar_test.js",
+    "form": "node src/tests/form_test.js",
+    "input": "node src/tests/input_test.js",
+    "test": "node --experimental-modules src/tests/main.mjs",
+    "start": "node src/main.js"
+    
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xoreo/message-term.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xoreo/message-term/issues"
+  },
+  "homepage": "https://github.com/xoreo/message-term#readme"
+}
