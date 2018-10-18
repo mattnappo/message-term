@@ -122,63 +122,126 @@ function init_scr() {
         }
     });
     
-    input_window = blessed.form({
-        parent: screen,
-        keys: true,
-        mouse: true,
-        top: screen.height - 4,
-        left: "50%",
-        width: "50%",
-        height: 4,
-        label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
-        tags: true,
-        name: "input_window",
-        border: {
-            type: "line"
-        },
-        style: {
-            border: {
-                fg: settings.foreground
-            },
-            fg: settings.foreground,
-            bg: settings.background
-        }
-    });
-
-    input_box = blessed.textbox({
-        parent: input_window,
-        top: screen.height - 4,
-        left: "50%",
-        width: "50%",
-        height: 4,
-        label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
-        content: ">sreufywb4fuwefihjkx ",
-        tags: true,
-        border: {
-            type: "line"
-        },
-        style: {
-            border: {
-                fg: settings.foreground
-            },
-            fg: settings.foreground,
-            bg: settings.background
-        }
-    });
-
-    input_box.on('focus', function() {
-        input_box.readInput();
-    });
-    
     chat_window.on('submit', function (data) {
         console.log(data.message);
     });
+
+    // input_window = blessed.form({
+    //     parent: screen,
+    //     keys: true,
+    //     mouse: true,
+    //     top: screen.height - 4,
+    //     left: "50%",
+    //     width: "50%",
+    //     height: 4,
+    //     label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
+    //     tags: true,
+    //     name: "input_window",
+    //     border: {
+    //         type: "line"
+    //     },
+    //     style: {
+    //         border: {
+    //             fg: settings.foreground
+    //         },
+    //         fg: settings.foreground,
+    //         bg: settings.background
+    //     }
+    // });
+
+    // input_box = blessed.textbox({
+    //     parent: input_window,
+    //     top: screen.height - 4,
+    //     left: "50%",
+    //     width: "50%",
+    //     height: 4,
+    //     label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
+    //     content: ">sreufywb4fuwefihjkx ",
+    //     tags: true,
+    //     border: {
+    //         type: "line"
+    //     },
+    //     style: {
+    //         border: {
+    //             fg: settings.foreground
+    //         },
+    //         fg: settings.foreground,
+    //         bg: settings.background
+    //     }
+    // });
+
+    // input_box.on('focus', function() {
+    //     input_box.readInput();
+    // });
     
-    input_window.key(["enter"], function(ch, key) { 
-        input_window.submit();
-    });
+    // input_window.key(["enter"], function(ch, key) { 
+    //     input_window.submit();
+    // });
 
     // input_window.focus();
+
+
+    var form = blessed.form({
+        parent: screen,
+        mouse: true,
+        keys: true,
+        vi: true,
+        left: 0,
+        top: 0,
+        width: '100%',
+        //height: 12,
+        style: {
+            bg: 'green',
+        // border: {
+        //   inverse: true
+        // },
+        scrollbar: {
+        inverse: true
+        }
+        },
+        content: 'foobar',
+        scrollable: true,
+        // border: {
+        //   type: 'ch',
+        //   ch: ' '
+        // },
+        scrollbar: {
+            ch: ' '
+        }
+        //alwaysScroll: true
+    });
+    
+    form.on('submit', function(data) {
+        new_person(text.getContent());
+        // console.log(text.getContent());
+        // text.setContent(JSON.stringify(data, null, 2));
+        screen.render();
+    });
+  
+    var text = blessed.textbox({
+        parent: form,
+        readOnFocus: true,
+        mouse: true,
+        keys: true,
+        style: {
+            bg: 'blue'
+        },
+        height: 1,
+        width: 20,
+        left: 1,
+        top: 3,
+        name: 'text'
+    });
+
+    text.on('focus', function() {
+        text.readInput();
+    });
+
+    screen.key('enter', function() {
+        form.submit();
+    });
+
+    form.focus();
 
     if (message_count <= 0) {
         no_messages = blessed.box({
