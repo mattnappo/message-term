@@ -186,9 +186,9 @@ function init_scr() {
         mouse: true,
         keys: true,
         vi: true,
-        left: 0,
-        top: 0,
-        width: '100%',
+        top: screen.height - 4,
+        left: "50%",
+        width: "50%",
         //height: 12,
         style: {
             bg: 'green',
