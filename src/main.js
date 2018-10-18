@@ -11,6 +11,7 @@ var no_messages;
 var no_chats;
 
 var input_window;
+var input_box;
 
 var settings = {
     foreground: "#45ff30",
@@ -131,7 +132,7 @@ function init_scr() {
         height: 4,
         label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
         tags: true,
-        name: "message",
+        name: "input_window",
         border: {
             type: "line"
         },
@@ -144,14 +145,14 @@ function init_scr() {
         }
     });
 
-    var input_box = blessed.textbox({
+    input_box = blessed.textbox({
         parent: input_window,
         top: screen.height - 4,
         left: "50%",
         width: "50%",
         height: 4,
         label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
-        text: ">sreufywb4fuwefihjkx ",
+        content: ">sreufywb4fuwefihjkx ",
         tags: true,
         border: {
             type: "line"
