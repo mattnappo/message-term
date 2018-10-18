@@ -1,7 +1,8 @@
 const blessed = require('blessed');
 
 screen = blessed.screen({
-    warnings: true
+    warnings: true,
+    debug: true
 });
 
 var form = blessed.form({
@@ -35,8 +36,10 @@ var form = blessed.form({
 });
 
 form.on('submit', function(data) {
-    output.setContent(JSON.stringify(data, null, 2));
-    screen.render();
+    // box.setContent(text.getContent());
+    // console.log(text.getContent());
+    // text.setContent(JSON.stringify(data, null, 2));
+    // screen.render();
 });
 
 var text = blessed.textbox({
@@ -54,12 +57,29 @@ var text = blessed.textbox({
     name: 'text'
 });
 
+var box = blessed.box({
+    parent: screen,
+    mouse: true,
+    keys: true,
+    style: {
+      bg: 'blue'
+    },
+    height: 1,
+    width: 20,
+    left: "50%",
+    top: "50%"
+});
+
 text.on('focus', function() {
     text.readInput();
 });
 
 screen.key('q', function() {
     return screen.destroy();
+});
+
+screen.key('enter', function() {
+    form.submit();
 });
 
 form.focus();
