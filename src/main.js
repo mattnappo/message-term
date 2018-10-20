@@ -158,7 +158,8 @@ function init_scr() {
     });
     
     input_window.on("submit", function(data) {
-        new_person(text.getContent());
+        console.log(input_box.getContent());
+        new_person(input_box.getContent());
         screen.render();
     });
   
@@ -182,7 +183,6 @@ function init_scr() {
     });
 
     screen.key("enter", function() {
-        console.log("entered");
         input_window.submit();
     });
 
@@ -361,38 +361,10 @@ forge_message("Alice", "Yeah.");
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
-        message_count += 1;
         var name_object = imessage.nameForHandle(msg.handle);
         name_object.then(function(name) {
-            
-            if (!conversations.hasOwnProperty(name)) {
-                people.push(name);
-                new_person(name);
-                conversations[name] = [];
-            }
-
-            var conversation = conversations[name];
-            var len = conversation.length;
-
-            conversation[len] = {};
-            conversation[len].content = msg.text;
-            conversation[len].sender = name;
-            conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
-            conversation[len].color = settings.white;
-
-            // conversation[len] = {};
-            // conversation[len].content = msg.text;
-            // conversation[len].sender = name;
-            // conversation[len].lines = msg.text.split(/\r\n|\r|\n/).length;
-            // // conversation[len].left = "53%";
-            // // conversation[len].left = chat_window.width / 2 - 3;
-            // // console.log(conversation[len].left);
-            // conversation[len].color = settings.blue;
-            
-            if (current_chat == name) {
-                update_messages();
-            }
-
+            forge_message(name, msg.text);
+            screen.render();
         });
     // }
 });
