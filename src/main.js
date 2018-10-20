@@ -2,6 +2,7 @@
 
 const imessage = require("osa-imessage");
 const blessed = require("blessed");
+const fs = require('fs');
 
 var screen;
 var people_window;
@@ -236,12 +237,17 @@ function init_scr() {
 
 // ----- UI -----
 
-function add_message(message, top) {
+function add_message(message) {
     chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + message.sender + "{/bold}");
     chat_window.render();
+
+    var conversation = conversations[current_chat];
+    // conversation[conversation.length].top += message.lines + 2;
+    console.log("IMPORTANT: " + JSON.stringify(conversation));
     var new_message = blessed.box({
         parent: chat_window,
-        top: top,
+        // top: conversation[conversation.length].top,
+        top: 0,
         left: message.left,
         height: message.lines + 2,
         width: "45%",
@@ -259,7 +265,7 @@ function add_message(message, top) {
         }
     });
 
-    chat_window.render();
+    // chat_window.render();
     screen.render();
     return new_message;
 }
@@ -282,13 +288,13 @@ function update_messages() {
     var total_lines = 0;
     for (var i = 0; i < messages.length; i++) {
         if (i > 0) total_lines += messages[i].lines + 2;
-        var msg = add_message(messages[i], total_lines);
+        var msg = add_message(messages[i]);
         chat_messages.push(msg);
     }
 }
 
-var top = 0;
 function new_person(person) {
+    var top = 0;
     if (message_count == 1) {
         top = 0;
         hide_element(no_messages);
@@ -324,7 +330,7 @@ function new_person(person) {
 }
 
 function count(obj) {
-    var count=0;
+    var count = 0;
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
             ++count;
@@ -351,7 +357,9 @@ function forge_message(name, message, to_recipient) {
     conversation[len].content = message;
     conversation[len].sender = name;
     conversation[len].lines = message.split(/\r\n|\r|\n/).length;
-
+    conversation[len].top = 0;
+    
+    
     if (to_recipient) {
         conversation[len].color = settings.blue;
         conversation[len].left = "53%";
@@ -366,8 +374,8 @@ function forge_message(name, message, to_recipient) {
 forge_message("Bob", "sup\nhi", false);
 forge_message("Bob", "sup", false);
 
-forge_message("Alice", "It's Alice.", false);
-forge_message("Alice", "Yeah.", true);
+// forge_message("Alice", "It's Alice.", false);
+// forge_message("Alice", "Yeah.", true);
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
@@ -378,5 +386,11 @@ imessage.listen().on("message", (msg) => {
         });
     // }
 });
-
+function dothis() {
+    console.log("DOING THIS")
+    console.log("\n\n\chatmessagse  :" + JSON.stringify(chat_messages));
+    console.log("\n\n\nconversations:" + JSON.stringify(conversations));
+    console.log(conversations);
+}
+dothis();
 screen.render();
