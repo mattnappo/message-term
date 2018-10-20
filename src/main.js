@@ -154,8 +154,10 @@ function init_scr() {
     });
     
     input_window.on("submit", function(data) {
-        console.log(input_box.getContent());
-        new_person(input_box.getContent());
+        // console.log(input_box.getContent());
+        // new_person(input_box.getContent());
+        add_message();
+        send_message(current_chat, input_box.getContent());
         screen.render();
     });
   
@@ -260,6 +262,12 @@ function add_message(message, top) {
     return new_message;
 }
 
+function send_message(recipient, message) {
+    imessage.handleForName(recipient).then(handle => {
+        imessage.send(handle, messgae)
+    });
+}
+
 function clear_chats() {
     for (var i = 0; i < chat_messages.length; i++) {
         hide_element(chat_messages[i]);
@@ -327,7 +335,7 @@ function count(obj) {
 
 init_scr();
 
-function forge_message(name, message) {
+function forge_message(name, message, to_recipient) {
     message_count += 1;
     if (!conversations.hasOwnProperty(name)) {
         people.push(name);
@@ -342,18 +350,21 @@ function forge_message(name, message) {
     conversation[len].content = message;
     conversation[len].sender = name;
     conversation[len].lines = message.split(/\r\n|\r|\n/).length;
-    conversation[len].color = settings.white;
-
+    if (to_recipient) {
+        conversation[len].color = settings.blue;    
+    } else {
+        conversation[len].color = settings.white;
+    }
     if (current_chat == name) {
         update_messages();
     }
 }
 
-forge_message("Bob", "sup\nhi");
-forge_message("Bob", "sup");
+forge_message("Bob", "sup\nhi", false);
+forge_message("Bob", "sup", false);
 
-forge_message("Alice", "It's Alice.");
-forge_message("Alice", "Yeah.");
+forge_message("Alice", "It's Alice.", false);
+forge_message("Alice", "Yeah.", true);
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
