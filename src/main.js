@@ -181,7 +181,7 @@ function init_scr() {
     // input_window.focus();
 
 
-    var form = blessed.form({
+    input_window = blessed.form({
         parent: screen,
         mouse: true,
         keys: true,
@@ -192,13 +192,14 @@ function init_scr() {
         //height: 12,
         style: {
             bg: 'green',
-        // border: {
-        //   inverse: true
-        // },
+            // border: {
+                //   inverse: true
+                // },
             scrollbar: {
                 inverse: true
             }
         },
+        label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
         border: {
             type: "line"
         },
@@ -216,19 +217,19 @@ function init_scr() {
         // },
         scrollbar: {
             ch: ' '
-        }
+        },
         //alwaysScroll: true
     });
     
-    form.on('submit', function(data) {
+    input_window.on('submit', function(data) {
         new_person(text.getContent());
         // console.log(text.getContent());
         // text.setContent(JSON.stringify(data, null, 2));
         screen.render();
     });
   
-    var text = blessed.textbox({
-        parent: form,
+    input_box = blessed.textbox({
+        parent: input_window,
         readOnFocus: true,
         mouse: true,
         keys: true,
@@ -239,18 +240,18 @@ function init_scr() {
         width: "100%",
         left: 1,
         top: 0,
-        name: 'text'
+        name: "input_box"
     });
 
-    text.on('focus', function() {
-        text.readInput();
+    input_box.on('focus', function() {
+        input_box.readInput();
     });
 
     screen.key('enter', function() {
-        form.submit();
+        input_window.submit();
     });
 
-    form.focus();
+    input_box.focus();
 
     if (message_count <= 0) {
         no_messages = blessed.box({
