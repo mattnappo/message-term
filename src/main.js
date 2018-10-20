@@ -20,7 +20,7 @@ var settings = {
     white: "#e0e0e0",
 };
 
-var current_chat;
+var current_chat = "";
 
 var message_count = 0;
 var clicked_chat = false;
@@ -136,7 +136,8 @@ function init_scr() {
                 inverse: true
             }
         },
-        label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
+        // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
+        label: "Message",
         border: {
             type: "line"
         },
@@ -151,14 +152,6 @@ function init_scr() {
         scrollbar: {
             ch: " "
         },
-    });
-    
-    input_window.on("submit", function(data) {
-        // console.log(input_box.getContent());
-        // new_person(input_box.getContent());
-        add_message();
-        send_message(current_chat, input_box.getContent());
-        screen.render();
     });
   
     input_box = blessed.textbox({
@@ -178,6 +171,15 @@ function init_scr() {
 
     input_box.on("focus", function() {
         input_box.readInput();
+    });
+
+    input_window.on("submit", function(data) {
+        if (current_chat != "") {
+            var message = input_box.getContent();
+            forge_message(current_chat, message, true);
+            send_message(current_chat, message);
+            input_box.content = "";
+        }
     });
 
     screen.key("enter", function() {
@@ -264,7 +266,7 @@ function add_message(message, top) {
 
 function send_message(recipient, message) {
     imessage.handleForName(recipient).then(handle => {
-        imessage.send(handle, messgae)
+        imessage.send(handle, message);
     });
 }
 
