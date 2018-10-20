@@ -175,7 +175,7 @@ function init_scr() {
 
     input_window.on("submit", function(data) {
         if (current_chat != "") {
-            var message = input_box.getContent();
+            var message = input_box.Content();
             forge_message(current_chat, message, true);
             send_message(current_chat, message);
             input_box.content = "";
@@ -266,7 +266,9 @@ function add_message(message, top) {
 
 function send_message(recipient, message) {
     imessage.handleForName(recipient).then(handle => {
-        imessage.send(handle, message);
+        console.log(recipient);
+        console.log("NUMBER: " + handle);
+        // imessage.send(handle, message);
     });
 }
 
@@ -347,13 +349,14 @@ function forge_message(name, message, to_recipient) {
 
     var conversation = conversations[name];
     var len = conversation.length;
-
     conversation[len] = {};
     conversation[len].content = message;
     conversation[len].sender = name;
     conversation[len].lines = message.split(/\r\n|\r|\n/).length;
+
     if (to_recipient) {
-        conversation[len].color = settings.blue;    
+        conversation[len].color = settings.blue;
+        conversation[len].left = "53%";
     } else {
         conversation[len].color = settings.white;
     }
