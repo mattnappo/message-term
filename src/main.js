@@ -175,10 +175,10 @@ function init_scr() {
 
     input_window.on("submit", function(data) {
         if (current_chat != "") {
-            var message = input_box.Content();
+            input_box.content = "";
+            var message = input_box.getContent();
             forge_message(current_chat, message, true);
             send_message(current_chat, message);
-            input_box.content = "";
         }
     });
 
@@ -266,9 +266,7 @@ function add_message(message, top) {
 
 function send_message(recipient, message) {
     imessage.handleForName(recipient).then(handle => {
-        console.log(recipient);
-        console.log("NUMBER: " + handle);
-        // imessage.send(handle, message);
+        imessage.send(handle, message);
     });
 }
 
@@ -333,7 +331,7 @@ function count(obj) {
         }
     }
     return count;
- }
+}
 
 // ----- MAIN CODE -----
 
