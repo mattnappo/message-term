@@ -121,10 +121,6 @@ function init_scr() {
             bg: settings.background
         }
     });
-    
-    chat_window.on("submit", function (data) {
-        console.log(data.message);
-    });
 
     input_window = blessed.form({
         parent: screen,

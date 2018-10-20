@@ -16,7 +16,6 @@
     "input": "node src/tests/input_test.js",
     "test": "node --experimental-modules src/tests/main.mjs",
     "start": "node src/main.js"
-    
   },
   "repository": {
     "type": "git",
