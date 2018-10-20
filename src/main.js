@@ -195,11 +195,20 @@ function init_scr() {
         // border: {
         //   inverse: true
         // },
-        scrollbar: {
-        inverse: true
-        }
+            scrollbar: {
+                inverse: true
+            }
         },
-        content: 'foobar',
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: settings.foreground
+            },
+            fg: settings.foreground,
+            bg: settings.background
+        },
         scrollable: true,
         // border: {
         //   type: 'ch',
@@ -224,12 +233,12 @@ function init_scr() {
         mouse: true,
         keys: true,
         style: {
-            bg: 'blue'
+            bg: settings.background
         },
-        height: 1,
-        width: 20,
+        height: 2,
+        width: "100%",
         left: 1,
-        top: 3,
+        top: 0,
         name: 'text'
     });
 
