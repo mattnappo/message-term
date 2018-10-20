@@ -237,17 +237,12 @@ function init_scr() {
 
 // ----- UI -----
 
-function add_message(message) {
+function add_message(message, previous_height) {
     chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + message.sender + "{/bold}");
     chat_window.render();
-
-    var conversation = conversations[current_chat];
-    // conversation[conversation.length].top += message.lines + 2;
-    console.log("IMPORTANT: " + JSON.stringify(conversation));
     var new_message = blessed.box({
         parent: chat_window,
-        // top: conversation[conversation.length].top,
-        top: 0,
+        top: previous_height,
         left: message.left,
         height: message.lines + 2,
         width: "45%",
@@ -287,8 +282,11 @@ function update_messages() {
     var messages = conversations[current_chat];
     var total_lines = 0;
     for (var i = 0; i < messages.length; i++) {
-        if (i > 0) total_lines += messages[i].lines + 2;
-        var msg = add_message(messages[i]);
+        if (i > 0) {
+            // total_lines += messages[i].lines + 2;
+            total_lines += messages[i - 1].lines + 2;
+        }
+        var msg = add_message(messages[i], total_lines);
         chat_messages.push(msg);
     }
 }
@@ -357,8 +355,6 @@ function forge_message(name, message, to_recipient) {
     conversation[len].content = message;
     conversation[len].sender = name;
     conversation[len].lines = message.split(/\r\n|\r|\n/).length;
-    conversation[len].top = 0;
-    
     
     if (to_recipient) {
         conversation[len].color = settings.blue;
@@ -371,8 +367,10 @@ function forge_message(name, message, to_recipient) {
     }
 }
 
-forge_message("Bob", "sup\nhi", false);
+forge_message("Bob", "sup\nhi\nhi", false);
 forge_message("Bob", "sup", false);
+forge_message("Bob", "sup\nsup", false);
+forge_message("Bob", "sup\nsup\nsupsup", false);
 
 // forge_message("Alice", "It's Alice.", false);
 // forge_message("Alice", "Yeah.", true);
