@@ -105,9 +105,9 @@ function init_scr() {
         alwaysScroll: true,
         scrollback: 100,
         scrollbar: {
-            ch: ' ',
+            ch: " ",
             track: {
-                bg: 'yellow'
+                bg: "yellow"
             },
             style: {
                 inverse: true
@@ -122,64 +122,9 @@ function init_scr() {
         }
     });
     
-    chat_window.on('submit', function (data) {
+    chat_window.on("submit", function (data) {
         console.log(data.message);
     });
-
-    // input_window = blessed.form({
-    //     parent: screen,
-    //     keys: true,
-    //     mouse: true,
-    //     top: screen.height - 4,
-    //     left: "50%",
-    //     width: "50%",
-    //     height: 4,
-    //     label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
-    //     tags: true,
-    //     name: "input_window",
-    //     border: {
-    //         type: "line"
-    //     },
-    //     style: {
-    //         border: {
-    //             fg: settings.foreground
-    //         },
-    //         fg: settings.foreground,
-    //         bg: settings.background
-    //     }
-    // });
-
-    // input_box = blessed.textbox({
-    //     parent: input_window,
-    //     top: screen.height - 4,
-    //     left: "50%",
-    //     width: "50%",
-    //     height: 4,
-    //     label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
-    //     content: ">sreufywb4fuwefihjkx ",
-    //     tags: true,
-    //     border: {
-    //         type: "line"
-    //     },
-    //     style: {
-    //         border: {
-    //             fg: settings.foreground
-    //         },
-    //         fg: settings.foreground,
-    //         bg: settings.background
-    //     }
-    // });
-
-    // input_box.on('focus', function() {
-    //     input_box.readInput();
-    // });
-    
-    // input_window.key(["enter"], function(ch, key) { 
-    //     input_window.submit();
-    // });
-
-    // input_window.focus();
-
 
     input_window = blessed.form({
         parent: screen,
@@ -189,12 +134,8 @@ function init_scr() {
         top: screen.height - 4,
         left: "50%",
         width: "50%",
-        //height: 12,
         style: {
-            bg: 'green',
-            // border: {
-                //   inverse: true
-                // },
+            bg: "green",
             scrollbar: {
                 inverse: true
             }
@@ -211,20 +152,13 @@ function init_scr() {
             bg: settings.background
         },
         scrollable: true,
-        // border: {
-        //   type: 'ch',
-        //   ch: ' '
-        // },
         scrollbar: {
-            ch: ' '
+            ch: " "
         },
-        //alwaysScroll: true
     });
     
-    input_window.on('submit', function(data) {
+    input_window.on("submit", function(data) {
         new_person(text.getContent());
-        // console.log(text.getContent());
-        // text.setContent(JSON.stringify(data, null, 2));
         screen.render();
     });
   
@@ -243,11 +177,12 @@ function init_scr() {
         name: "input_box"
     });
 
-    input_box.on('focus', function() {
+    input_box.on("focus", function() {
         input_box.readInput();
     });
 
-    screen.key('enter', function() {
+    screen.key("enter", function() {
+        console.log("entered");
         input_window.submit();
     });
 
@@ -378,7 +313,6 @@ function new_person(person) {
         if (!clicked_chat) hide_element(no_chats);
         current_chat = person;
         update_messages();
-        // screen.render();
     });
     screen.render();
 }
@@ -396,9 +330,6 @@ function count(obj) {
 // ----- MAIN CODE -----
 
 init_scr();
-
-// message_count += 1;
-// new_person("my message", "sender");
 
 function forge_message(name, message) {
     message_count += 1;
@@ -427,7 +358,6 @@ forge_message("Bob", "sup");
 
 forge_message("Alice", "It's Alice.");
 forge_message("Alice", "Yeah.");
-
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
