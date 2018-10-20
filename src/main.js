@@ -291,8 +291,8 @@ function update_messages() {
     }
 }
 
+var top = 0;
 function new_person(person) {
-    var top = 0;
     if (message_count == 1) {
         top = 0;
         hide_element(no_messages);
@@ -372,8 +372,8 @@ forge_message("Bob", "sup", false);
 forge_message("Bob", "sup\nsup", false);
 forge_message("Bob", "sup\nsup\nsupsup", false);
 
-// forge_message("Alice", "It's Alice.", false);
-// forge_message("Alice", "Yeah.", true);
+forge_message("Alice", "It's Alice.", false);
+forge_message("Alice", "Yeah.", true);
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
