@@ -3,9 +3,29 @@
 const imessage = require("osa-imessage");
 const blessed = require("blessed");
 const crypto = require("./crypto.js");
+const path = require("path");
 
-// crypto.encrypt("Hello world", "../key/public.pem");
-// crypto.generate_key();
+var public_path = path.join(__dirname, "key/public.pem");
+var private_path = path.join(__dirname, "key/private.pem");
+
+var public_key;
+var private_key;
+
+fs.readFile(public_path, {encoding: 'utf-8'}, function(err, data) {
+    if (err) console.log(err);
+    public_key = data;
+    console.log(data);
+});
+
+fs.readFile(private_path, {encoding: 'utf-8'}, function(err, data) {
+    if (err) console.log(err);
+    private_key = data;
+    console.log(data);
+});
+
+// var m_path = path.resolve(__dirname, "..", "key/public.pem");
+// var s = crypto.encrypt("Hello world", m_path);
+// console.log(s);
 
 var screen;
 var people_window;
