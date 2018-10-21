@@ -117,7 +117,7 @@ function init_scr() {
         scrollbar: {
             ch: " ",
             track: {
-                bg: "yellow"
+                bg: settings.background
             },
             style: {
                 inverse: true
