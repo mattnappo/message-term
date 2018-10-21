@@ -26,7 +26,7 @@ function generate() {
         if(err) return console.log(err);
     });
     console.log("RSA keypair exported.");
-} 
+}
 
 module.exports = {
     encrypt: encrypt,

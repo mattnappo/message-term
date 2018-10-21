@@ -1,31 +1,17 @@
 // ----- INIT CODE -----
-
 const imessage = require("osa-imessage");
 const blessed = require("blessed");
 const crypto = require("./crypto.js");
+
+const fs = require("fs");
 const path = require("path");
 
-var public_path = path.join(__dirname, "key/public.pem");
-var private_path = path.join(__dirname, "key/private.pem");
+var public_path = path.join(__dirname, "/../key/public.pem");
+var private_path = path.join(__dirname, "/../key/private.pem");
 
-var public_key;
-var private_key;
-
-fs.readFile(public_path, {encoding: 'utf-8'}, function(err, data) {
-    if (err) console.log(err);
-    public_key = data;
-    console.log(data);
-});
-
-fs.readFile(private_path, {encoding: 'utf-8'}, function(err, data) {
-    if (err) console.log(err);
-    private_key = data;
-    console.log(data);
-});
-
-// var m_path = path.resolve(__dirname, "..", "key/public.pem");
-// var s = crypto.encrypt("Hello world", m_path);
-// console.log(s);
+// // var m_path = path.resolve(__dirname, "..", "key/public.pem");
+// // var s = crypto.encrypt("Hello world", m_path);
+// // console.log(s);
 
 var screen;
 var people_window;
@@ -289,9 +275,14 @@ function add_message(message, previous_height) {
 }
 
 function send_message(recipient, message) {
-    imessage.handleForName(recipient).then(handle => {
-        imessage.send(handle, message);
+    fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
+        if (err) console.log(err);
+        imessage.handleForName(recipient).then(handle => {
+            var encrypted = crypto.encrypt(message, public_path)
+            imessage.send(handle, message);
+        });
     });
+    
 }
 
 function clear_chats() {
@@ -400,13 +391,18 @@ forge_message("Alice", "Yeah.", true);
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
-        var name_object = imessage.nameForHandle(msg.handle);
-        name_object.then(function(name) {
-            forge_message(name, msg.text);
-            screen.render();
+        fs.readFile(private_path, {encoding: 'utf-8'}, function(err, private_key) {
+            if (err) console.log(err);
+            var name_object = imessage.nameForHandle(msg.handle);
+            var decrypted = crypto.decrypt(msg.text, private_path);
+            name_object.then(function(name) {
+                forge_message(name, decrypted);
+                screen.render();
+            });
         });
     // }
 });
+
 function dothis() {
     console.log("DOING THIS")
     console.log("\n\n\chatmessagse  :" + JSON.stringify(chat_messages));
