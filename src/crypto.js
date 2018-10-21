@@ -1,4 +1,3 @@
-const readline = require("readline");
 const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
@@ -18,43 +17,7 @@ var decrypt = function(toDecrypt, path) {
     var decrypted = crypto.privateDecrypt(privateKey, buffer);
     return decrypted.toString("utf8");
 };
-
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-var passphrase;
-
-rl.question("Enter an RSA passphrase: ", (input) => {
-    passphrase = input;
-    rl.close();
-});
-
-const { generateKeyPair } = require("crypto");
-generateKeyPair("rsa", {
-    modulusLength: 4096,
-    publicKeyEncoding: {
-        type: "spki",
-        format: "pem"
-    },
-    privateKeyEncoding: {
-        type: "pkcs8",
-        format: "pem",
-        cipher: "aes-256-cbc",
-        passphrase: passphrase
-    }
-}, (err, publicKey, privateKey) => {
-    fs.writeFile("./key/private.pem", privateKey, function(err) {
-        if(err) return console.log(err);
-        console.log("Private key exported.");
-    });
-    fs.writeFile("./key/public.pem", publicKey, function(err) {
-        if(err) return console.log(err);
-        console.log("Private key exported.");
-    });
-});
-
+   
 module.exports = {
     encrypt: encrypt,
     decrypt: decrypt

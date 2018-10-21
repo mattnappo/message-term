@@ -2,7 +2,10 @@
 
 const imessage = require("osa-imessage");
 const blessed = require("blessed");
-const blessed = require("./crypto.js");
+const crypto = require("./crypto.js");
+
+// crypto.encrypt("Hello world", "../key/public.pem");
+// crypto.generate_key();
 
 var screen;
 var people_window;

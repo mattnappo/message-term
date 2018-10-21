@@ -5,11 +5,14 @@
   "main": "src/main.js",
   "dependencies": {},
   "devDependencies": {
-    "osa-imessage": "^2.4.2",
-    "blessed": "^0.1.81"
+    "blessed": "^0.1.81",
+    "keypair": "^1.0.1",
+    "osa-imessage": "^2.4.2"
   },
   "scripts": {
-    "start": "node src/main.js"
+    "start": "node src/main.js",
+    "test": "node src/test_crypto.js",
+    "generate": "node src/generate.js"
   },
   "repository": {
     "type": "git",
