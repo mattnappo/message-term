@@ -2,7 +2,7 @@
 
 const imessage = require("osa-imessage");
 const blessed = require("blessed");
-const fs = require('fs');
+const blessed = require("./crypto.js");
 
 var screen;
 var people_window;
