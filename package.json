@@ -11,8 +11,7 @@
   },
   "scripts": {
     "start": "node src/main.js",
-    "test": "node src/test_crypto.js",
-    "generate": "node src/generate.js"
+    "crypto": "node src/test_crypto.js"
   },
   "repository": {
     "type": "git",

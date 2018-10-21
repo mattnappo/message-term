@@ -1,5 +1,10 @@
 const crypto = require("./crypto.js");
 const generate = require("./generate.js");
+const m_path = require("path");
 
-crypto.encrypt("Hello world", "../key/public.pem");
-// crypto.generate_key();
+
+var path = m_path.resolve(__dirname, "..", "key/public.pem");
+var s = crypto.encrypt("Hello world", path);
+console.log(s);
+
+// generate.generate();
