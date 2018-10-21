@@ -1,3 +1,4 @@
+const keypair = require('keypair');
 const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
@@ -15,8 +16,20 @@ var decrypt = function(toDecrypt, absolutePath) {
     var decrypted = crypto.privateDecrypt(privateKey, buffer);
     return decrypted.toString("utf8");
 };
-   
+
+function generate() {
+    var pair = keypair();
+    fs.writeFile("./key/private.pem", pair["private"], function(err) {
+        if(err) return console.log(err);
+    });
+    fs.writeFile("./key/public.pem", pair["public"], function(err) {
+        if(err) return console.log(err);
+    });
+    console.log("RSA keypair exported.");
+} 
+
 module.exports = {
     encrypt: encrypt,
-    decrypt: decrypt
+    decrypt: decrypt,
+    generate: generate
 }
