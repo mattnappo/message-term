@@ -413,5 +413,5 @@ function dothis() {
     console.log("\n\n\nconversations:" + JSON.stringify(conversations));
     console.log(conversations);
 }
-dothis();
+// dothis();
 screen.render();
