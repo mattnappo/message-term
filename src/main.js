@@ -285,6 +285,8 @@ function send_message(recipient, message) {
     
 }
 
+send_message("Matt Nappo", "hi");
+
 function clear_chats() {
     for (var i = 0; i < chat_messages.length; i++) {
         hide_element(chat_messages[i]);
