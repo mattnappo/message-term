@@ -278,8 +278,8 @@ function send_message(recipient, message) {
     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
         if (err) console.log(err);
         imessage.handleForName(recipient).then(handle => {
-            var encrypted = crypto.encrypt(message, public_path)
-            imessage.send(handle, message);
+            var encrypted = crypto.encrypt(message, public_path);
+            imessage.send(handle, encrypted);
         });
     });
     
@@ -396,11 +396,14 @@ imessage.listen().on("message", (msg) => {
         fs.readFile(private_path, {encoding: 'utf-8'}, function(err, private_key) {
             if (err) console.log(err);
             var name_object = imessage.nameForHandle(msg.handle);
-            var decrypted = crypto.decrypt(msg.text, private_path);
-            name_object.then(function(name) {
-                forge_message(name, decrypted);
-                screen.render();
-            });
+            try {
+                var decrypted = crypto.decrypt(msg.text, private_path);
+                name_object.then(function(name) {
+                    forge_message(name, decrypted);
+                    screen.render();
+                });
+            } catch (err) { }
+            
         });
     // }
 });
