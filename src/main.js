@@ -65,7 +65,6 @@ function show_key_error() {
         width: "50%",
         height: "50%",
         tags: true,
-        content: "Run 'npm run keymanage' to generate a key!",
         border: {
             type: "line"
         },
@@ -77,7 +76,20 @@ function show_key_error() {
             bg: settings.background
         }
     });
-    screen.append(errorbox);
+
+    var errorbox = blessed.box({
+        parent: screen,
+        top: "50%",
+        left: "25%",
+        width: "50%",
+        height: "50%",
+        tags: true,
+        content: "{center}Run 'npm run keymanage' to generate a key!{/center}",
+        style: {
+            fg: settings.foreground,
+            bg: settings.background
+        }
+    });
     screen.render();
 }
 
@@ -424,10 +436,12 @@ forge_message("Bob", "sup\nsup\nsupsup", false);
 
 forge_message("Alice", "It's Alice.", false);
 forge_message("Alice", "Yeah.", true);
-// send_message("Dowland Aiello", "hi");
+
+forge_message("Charlie Loigman", "test", true);
+send_message("Charlie Loigman", "test");
 
 imessage.listen().on("message", (msg) => {
-    // if (!msg.fromMe) {
+    if (!msg.fromMe) {
         fs.readFile(private_path, {encoding: 'utf-8'}, function(err, private_key) {
             if (err) console.log(err);
             var name_object = imessage.nameForHandle(msg.handle);
@@ -437,10 +451,9 @@ imessage.listen().on("message", (msg) => {
                     forge_message(name, decrypted);
                     screen.render();
                 });
-            } catch (err) { }
-            
+            } catch (err) { }       
         });
-    // }
+    }
 });
 
 main();
