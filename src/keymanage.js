@@ -130,14 +130,14 @@ function init_scr() {
     var footer;
 
     var p = path.join(__dirname, "..", "keys", "keys.json");
-    fs.readFile(p, {encoding: 'utf-8'}, function(err, data){
-        if (!err) {
-            var name = data["mainkey"];
-            footer = blessed.box(create_footer(name));
-        } else {
-            footer = blessed.box(create_footer("None"));
-        }
-    });
+    try {
+        var raw = fs.readFileSync(p, "utf8");
+        var contents = JSON.parse(raw);
+        footer = blessed.box(create_footer(contents["mainkey"]));
+    } catch (err) {
+        footer = blessed.box(create_footer("None"));
+    }
+    screen.render();
 
     var main_box = blessed.box({
         parent: screen,
@@ -210,10 +210,7 @@ function init_scr() {
         } else {
             console.log("That key could not be found.");
         }
-        
-    });
-    
-    
+    });   
 }
 
 // ----- MAIN -----

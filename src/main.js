@@ -6,12 +6,8 @@ const crypto = require("./crypto.js");
 const fs = require("fs");
 const path = require("path");
 
-var public_path = path.join(__dirname, "/../keys/45f49d71/public.pem");
-var private_path = path.join(__dirname, "/../keys/45f49d71/private.pem");
-
-// // var m_path = path.resolve(__dirname, "..", "key/public.pem");
-// // var s = crypto.encrypt("Hello world", m_path);
-// // console.log(s);
+var public_path;
+var private_path;
 
 var screen;
 var people_window;
@@ -49,13 +45,35 @@ function hide_element(element) {
     element.content = "";
     element.border.type = "none";
 }
+screen = blessed.screen({
+    smartCSR: true,
+    debug: true,
+    title: "Message Term"
+});
+
+function show_key_error() {
+    var errorbox = blessed.box({
+        parent: screen,
+        top: "25%",
+        left: "25%",
+        width: "50%",
+        height: "50%",
+        tags: true,
+        content: "run 'npm run keymanage' to generate a key!",
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: settings.foreground
+            },
+            fg: settings.foreground,
+            bg: settings.background
+        }
+    });
+}
 
 function init_scr() {
-    screen = blessed.screen({
-        smartCSR: true,
-        debug: true,
-        title: "Message Term"
-    });
 
     screen.key(["C-x"], function(ch, key) { 
         return process.exit(0);
@@ -355,7 +373,20 @@ function count(obj) {
 
 // ----- MAIN CODE -----
 
-init_scr();
+function main() {
+    var p = path.join(__dirname, "..", "keys", "keys.json");
+    try {
+        var raw = fs.readFileSync(p, "utf8");
+        var contents = JSON.parse(raw);
+        var mainkey = contents["mainkey"];
+        
+        public_path = path.resolve(__dirname, "..", "keys", mainkey, "public.pem");
+        private_path = path.resolve(__dirname, "..", "keys", mainkey, "private.pem");
+        init_scr();
+    } catch (err) {
+        show_key_error();
+    }
+}
 
 function forge_message(name, message, to_recipient) {
     message_count += 1;
@@ -408,11 +439,4 @@ imessage.listen().on("message", (msg) => {
     // }
 });
 
-function dothis() {
-    console.log("DOING THIS")
-    console.log("\n\n\chatmessagse  :" + JSON.stringify(chat_messages));
-    console.log("\n\n\nconversations:" + JSON.stringify(conversations));
-    console.log(conversations);
-}
-// dothis();
 screen.render();
