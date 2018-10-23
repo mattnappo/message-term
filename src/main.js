@@ -6,8 +6,8 @@ const crypto = require("./crypto.js");
 const fs = require("fs");
 const path = require("path");
 
-var public_path = path.join(__dirname, "/../key/public.pem");
-var private_path = path.join(__dirname, "/../key/private.pem");
+var public_path = path.join(__dirname, "/../keys/45f49d71/public.pem");
+var private_path = path.join(__dirname, "/../keys/45f49d71/private.pem");
 
 // // var m_path = path.resolve(__dirname, "..", "key/public.pem");
 // // var s = crypto.encrypt("Hello world", m_path);

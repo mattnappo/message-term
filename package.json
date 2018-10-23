@@ -13,7 +13,7 @@
   "scripts": {
     "start": "node src/main.js",
     "crypto": "node src/test_crypto.js",
-    "keygen": "node src/keygen.js"
+    "keymanage": "node src/keymanage.js"
   },
   "repository": {
     "type": "git",

@@ -48,6 +48,21 @@ function newkey() {
     screen.render();
 }
 
+function set_main_key(keyid) {
+    var m_key = path.resolve(__dirname, "..", "keys", keyid);
+    if (fs.existsSync(m_key)) {
+        var mainkey = {
+            mainkey: keyid
+        };
+        fs.writeFile(m_key, JSON.stringify(mainkey), function(err) {
+            if(err) return console.log(err);
+        });
+        return true;
+    } else {
+        return true;
+    }
+}
+
 function main() {
     var root = path.resolve(__dirname, "..", "keys");
     create_dir(root);
@@ -152,6 +167,16 @@ function init_scr() {
             new_key_count += 1;
         }
     });
+    
+    set_main_key_btn.on("click", function(data) {
+        if (set_main_key("something")) {
+            console.log("Updated main key");
+        } else {
+            console.log("That key could not be found.");
+        }
+        
+    });
+    
     
 }
 
