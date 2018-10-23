@@ -17,7 +17,7 @@ var decrypt = function(toDecrypt, absolutePath) {
     return decrypted.toString("utf8");
 };
 
-function generate(dir) {
+var generate = function(dir) {
     var pair = keypair();
     var priv = path.resolve(dir, "private.pem");
     var pub = path.resolve(dir, "public.pem");

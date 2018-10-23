@@ -6,6 +6,7 @@
   "dependencies": {},
   "devDependencies": {
     "blessed": "^0.1.81",
+    "ftp": "^0.3.10",
     "keypair": "^1.0.1",
     "osa-imessage": "^2.4.2"
   },
