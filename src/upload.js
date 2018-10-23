@@ -10,7 +10,7 @@ c.on('ready', function() {
 });
 
 c.connect({
-    host: "ftp.mattnappo.com",
+    host: "mattnappo.com",
     user: "keys",
-    password: ""
+    password: "mykeys"
 });
