@@ -46,15 +46,17 @@ function newkey() {
         new_key_btn.setContent("Keygen failed.");
     }
     screen.render();
+    return name;
 }
 
 function set_main_key(keyid) {
     var m_key = path.resolve(__dirname, "..", "keys", keyid);
+    var keysjson = path.resolve(__dirname, "..", "keys", "keys.json");
     if (fs.existsSync(m_key)) {
         var mainkey = {
             mainkey: keyid
         };
-        fs.writeFile(m_key, JSON.stringify(mainkey), function(err) {
+        fs.writeFile(keysjson, JSON.stringify(mainkey), function(err) {
             if(err) return console.log(err);
         });
         return true;
@@ -74,6 +76,27 @@ process.on("unhandledRejection", error => {
     console.log("unhandledRejection", error.message);
 });
 
+function create_footer(name) {
+    return {
+        parent: screen,
+        top: "90%",
+        height: 3,
+        width: "100%",
+        content: "{center}{bold}Main key: '" + name + "'{/bold}{/center}",
+        tags: true,
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: settings.foreground
+            },
+            fg: settings.foreground,
+            bg: settings.background
+        }
+    };
+}
+
 function init_scr() {
     screen = blessed.screen({
         smartCSR: true,
@@ -90,7 +113,7 @@ function init_scr() {
         top: 0,
         height: 3,
         width: "100%",
-        content: "{center}{bold}Message Term Keygen{/bold}{/center}",
+        content: "{center}{bold}Key Manager{/bold}{/center}",
         tags: true,
         border: {
             type: "line"
@@ -101,6 +124,18 @@ function init_scr() {
             },
             fg: settings.foreground,
             bg: settings.background
+        }
+    });
+    
+    var footer;
+
+    var p = path.join(__dirname, "..", "keys", "keys.json");
+    fs.readFile(p, {encoding: 'utf-8'}, function(err, data){
+        if (!err) {
+            var name = data["mainkey"];
+            footer = blessed.box(create_footer(name));
+        } else {
+            footer = blessed.box(create_footer("None"));
         }
     });
 
@@ -163,7 +198,8 @@ function init_scr() {
         if (new_key_count == 0) {
             new_key_btn.setContent("{center}{bold}Generating...{/bold}{/center}");
             new_key_btn.render();
-            newkey();
+            var keyid = newkey();
+            set_main_key(keyid);
             new_key_count += 1;
         }
     });
