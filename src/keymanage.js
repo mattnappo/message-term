@@ -79,10 +79,10 @@ process.on("unhandledRejection", error => {
 function create_footer(name) {
     return {
         parent: screen,
-        top: "90%",
+        top: screen.height - 3,
         height: 3,
         width: "100%",
-        content: "{center}{bold}Main key: '" + name + "'{/bold}{/center}",
+        content: "{center}{bold}Main key: " + name + "{/bold}{/center}",
         tags: true,
         border: {
             type: "line"
@@ -160,32 +160,10 @@ function init_scr() {
     
     new_key_btn = blessed.button({
         parent: main_box,
-        top: 2,
+        top: "33%",
+        width: "50%",
+        left: "25%",
         content: "{center}{bold}Generate a new key{/bold}{/center}",
-        height: 1,
-        tags: true,
-        style: {
-            fg: settings.foreground,
-            bg: settings.background
-        }
-    });
-
-    remove_key_btn = blessed.button({
-        parent: main_box,
-        top: 4,
-        content: "{center}{bold}Remove a key{/bold}{/center}",
-        height: 3,
-        tags: true,
-        style: {
-            fg: settings.foreground,
-            bg: settings.background
-        }
-    });
-
-    set_main_key_btn = blessed.button({
-        parent: main_box,
-        top: 6,
-        content: "{center}{bold}Set main key{/bold}{/center}",
         height: 3,
         tags: true,
         style: {
@@ -196,28 +174,16 @@ function init_scr() {
 
     new_key_btn.on("click", function(data) {
         if (new_key_count == 0) {
-            new_key_btn.setContent("{center}{bold}Generating...{/bold}{/center}");
-            new_key_btn.render();
             var keyid = newkey();
             set_main_key(keyid);
             new_key_count += 1;
         }
     });
-    
-    set_main_key_btn.on("click", function(data) {
-        if (set_main_key("something")) {
-            // console.log("Updated main key");
-        } else {
-            console.log("That key could not be found.");
-        }
-    });   
 }
 
 // ----- MAIN -----
 
-
 main();
 init_scr();
-// newkey();
 
 screen.render();
