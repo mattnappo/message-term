@@ -290,7 +290,6 @@ function add_message(message, previous_height) {
         }
     });
 
-    // chat_window.render();
     screen.render();
     return new_message;
 }
@@ -318,7 +317,6 @@ function update_messages() {
     var total_lines = 0;
     for (var i = 0; i < messages.length; i++) {
         if (i > 0) {
-            // total_lines += messages[i].lines + 2;
             total_lines += messages[i - 1].lines + 2;
         }
         var msg = add_message(messages[i], total_lines);
@@ -426,7 +424,7 @@ forge_message("Bob", "sup\nsup\nsupsup", false);
 
 forge_message("Alice", "It's Alice.", false);
 forge_message("Alice", "Yeah.", true);
-send_message("Matt Nappo", "hi");
+send_message("Dowland Aiello", "hi");
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
