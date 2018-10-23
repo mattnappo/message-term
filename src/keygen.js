@@ -1,7 +1,26 @@
-const r_crypto = require("crypto");
+// ----- INIT CODE -----
+
+const blessed = require("blessed");
 const crypto = require("./crypto.js");
-const path = require("path");
+const r_crypto = require("crypto");
+
 const fs = require("fs");
+const path = require("path");
+
+var settings = {
+    foreground: "#45ff30",
+    background: "black",
+    blue: "#429bf4",
+    white: "#e0e0e0",
+};
+
+var screen;
+var new_key_btn;
+var remove_key_btn;
+var set_main_key_btn;
+var new_key_count = 0;
+
+// ----- CRYPTO STUFF -----
 
 function random_hash() {
     var md5 = r_crypto.createHash("md5");
@@ -21,7 +40,12 @@ function newkey() {
     var name = random_hash();
     var this_key = path.resolve(__dirname, "..", "keys", name);
     create_dir(this_key);
-    crypto.generate(this_key);
+    if (crypto.generate(this_key)) {
+        new_key_btn.setContent("{center}{bold}Keypair '" + name + "' generated.{/bold}{/center}");
+    } else {
+        new_key_btn.setContent("Keygen failed.");
+    }
+    screen.render();
 }
 
 function main() {
@@ -29,28 +53,14 @@ function main() {
     create_dir(root);
 }
 
-// ----- INIT CODE -----
-const blessed = require("blessed");
-const crypto = require("./crypto.js");
-
-const fs = require("fs");
-const path = require("path");
-
-var settings = {
-    foreground: "#45ff30",
-    background: "black",
-    blue: "#429bf4",
-    white: "#e0e0e0",
-};
-
-// ----- SETUP -----
+// ----- GUI -----
 
 process.on("unhandledRejection", error => {
     console.log("unhandledRejection", error.message);
 });
 
 function init_scr() {
-    var screen = blessed.screen({
+    screen = blessed.screen({
         smartCSR: true,
         debug: true,
         title: "Message Term"
@@ -81,7 +91,8 @@ function init_scr() {
 
     var main_box = blessed.box({
         parent: screen,
-        top: "50%",
+        top: "25%",
+        left: "25%",
         width: "50%",
         height: "50%",
         tags: true,
@@ -97,16 +108,58 @@ function init_scr() {
         }
     });
     
+    new_key_btn = blessed.button({
+        parent: main_box,
+        top: 2,
+        content: "{center}{bold}Generate a new key{/bold}{/center}",
+        height: 1,
+        tags: true,
+        style: {
+            fg: settings.foreground,
+            bg: settings.background
+        }
+    });
+
+    remove_key_btn = blessed.button({
+        parent: main_box,
+        top: 4,
+        content: "{center}{bold}Remove a key{/bold}{/center}",
+        height: 3,
+        tags: true,
+        style: {
+            fg: settings.foreground,
+            bg: settings.background
+        }
+    });
+
+    set_main_key_btn = blessed.button({
+        parent: main_box,
+        top: 6,
+        content: "{center}{bold}Set main key{/bold}{/center}",
+        height: 3,
+        tags: true,
+        style: {
+            fg: settings.foreground,
+            bg: settings.background
+        }
+    });
+
+    new_key_btn.on("click", function(data) {
+        if (new_key_count == 0) {
+            new_key_btn.setContent("{center}{bold}Generating...{/bold}{/center}");
+            new_key_btn.render();
+            newkey();
+            new_key_count += 1;
+        }
+    });
+    
 }
 
-// ----- UI -----
+// ----- MAIN -----
 
-    
-// person_box.on("click", function(data) {
-//     if (!clicked_chat) hide_element(no_chats);
-//     current_chat = person;
-//     update_messages();
-// });
 
-// main();
+main();
 init_scr();
+// newkey();
+
+screen.render();

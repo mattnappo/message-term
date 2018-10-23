@@ -28,7 +28,7 @@ var generate = function(dir) {
     fs.writeFile(pub, pair["public"], function(err) {
         if(err) return console.log(err);
     });
-    console.log("RSA keypair generated to " + dir);
+    return true;
 }
 
 module.exports = {
