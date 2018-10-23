@@ -36,18 +36,7 @@ var conversations = { };
 var chat_messages = [ ];
 
 // ----- SETUP -----
-function init() {
-    screen = blessed.screen({
-        smartCSR: true,
-        debug: true,
-        title: "Message Term"
-    });
-    
-    screen.key(["C-x"], function(ch, key) { 
-        return process.exit(0);
-    });
-}
-    
+
 process.on("unhandledRejection", error => {
     console.log("unhandledRejection", error.message);
 });
@@ -57,31 +46,42 @@ function hide_element(element) {
     element.border.type = "none";
 }
 
-function show_key_error() {
-    var errorbox = blessed.box({
-        parent: screen,
-        top: "25%",
-        left: "25%",
-        width: "50%",
-        height: "50%",
-        tags: true,
-        content: "Run 'npm run keymanage' to generate a key!",
-        border: {
-            type: "line"
-        },
-        style: {
-            border: {
-                fg: settings.foreground
-            },
-            fg: settings.foreground,
-            bg: settings.background
-        }
-    });
-    screen.append(errorbox);
-    screen.render();
-}
+screen = blessed.screen({
+    smartCSR: true,
+    debug: true,
+    title: "Message Term"
+});
+
+screen.key(["C-x"], function(ch, key) { 
+    return process.exit(0);
+});
+
+// function show_key_error() {
+//     var errorbox = blessed.box({
+//         parent: screen,
+//         top: "25%",
+//         left: "25%",
+//         width: "50%",
+//         height: "50%",
+//         tags: true,
+//         content: "run 'npm run keymanage' to generate a key!",
+//         border: {
+//             type: "line"
+//         },
+//         style: {
+//             border: {
+//                 fg: settings.foreground
+//             },
+//             fg: settings.foreground,
+//             bg: settings.background
+//         }
+//     });
+//     screen.append(errorbox);
+//     screen.render();
+// }
 
 function init_scr() {
+
     var header = blessed.box({
         parent: screen,
         top: 0,
@@ -167,7 +167,7 @@ function init_scr() {
                 inverse: true
             }
         },
-        // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}{/" + settings.foreground + "-fg}",
+        // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
         label: "Message",
         border: {
             type: "line"
@@ -289,8 +289,6 @@ function add_message(message, previous_height) {
             bg: settings.background
         }
     });
-
-    // chat_window.render();
     screen.render();
     return new_message;
 }
@@ -305,6 +303,8 @@ function send_message(recipient, message) {
     });
     
 }
+
+send_message("Matt Nappo", "hi");
 
 function clear_chats() {
     for (var i = 0; i < chat_messages.length; i++) {
@@ -373,25 +373,24 @@ function count(obj) {
 }
 
 // ----- MAIN CODE -----
-
-init();
-try {
-    var p = path.resolve(__dirname, "..", "keys", "keys.json");
-    var raw = fs.readFileSync(p, "utf8");
-    var contents = JSON.parse(raw);
-    var mainkey = contents["mainkey"];
-        
-    public_path = path.resolve(__dirname, "..", "keys", mainkey, "public.pem");
-    private_path = path.resolve(__dirname, "..", "keys", mainkey, "private.pem");
-    init_scr();
-} catch (err) {
-    show_key_error();
-}
-
-
-function main() {
-}
+console.log(" sdfsdffsdfinit");
+// function main() {
     
+//     var p = path.resolve(__dirname, "..", "keys", "keys.json");
+//     console.warn("asd");
+//         var raw = fs.readFileSync(p, "utf8");
+//         var contents = JSON.parse(raw);
+//         var mainkey = contents["mainkey"];
+        
+//         public_path = path.resolve(__dirname, "..", "keys", mainkey, "public.pem");
+//         private_path = path.resolve(__dirname, "..", "keys", mainkey, "private.pem");
+        
+//         console.log("screen init");
+    
+//         show_key_error();
+//         console.log("screen MNOT init");
+    
+// }
 
 function forge_message(name, message, to_recipient) {
     message_count += 1;
@@ -426,7 +425,6 @@ forge_message("Bob", "sup\nsup\nsupsup", false);
 
 forge_message("Alice", "It's Alice.", false);
 forge_message("Alice", "Yeah.", true);
-send_message("Matt Nappo", "hi");
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
@@ -445,5 +443,6 @@ imessage.listen().on("message", (msg) => {
     // }
 });
 
-main();
+// main();
+
 screen.render();
