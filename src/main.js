@@ -424,7 +424,7 @@ forge_message("Bob", "sup\nsup\nsupsup", false);
 
 forge_message("Alice", "It's Alice.", false);
 forge_message("Alice", "Yeah.", true);
-send_message("Dowland Aiello", "hi");
+// send_message("Dowland Aiello", "hi");
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
