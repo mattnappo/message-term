@@ -24,7 +24,7 @@ function main() {
     var name = random_hash();
     var this_key = path.resolve(__dirname, "..", "keys", name);
     create_dir(this_key);
-
+    crypto.generate(this_key);
 }
 
 main();

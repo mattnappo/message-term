@@ -17,15 +17,18 @@ var decrypt = function(toDecrypt, absolutePath) {
     return decrypted.toString("utf8");
 };
 
-function generate() {
+function generate(dir) {
     var pair = keypair();
-    fs.writeFile("./key/private.pem", pair["private"], function(err) {
+    var priv = path.resolve(dir, "private.pem");
+    var pub = path.resolve(dir, "public.pem");
+
+    fs.writeFile(priv, pair["private"], function(err) {
         if(err) return console.log(err);
     });
-    fs.writeFile("./key/public.pem", pair["public"], function(err) {
+    fs.writeFile(pub, pair["public"], function(err) {
         if(err) return console.log(err);
     });
-    console.log("RSA keypair exported.");
+    console.log("RSA keypair generated to " + dir);
 }
 
 module.exports = {
