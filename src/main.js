@@ -111,7 +111,7 @@ function init_scr() {
         scrollbar: {
             ch: " ",
             track: {
-                bg: "yellow"
+                bg: settings.background
             },
             style: {
                 inverse: true
@@ -379,19 +379,13 @@ forge_message("Alice", "It's Alice.", false);
 forge_message("Alice", "Yeah.", true);
 
 imessage.listen().on("message", (msg) => {
-    // if (!msg.fromMe) {
+    if (!msg.fromMe) {
         var name_object = imessage.nameForHandle(msg.handle);
         name_object.then(function(name) {
             forge_message(name, msg.text);
             screen.render();
         });
-    // }
+    }
 });
-function dothis() {
-    console.log("DOING THIS")
-    console.log("\n\n\chatmessagse  :" + JSON.stringify(chat_messages));
-    console.log("\n\n\nconversations:" + JSON.stringify(conversations));
-    console.log(conversations);
-}
-dothis();
+
 screen.render();
