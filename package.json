@@ -11,7 +11,7 @@
     "osa-imessage": "^2.4.2"
   },
   "scripts": {
-    "client": "node src/main.js",
+    "start": "node src/main.js",
     "keymanage": "node src/keymanage.js"
   },
   "repository": {

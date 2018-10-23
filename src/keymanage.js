@@ -206,7 +206,7 @@ function init_scr() {
     
     set_main_key_btn.on("click", function(data) {
         if (set_main_key("something")) {
-            console.log("Updated main key");
+            // console.log("Updated main key");
         } else {
             console.log("That key could not be found.");
         }
