@@ -40,7 +40,10 @@ function init() {
     screen = blessed.screen({
         smartCSR: true,
         debug: true,
-        title: "Message Term"
+        title: "Message Term",
+        style: {
+            bg: settings.background
+        }
     });
     
     screen.key(["C-x"], function(ch, key) { 
@@ -437,8 +440,8 @@ forge_message("Bob", "sup\nsup\nsupsup", false);
 forge_message("Alice", "It's Alice.", false);
 forge_message("Alice", "Yeah.", true);
 
-forge_message("Charlie Loigman", "test", true);
-send_message("Charlie Loigman", "test");
+// forge_message("Charlie Loigman", "test", true);
+// send_message("Charlie Loigman", "test");
 
 imessage.listen().on("message", (msg) => {
     if (!msg.fromMe) {
