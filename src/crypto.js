@@ -1,3 +1,4 @@
+const keypair = require('keypair');
 const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
@@ -15,8 +16,23 @@ var decrypt = function(toDecrypt, absolutePath) {
     var decrypted = crypto.privateDecrypt(privateKey, buffer);
     return decrypted.toString("utf8");
 };
-   
+
+var generate = function(dir) {
+    var pair = keypair();
+    var priv = path.resolve(dir, "private.pem");
+    var pub = path.resolve(dir, "public.pem");
+
+    fs.writeFile(priv, pair["private"], function(err) {
+        if(err) return console.log(err);
+    });
+    fs.writeFile(pub, pair["public"], function(err) {
+        if(err) return console.log(err);
+    });
+    return true;
+}
+
 module.exports = {
     encrypt: encrypt,
-    decrypt: decrypt
+    decrypt: decrypt,
+    generate: generate
 }

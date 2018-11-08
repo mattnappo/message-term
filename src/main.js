@@ -1,11 +1,13 @@
 // ----- INIT CODE -----
-
 const imessage = require("osa-imessage");
 const blessed = require("blessed");
 const crypto = require("./crypto.js");
 
-// crypto.encrypt("Hello world", "../key/public.pem");
-// crypto.generate_key();
+const fs = require("fs");
+const path = require("path");
+
+var public_path;
+var private_path;
 
 var screen;
 var people_window;
@@ -34,7 +36,21 @@ var conversations = { };
 var chat_messages = [ ];
 
 // ----- SETUP -----
-
+function init() {
+    screen = blessed.screen({
+        smartCSR: true,
+        debug: true,
+        title: "Message Term",
+        style: {
+            bg: settings.background
+        }
+    });
+    
+    screen.key(["C-x"], function(ch, key) { 
+        return process.exit(0);
+    });
+}
+    
 process.on("unhandledRejection", error => {
     console.log("unhandledRejection", error.message);
 });
@@ -44,17 +60,43 @@ function hide_element(element) {
     element.border.type = "none";
 }
 
+function show_key_error() {
+    var errorbox = blessed.box({
+        parent: screen,
+        top: "25%",
+        left: "25%",
+        width: "50%",
+        height: "50%",
+        tags: true,
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: settings.foreground
+            },
+            fg: settings.foreground,
+            bg: settings.background
+        }
+    });
+
+    var errorbox = blessed.box({
+        parent: screen,
+        top: "50%",
+        left: "25%",
+        width: "50%",
+        height: "50%",
+        tags: true,
+        content: "{center}Run 'npm run keymanage' to generate a key!{/center}",
+        style: {
+            fg: settings.foreground,
+            bg: settings.background
+        }
+    });
+    screen.render();
+}
+
 function init_scr() {
-    screen = blessed.screen({
-        smartCSR: true,
-        debug: true,
-        title: "Message Term"
-    });
-
-    screen.key(["C-x"], function(ch, key) { 
-        return process.exit(0);
-    });
-
     var header = blessed.box({
         parent: screen,
         top: 0,
@@ -140,7 +182,7 @@ function init_scr() {
                 inverse: true
             }
         },
-        // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}",
+        // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}{/" + settings.foreground + "-fg}",
         label: "Message",
         border: {
             type: "line"
@@ -179,18 +221,21 @@ function init_scr() {
 
     input_window.on("submit", function(data) {
         if (current_chat != "") {
-            input_box.content = "";
             var message = input_box.getContent();
-            forge_message(current_chat, message, true);
-            send_message(current_chat, message);
+            if (message != "") {
+                input_window.reset();
+                forge_message(current_chat, message, true);
+                send_message(current_chat, message);
+                input_window.focus();
+            }
         }
     });
 
-    screen.key("enter", function() {
+    input_box.key("enter", function() {
         input_window.submit();
     });
 
-    input_box.focus();
+    input_window.focus();
 
     if (message_count <= 0) {
         no_messages = blessed.box({
@@ -263,15 +308,19 @@ function add_message(message, previous_height) {
         }
     });
 
-    // chat_window.render();
     screen.render();
     return new_message;
 }
 
 function send_message(recipient, message) {
-    imessage.handleForName(recipient).then(handle => {
-        imessage.send(handle, message);
+    fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
+        if (err) console.log(err);
+        imessage.handleForName(recipient).then(handle => {
+            var encrypted = crypto.encrypt(message, public_path);
+            imessage.send(handle, encrypted);
+        });
     });
+    
 }
 
 function clear_chats() {
@@ -286,7 +335,6 @@ function update_messages() {
     var total_lines = 0;
     for (var i = 0; i < messages.length; i++) {
         if (i > 0) {
-            // total_lines += messages[i].lines + 2;
             total_lines += messages[i - 1].lines + 2;
         }
         var msg = add_message(messages[i], total_lines);
@@ -342,7 +390,24 @@ function count(obj) {
 
 // ----- MAIN CODE -----
 
-init_scr();
+init();
+try {
+    var p = path.resolve(__dirname, "..", "keys", "keys.json");
+    var raw = fs.readFileSync(p, "utf8");
+    var contents = JSON.parse(raw);
+    var mainkey = contents["mainkey"];
+        
+    public_path = path.resolve(__dirname, "..", "keys", mainkey, "public.pem");
+    private_path = path.resolve(__dirname, "..", "keys", mainkey, "private.pem");
+    init_scr();
+} catch (err) {
+    show_key_error();
+}
+
+
+function main() {
+}
+    
 
 function forge_message(name, message, to_recipient) {
     message_count += 1;
@@ -370,22 +435,32 @@ function forge_message(name, message, to_recipient) {
     }
 }
 
-forge_message("Bob", "sup\nhi\nhi", false);
-forge_message("Bob", "sup", false);
-forge_message("Bob", "sup\nsup", false);
-forge_message("Bob", "sup\nsup\nsupsup", false);
+// forge_message("Bob", "sup\nhi\nhi", false);
+// forge_message("Bob", "sup", false);
+// forge_message("Bob", "sup\nsup", false);
+// forge_message("Bob", "sup\nsup\nsupsup", false);
 
-forge_message("Alice", "It's Alice.", false);
-forge_message("Alice", "Yeah.", true);
+// forge_message("Alice", "It's Alice.", false);
+// forge_message("Alice", "Yeah.", true);
+
+// forge_message("Matt Nappo", "test", true);
+send_message("Matt Nappo", "test");
 
 imessage.listen().on("message", (msg) => {
-    if (!msg.fromMe) {
-        var name_object = imessage.nameForHandle(msg.handle);
-        name_object.then(function(name) {
-            forge_message(name, msg.text);
-            screen.render();
+    // if (!msg.fromMe) {
+        fs.readFile(private_path, {encoding: 'utf-8'}, function(err, private_key) {
+            if (err) console.log(err);
+            var name_object = imessage.nameForHandle(msg.handle);
+            try {
+                var decrypted = crypto.decrypt(msg.text, private_path);
+                name_object.then(function(name) {
+                    forge_message(name, decrypted);
+                    screen.render();
+                });
+            } catch (err) { }
         });
-    }
+    // }
 });
 
+main();
 screen.render();
