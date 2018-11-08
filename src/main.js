@@ -221,18 +221,21 @@ function init_scr() {
 
     input_window.on("submit", function(data) {
         if (current_chat != "") {
-            input_box.content = "";
             var message = input_box.getContent();
-            forge_message(current_chat, message, true);
-            send_message(current_chat, message);
+            if (message != "") {
+                input_window.reset();
+                forge_message(current_chat, message, true);
+                send_message(current_chat, message);
+                input_box.focus();
+            }
         }
     });
 
-    screen.key("enter", function() {
+    input_box.key("enter", function() {
         input_window.submit();
     });
 
-    input_box.focus();
+    input_window.focus();
 
     if (message_count <= 0) {
         no_messages = blessed.box({
@@ -432,19 +435,19 @@ function forge_message(name, message, to_recipient) {
     }
 }
 
-forge_message("Bob", "sup\nhi\nhi", false);
-forge_message("Bob", "sup", false);
-forge_message("Bob", "sup\nsup", false);
-forge_message("Bob", "sup\nsup\nsupsup", false);
+// forge_message("Bob", "sup\nhi\nhi", false);
+// forge_message("Bob", "sup", false);
+// forge_message("Bob", "sup\nsup", false);
+// forge_message("Bob", "sup\nsup\nsupsup", false);
 
-forge_message("Alice", "It's Alice.", false);
-forge_message("Alice", "Yeah.", true);
+// forge_message("Alice", "It's Alice.", false);
+// forge_message("Alice", "Yeah.", true);
 
-// forge_message("Charlie Loigman", "test", true);
-// send_message("Charlie Loigman", "test");
+// forge_message("Matt Nappo", "test", true);
+send_message("Matt Nappo", "test");
 
 imessage.listen().on("message", (msg) => {
-    if (!msg.fromMe) {
+    // if (!msg.fromMe) {
         fs.readFile(private_path, {encoding: 'utf-8'}, function(err, private_key) {
             if (err) console.log(err);
             var name_object = imessage.nameForHandle(msg.handle);
@@ -454,9 +457,9 @@ imessage.listen().on("message", (msg) => {
                     forge_message(name, decrypted);
                     screen.render();
                 });
-            } catch (err) { }       
+            } catch (err) { }
         });
-    }
+    // }
 });
 
 main();
