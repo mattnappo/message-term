@@ -10,10 +10,23 @@ var encrypt = function(toEncrypt, absolutePath) {
     return encrypted.toString("base64");
 };
 
+var encrypt_k = function(toEncrypt, key) {
+    console.log("DOOODLE BOB");
+    var buffer = new Buffer(toEncrypt);
+    var encrypted = crypto.publicEncrypt(key, buffer);
+    return encrypted.toString("base64");
+};
+
 var decrypt = function(toDecrypt, absolutePath) {
     var privateKey = fs.readFileSync(absolutePath, "utf8");
     var buffer = new Buffer(toDecrypt, "base64");
     var decrypted = crypto.privateDecrypt(privateKey, buffer);
+    return decrypted.toString("utf8");
+};
+
+var decrypt_k = function(toDecrypt, key) {
+    var buffer = new Buffer(toDecrypt, "base64");
+    var decrypted = crypto.privateDecrypt(key, buffer);
     return decrypted.toString("utf8");
 };
 
