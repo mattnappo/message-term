@@ -10,6 +10,7 @@
     "keypair": "^1.0.1",
     "osa-imessage": "^2.4.2"
   },
+  "bin": "./bin/",
   "scripts": {
     "start": "node src/main.js",
     "keymanage": "node src/keymanage.js"
