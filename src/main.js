@@ -225,7 +225,16 @@ function init_scr() {
             if (message != "") {
                 input_window.reset();
                 forge_message(current_chat, message, true);
-                send_message(current_chat, message);
+                fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
+                    if (err) console.log(err);
+                    var r = {
+                        "public_key": public_key,
+                        "body": message
+                    };
+                    send_message(current_chat, JSON.stringify(r));
+                });
+                
+                
                 input_window.focus();
             }
         }
