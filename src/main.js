@@ -226,7 +226,7 @@ function init_scr() {
                 input_window.reset();
                 forge_message(current_chat, message, true);
                 send_message(current_chat, message);
-                input_box.focus();
+                input_window.focus();
             }
         }
     });
