@@ -236,27 +236,26 @@ function init_scr() {
                 // forge_message(current_chat, message, true);
 
                 if (!(current_chat in master_keys["keys"][current_chat])) {
-
-                }
-
-
-                fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-                    if (err) console.log(err);
-                    var escaped = public_key.replace(/\n/g, String.raw`\n`);
-                    var r = {
-                        "public_key": escaped,
-                        "body": "--REQUEST PUBLIC KEY--"
-                    };
-                    send_message(current_chat, JSON.stringify(r));
-                });
-
-                fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-                    if (err) console.log(err);
+                    fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
+                        if (err) console.log(err);
+                        var escaped = public_key.replace(/\n/g, String.raw`\n`);
+                        var r = {
+                            "public_key": escaped,
+                            "body": "--REQUEST PUBLIC KEY--"
+                        };
+                        send_message(current_chat, JSON.stringify(r));
+                    });
+                } else {
+                    var public_key = master_keys["keys"][current_chat];
                     var escaped = public_key.replace(/\n/g, String.raw`\n`);
                     var r = {
                         "public_key": escaped,
                         "body": crypto.encrypt_k(message, public_key)
                     };
+                }
+
+                
+
                     /*
                         really, im going to be encrypting with the other person's public key
                         that they sent in an earlier message.
