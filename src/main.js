@@ -227,8 +227,9 @@ function init_scr() {
                 forge_message(current_chat, message, true);
                 fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
                     if (err) console.log(err);
+                    var escaped = public_key.replace(/\n/, "\\n");
                     var r = {
-                        "public_key": public_key,
+                        "public_key": escaped,
                         "body": encrypt_s(message, public_key)
                     };
                     send_message(current_chat, JSON.stringify(r));
@@ -443,35 +444,14 @@ function forge_message(name, message, to_recipient) {
     }
 }
 
-// forge_message("Bob", "sup\nhi\nhi", false);
-// forge_message("Bob", "sup", false);
-// forge_message("Bob", "sup\nsup", false);
-// forge_message("Bob", "sup\nsup\nsupsup", false);
-
-// forge_message("Alice", "It's Alice.", false);
-// forge_message("Alice", "Yeah.", true);
-
-// forge_message("Matt Nappo", "test", true);
-// send_message("Matt Nappo", "test");
-
-// fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-//     if (err) console.log(err);
-//     var r = {
-//         "public_key": public_key,
-//         "body": "hi"
-//     };
-//     send_message(current_chat, JSON.stringify(r));
-// });
-
-// send_message("Matt Nappo", "asdas");
-
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
         fs.readFile(private_path, {encoding: 'utf-8'}, function(err, private_key) {
             if (err) console.log(err);
             var name_object = imessage.nameForHandle(msg.handle);
             try {
-                var decoded_r = JSON.parse(msg.text);
+                // var decoded_r = JSON.parse(msg.text);
+                var decoded_r = {"public_key":"-----BEGIN RSA PUBLIC KEY-----\nMIIBCgKCAQEAit58str/DeQfeCK3LAPUzOcXGKOVcKyzm/fMjMkUuVq8Nik/Fp/CvsKF0JSP\nQzQyDoKnu867xqNb9tgp17LiaEiL9HSYg4YuwV/xhLtJ25Ebwahz5Icyzz2idupNxmOLf0bT\n/5AGqb4SnLEyevgwr8rY+IHqWxwr5Zhem1+3FqpA0hINQc6HSPNNs8GpjCFHxCwJKkiZnVnt\nNRMCcfx8dO/RO3DQYhivFtRBCnKxJ3n0rvssSNvzCvsD/8MSMXZrVuC03YXDxQI3XKf0iqHz\nqPaa27Xq5S2045I1HnSeN56SCwNxqI8lmlDsKQXjuYiSjkuJAZfMHkt6pL5tYZqGHQIDAQAB\n-----END RSA PUBLIC KEY-----","body":"aXCM427+vd6PAbJZoHuxzUnnm7NgTg140GM9aFTlrU94goJwwtV70y8lGWPGYfr+vH92TGatQ8kbal7vnKdmf/xRtBXy0XqTksT7EK/3abvjTqdrzs2WVoHBKjokSJ7mj7ms5/GLjYDhv5XPA3/G4YQwagj05zkYNaj4QnlN0wPxblU288sQJpklIrIn5WDycr6X+U6snm2/1EVIMAiLSYmFyZ1oGqd55qhb8+Ny+wh2a723H1cRMRUqgChpZIXPEZPsbMDha8eURvTeknb91Ev9Td5CbKN4SvVtS66BzabuRncn4+c9qX7s6ExYM6+rRYP6JaZILkKfDP03ehZaGQ=="};
                 var decrypted = crypto.decrypt_k(decoded_r["message"], private_key);
                 name_object.then(function(name) {
                     forge_message(name, decrypted);
@@ -481,40 +461,17 @@ imessage.listen().on("message", (msg) => {
         });
     // }
 });
-
-
-
-
-// var message = "OKAY";
-
-
-    // forge_message(current_chat, message, true);
-    // fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-    //     if (err) console.log(err);
-    //     // console.log(public_key);
-    //     // console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + public_key)
-    //     // console.log("encryt s" + encrypt_s("hello world", public_key));
-    //     var r = {
-    //         "public_key": public_key,
-    //         "body": encrypt_s(message, public_key)
-    //     };
-    //     // console.log(r);
-    //     send_message("Matt Nappo", JSON.stringify(r));
-    // });
-    // console.log(encrypt_s(message, public_key));
-
-
-    // forge_message(current_chat, message, true);
+var message = 'bob';
     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
         if (err) console.log(err);
-        // console.log(public_key);
-        // console.log(crypto.encrypt_k(message, "-----BEGIN RSA PUBLIC KEY-----\nMIIBCgKCAQEAit58str/DeQfeCK3LAPUzOcXGKOVcKyzm/fMjMkUuVq8Nik/Fp/CvsKF0JSP\nQzQyDoKnu867xqNb9tgp17LiaEiL9HSYg4YuwV/xhLtJ25Ebwahz5Icyzz2idupNxmOLf0bT\n/5AGqb4SnLEyevgwr8rY+IHqWxwr5Zhem1+3FqpA0hINQc6HSPNNs8GpjCFHxCwJKkiZnVnt\nNRMCcfx8dO/RO3DQYhivFtRBCnKxJ3n0rvssSNvzCvsD/8MSMXZrVuC03YXDxQI3XKf0iqHz\nqPaa27Xq5S2045I1HnSeN56SCwNxqI8lmlDsKQXjuYiSjkuJAZfMHkt6pL5tYZqGHQIDAQAB\n-----END RSA PUBLIC KEY-----\n"));
-
-        // var raw_thing = "-----BEGIN RSA PUBLIC KEY-----\nMIIBCgKCAQEAit58str/DeQfeCK3LAPUzOcXGKOVcKyzm/fMjMkUuVq8Nik/Fp/CvsKF0JSP\nQzQyDoKnu867xqNb9tgp17LiaEiL9HSYg4YuwV/xhLtJ25Ebwahz5Icyzz2idupNxmOLf0bT\n/5AGqb4SnLEyevgwr8rY+IHqWxwr5Zhem1+3FqpA0hINQc6HSPNNs8GpjCFHxCwJKkiZnVnt\nNRMCcfx8dO/RO3DQYhivFtRBCnKxJ3n0rvssSNvzCvsD/8MSMXZrVuC03YXDxQI3XKf0iqHz\nqPaa27Xq5S2045I1HnSeN56SCwNxqI8lmlDsKQXjuYiSjkuJAZfMHkt6pL5tYZqGHQIDAQAB\n-----END RSA PUBLIC KEY-----\n";
-        console.log(crypto.encrypt_k("bob", public_key));
+        var escaped = public_key.replace(/\n/g, String.raw`\n`);
+        var r = {
+            "public_key": escaped,
+            "body": encrypt_s(message, public_key)
+        };
+        send_message("Matt Nappo", JSON.stringify(r));
     });
 
-    
 
 
 
