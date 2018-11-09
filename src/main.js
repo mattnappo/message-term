@@ -233,8 +233,7 @@ function init_scr() {
             var message = input_box.getContent();
             if (message != "") {
                 input_window.reset();
-                // forge_message(current_chat, message, true);
-
+                
                 if (!(current_chat in master_keys["keys"][current_chat])) {
                     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
                         if (err) console.log(err);
@@ -246,12 +245,15 @@ function init_scr() {
                         send_message(current_chat, JSON.stringify(r));
                     });
                 } else {
+                    forge_message(current_chat, message, true);
                     var public_key = master_keys["keys"][current_chat];
                     var escaped = public_key.replace(/\n/g, String.raw`\n`);
                     var r = {
                         "public_key": escaped,
                         "body": crypto.encrypt_k(message, public_key)
                     };
+                    send_message(current_chat, JSON.stringify(r));
+                    
                 }
 
                 
@@ -272,8 +274,8 @@ function init_scr() {
 
                         These are just some ideas that ill think about later.
                     */
-                    send_message(current_chat, JSON.stringify(r));
-                });
+                    
+                
                 input_box.focus();
             }
         }
