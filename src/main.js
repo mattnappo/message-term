@@ -232,6 +232,22 @@ function init_scr() {
                         "public_key": escaped,
                         "body": crypto.encrypt_k(message, public_key)
                     };
+                    /*
+                        really, im going to be encrypting with the other person's public key
+                        that they sent in an earlier message.
+                        Maybe I should have some sort of JSON object that stores all of the people in the
+                        people list's names and public keys. This would break if they change key mid-way in a conversation,
+                        or would it?
+
+                        This also gets into the issue of the compose button, because I need their public key in order
+                        to send an encrypted message to them. hmmmmmm.
+                        
+                        Maybe when I hit compose in the client, I send just my key and I find out a way to
+                        get the other person's key. Will this eliminate the need for sending the key in each message?
+                        idk?
+
+                        These are just some ideas that ill think about later.
+                    */
                     send_message(current_chat, JSON.stringify(r));
                 });
                 input_box.focus();
