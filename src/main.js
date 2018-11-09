@@ -54,6 +54,9 @@ function init() {
 process.on("unhandledRejection", error => {
     console.log("unhandledRejection", error.message);
 });
+// process.on("uncaughtException", function (err) {
+//     console.error(err);
+// });
 
 function hide_element(element) {
     element.content = "";
@@ -466,11 +469,26 @@ imessage.listen().on("message", (msg) => {
             var name_object = imessage.nameForHandle(msg.handle);
             try {
                 var decoded_r = JSON.parse(msg.text);
-                var decrypted = crypto.decrypt_k(decoded_r["body"], private_key);
-                name_object.then(function(name) {
-                    forge_message(name, decrypted);
-                    screen.render();
-                });
+                var body = decoded_r["body"];
+                if (body == "--REQUEST PUBLIC KEY--") {
+                    fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
+                        if (err) console.log(err);
+                        var escaped = public_key.replace(/\n/g, String.raw`\n`);
+                        var r = {
+                            "public_key": escaped,
+                            "body": "--INCOMING PUBLIC KEY--"
+                        };
+                        send_message(current_chat, JSON.stringify(r));
+                    });
+                } else if (body == "--INCOMING PUBLIC KEY--") {
+                    // add the key to the master dictionary
+                } else {
+                    var decrypted = crypto.decrypt_k(body, private_key);
+                    name_object.then(function(name) {
+                        forge_message(name, decrypted);
+                        screen.render();
+                    });
+                }
             } catch (err) { }
         });
     // }
