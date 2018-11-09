@@ -1,28 +1,26 @@
 {
-  "name": "message-term",
-  "version": "1.0.0",
-  "description": "iMessage client for your terminal.",
-  "main": "src/main.js",
-  "dependencies": {},
-  "devDependencies": {
-    "blessed": "^0.1.81",
-    "ftp": "^0.3.10",
-    "keypair": "^1.0.1",
-    "osa-imessage": "^2.4.2"
-  },
-  "bin": "./bin/",
-  "scripts": {
-    "start": "node src/main.js",
-    "keymanage": "node src/keymanage.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/xoreo/message-term.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/xoreo/message-term/issues"
-  },
-  "homepage": "https://github.com/xoreo/message-term#readme"
+    "name": "message-term",
+    "version": "1.0.0",
+    "description": "iMessage client for your terminal.",
+    "main": "src/main.js",
+    "dependencies": {},
+    "devDependencies": {
+        "blessed": "^0.1.81",
+        "keypair": "^1.0.1",
+        "osa-imessage": "^2.4.2"
+    },
+    "scripts": {
+        "client": "node src/main.js",
+        "keymanage": "node src/keymanage.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/xoreo/message-term.git"
+    },
+    "author": "xoreo",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/xoreo/message-term/issues"
+    },
+    "homepage": "https://github.com/xoreo/message-term#readme"
 }
