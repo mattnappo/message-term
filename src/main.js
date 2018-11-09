@@ -51,9 +51,9 @@ function init() {
     });
 }
     
-process.on("unhandledRejection", error => {
-    console.log("unhandledRejection", error.message);
-});
+// process.on("unhandledRejection", error => {
+//     console.log("unhandledRejection", error.message);
+// });
 
 function hide_element(element) {
     element.content = "";
@@ -322,21 +322,13 @@ function add_message(message, previous_height) {
     
 function encrypt_s(message, public_key) {
     var encrypted = crypto.encrypt_k(message, public_key);
-    console.log(encrypted);
-    // return encrypted;
+    return encrypted;
 }
-// var __key = "-----BEGIN RSA PUBLIC KEY-----MIIBCgKCAQEAit58str/DeQfeCK3LAPUzOcXGKOVcKyzm/fMjMkUuVq8Nik/Fp/CvsKF0JSPQzQyDoKnu867xqNb9tgp17LiaEiL9HSYg4YuwV/xhLtJ25Ebwahz5Icyzz2idupNxmOLf0bT/5AGqb4SnLEyevgwr8rY+IHqWxwr5Zhem1+3FqpA0hINQc6HSPNNs8GpjCFHxCwJKkiZnVntNRMCcfx8dO/RO3DQYhivFtRBCnKxJ3n0rvssSNvzCvsD/8MSMXZrVuC03YXDxQI3XKf0iqHzqPaa27Xq5S2045I1HnSeN56SCwNxqI8lmlDsKQXjuYiSjkuJAZfMHkt6pL5tYZqGHQIDAQAB-----END RSA PUBLIC KEY-----"
-// encrypt_s("dodle bob", __key);
-
-
 
 function send_message(recipient, message) {
-    // fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-        // if (err) console.log(err);
-        imessage.handleForName(recipient).then(handle => {
-            imessage.send(handle, message);
-        });
-    // });
+    imessage.handleForName(recipient).then(handle => {
+        imessage.send(handle, message);
+    });
 }
 
 function clear_chats() {
@@ -492,24 +484,37 @@ imessage.listen().on("message", (msg) => {
 
 
 
-var message = "OKAY";
+
+// var message = "OKAY";
 
 
-    forge_message(current_chat, message, true);
+    // forge_message(current_chat, message, true);
+    // fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
+    //     if (err) console.log(err);
+    //     // console.log(public_key);
+    //     // console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + public_key)
+    //     // console.log("encryt s" + encrypt_s("hello world", public_key));
+    //     var r = {
+    //         "public_key": public_key,
+    //         "body": encrypt_s(message, public_key)
+    //     };
+    //     // console.log(r);
+    //     send_message("Matt Nappo", JSON.stringify(r));
+    // });
+    // console.log(encrypt_s(message, public_key));
+
+
+    // forge_message(current_chat, message, true);
     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
         if (err) console.log(err);
         // console.log(public_key);
-        // console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + public_key)
-        console.log("encryt s" + encrypt_s("hello world", public_key));
-        var r = {
-            "public_key": public_key,
-            "body": encrypt_s(message, public_key)
-        };
-        // console.log(r);
-        send_message("Matt Nappo", JSON.stringify(r));
+        // console.log(crypto.encrypt_k(message, "-----BEGIN RSA PUBLIC KEY-----\nMIIBCgKCAQEAit58str/DeQfeCK3LAPUzOcXGKOVcKyzm/fMjMkUuVq8Nik/Fp/CvsKF0JSP\nQzQyDoKnu867xqNb9tgp17LiaEiL9HSYg4YuwV/xhLtJ25Ebwahz5Icyzz2idupNxmOLf0bT\n/5AGqb4SnLEyevgwr8rY+IHqWxwr5Zhem1+3FqpA0hINQc6HSPNNs8GpjCFHxCwJKkiZnVnt\nNRMCcfx8dO/RO3DQYhivFtRBCnKxJ3n0rvssSNvzCvsD/8MSMXZrVuC03YXDxQI3XKf0iqHz\nqPaa27Xq5S2045I1HnSeN56SCwNxqI8lmlDsKQXjuYiSjkuJAZfMHkt6pL5tYZqGHQIDAQAB\n-----END RSA PUBLIC KEY-----\n"));
+
+        // var raw_thing = "-----BEGIN RSA PUBLIC KEY-----\nMIIBCgKCAQEAit58str/DeQfeCK3LAPUzOcXGKOVcKyzm/fMjMkUuVq8Nik/Fp/CvsKF0JSP\nQzQyDoKnu867xqNb9tgp17LiaEiL9HSYg4YuwV/xhLtJ25Ebwahz5Icyzz2idupNxmOLf0bT\n/5AGqb4SnLEyevgwr8rY+IHqWxwr5Zhem1+3FqpA0hINQc6HSPNNs8GpjCFHxCwJKkiZnVnt\nNRMCcfx8dO/RO3DQYhivFtRBCnKxJ3n0rvssSNvzCvsD/8MSMXZrVuC03YXDxQI3XKf0iqHz\nqPaa27Xq5S2045I1HnSeN56SCwNxqI8lmlDsKQXjuYiSjkuJAZfMHkt6pL5tYZqGHQIDAQAB\n-----END RSA PUBLIC KEY-----\n";
+        console.log(crypto.encrypt_k("bob", public_key));
     });
 
-
+    
 
 
 

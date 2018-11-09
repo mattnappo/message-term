@@ -16,15 +16,6 @@ var encrypt_k = function(toEncrypt, key) {
     return encrypted.toString("base64");
 };
 
-// var raw_thing = "-----BEGIN RSA PUBLIC KEY-----\n\
-// MIIBCgKCAQEAit58str/DeQfeCK3LAPUzOcXGKOVcKyzm/fMjMkUuVq8Nik/Fp/CvsKF0JSP\n\
-// QzQyDoKnu867xqNb9tgp17LiaEiL9HSYg4YuwV/xhLtJ25Ebwahz5Icyzz2idupNxmOLf0bT\n\
-// /5AGqb4SnLEyevgwr8rY+IHqWxwr5Zhem1+3FqpA0hINQc6HSPNNs8GpjCFHxCwJKkiZnVnt\n\
-// NRMCcfx8dO/RO3DQYhivFtRBCnKxJ3n0rvssSNvzCvsD/8MSMXZrVuC03YXDxQI3XKf0iqHz\n\
-// qPaa27Xq5S2045I1HnSeN56SCwNxqI8lmlDsKQXjuYiSjkuJAZfMHkt6pL5tYZqGHQIDAQAB\n\
-// -----END RSA PUBLIC KEY-----";
-// console.log(encrypt_k("bob", raw_thing));
-
 var decrypt = function(toDecrypt, absolutePath) {
     var privateKey = fs.readFileSync(absolutePath, "utf8");
     var buffer = new Buffer(toDecrypt, "base64");
@@ -55,5 +46,7 @@ var generate = function(dir) {
 module.exports = {
     encrypt: encrypt,
     decrypt: decrypt,
+    encrypt_k: encrypt_k,
+    decrypt_k: decrypt_k,
     generate: generate
 }
