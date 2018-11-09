@@ -6,6 +6,12 @@ const crypto = require("./crypto.js");
 const fs = require("fs");
 const path = require("path");
 
+var master_keys = {
+    "keys": {
+
+    }
+};
+
 var public_path;
 var private_path;
 
@@ -227,7 +233,23 @@ function init_scr() {
             var message = input_box.getContent();
             if (message != "") {
                 input_window.reset();
-                forge_message(current_chat, message, true);
+                // forge_message(current_chat, message, true);
+
+                if (!(current_chat in master_keys["keys"][current_chat])) {
+
+                }
+
+
+                fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
+                    if (err) console.log(err);
+                    var escaped = public_key.replace(/\n/g, String.raw`\n`);
+                    var r = {
+                        "public_key": escaped,
+                        "body": "--REQUEST PUBLIC KEY--"
+                    };
+                    send_message(current_chat, JSON.stringify(r));
+                });
+
                 fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
                     if (err) console.log(err);
                     var escaped = public_key.replace(/\n/g, String.raw`\n`);
@@ -470,6 +492,7 @@ imessage.listen().on("message", (msg) => {
             try {
                 var decoded_r = JSON.parse(msg.text);
                 var body = decoded_r["body"];
+                var their_public = decoded_r["public_key"];
                 if (body == "--REQUEST PUBLIC KEY--") {
                     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
                         if (err) console.log(err);
@@ -481,7 +504,14 @@ imessage.listen().on("message", (msg) => {
                         send_message(current_chat, JSON.stringify(r));
                     });
                 } else if (body == "--INCOMING PUBLIC KEY--") {
-                    // add the key to the master dictionary
+                    name_object.then(function(name) {
+                        var new_key = {
+                            name: name,
+                            "key": their_public
+                        };
+                        master_keys["keys"][name] = their_public;
+                        console.log(master_keys);
+                    });
                 } else {
                     var decrypted = crypto.decrypt_k(body, private_key);
                     name_object.then(function(name) {
