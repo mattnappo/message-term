@@ -234,8 +234,7 @@ function init_scr() {
                     };
                     send_message(current_chat, JSON.stringify(r));
                 });
-                
-                input_window.focus();
+                input_box.focus();
             }
         }
     });
@@ -475,6 +474,5 @@ function send_test(message) {
 
 send_test("hi");
 
-    
 main();
 screen.render();
