@@ -472,7 +472,7 @@ function send_test(message) {
     });
 }
 
-send_test("hi");
+// send_test("hi");
 
 main();
 screen.render();
