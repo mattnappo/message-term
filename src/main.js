@@ -480,7 +480,7 @@ imessage.listen().on("message", (msg) => {
             var name_object = imessage.nameForHandle(msg.handle);
             try {
                 var decoded_r = JSON.parse(msg.text);
-                var decrypted = crypto.decrypt_k(decoded_r["message"], decoded_r["public_key"]);
+                var decrypted = crypto.decrypt_k(decoded_r["message"], private_key);
                 name_object.then(function(name) {
                     forge_message(name, decrypted);
                     screen.render();
