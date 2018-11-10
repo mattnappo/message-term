@@ -42,6 +42,8 @@ var people = [ ];
 var conversations = { };
 var chat_messages = [ ];
 
+
+current_chat = "Matt Nappo";
 // ----- SETUP -----
 function init() {
     screen = blessed.screen({
@@ -234,7 +236,7 @@ function init_scr() {
             var message = input_box.getContent();
             if (message != "") {
                 input_window.reset();
-                if (!(current_chat in master_keys["keys"][current_chat])) {
+                if (!(current_chat in master_keys["keys"])) {
                     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
                         if (err) console.log(err);
                         var escaped = public_key.replace(/\n/g, String.raw`\n`);
@@ -495,8 +497,6 @@ imessage.listen().on("message", (msg) => {
                 var body = decoded_r["body"];
                 var their_public = decoded_r["public_key"];
                 if (body == "--REQUEST PUBLIC KEY--") {
-                    console.log('yeet');
-                    // console.log("yes");
                     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
                         if (err) console.log(err);
                         var escaped = public_key.replace(/\n/g, String.raw`\n`);
@@ -507,18 +507,17 @@ imessage.listen().on("message", (msg) => {
                         send_message(current_chat, JSON.stringify(r));
                     });
                 } else if (body == "--INCOMING PUBLIC KEY--") {
-                    
                     name_object.then(function(name) {
-                        var new_key = {
-                            name: name,
-                            "key": their_public
-                        };
                         master_keys["keys"][name] = their_public;
-                        pending_send = {
-                            to: "",
-                            r: message
-                        };
-
+                        fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
+                            if (err) console.log(err);
+                            var escaped = public_key.replace(/\n/g, String.raw`\n`);
+                            var r = {
+                                "public_key": escaped,
+                                "body": crypto.encrypt_k(pending_send[current_chat], their_public)
+                            };
+                            send_message(current_chat, JSON.stringify(r));
+                        });
                     });
                 } else {
                     var decrypted = crypto.decrypt_k(body, private_key);
@@ -547,30 +546,40 @@ imessage.listen().on("message", (msg) => {
 // send_test("hi");
 
 
-var message = "hi";
-current_chat = "Matt Nappo";
-console.log("okay");
-if (!(current_chat in master_keys["keys"])) {
-    fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-        if (err) console.log(err);
-        var escaped = public_key.replace(/\n/g, String.raw`\n`);
-        var r = {
-            "public_key": escaped,
-            "body": "--REQUEST PUBLIC KEY--"
-        };
-        send_message(current_chat, JSON.stringify(r));
-    });
-} else {
-    forge_message(current_chat, message, true);
-    var public_key = master_keys["keys"][current_chat];
-    var escaped = public_key.replace(/\n/g, String.raw`\n`);
-    var r = {
-        "public_key": escaped,
-        "body": crypto.encrypt_k(message, public_key)
-    };
-    send_message(current_chat, JSON.stringify(r));
+// var message = "hi";
+// current_chat = "Matt Nappo";
+// if (!(current_chat in master_keys["keys"])) {
+//     console.log("REEEEEEEEEEEEEEE");
+//     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
+//         if (err) console.log(err);
+//         var escaped = public_key.replace(/\n/g, String.raw`\n`);
+//         var r = {
+//             "public_key": escaped,
+//             "body": "--REQUEST PUBLIC KEY--"
+//         };
+//         send_message(current_chat, JSON.stringify(r));
+//     });
+// }
+
+// if (current_chat in master_keys["keys"]) {
+//     console.log("HERE AFTER");
+//     forge_message(current_chat, message, true);
+//     var public_key = master_keys["keys"][current_chat];
+//     var escaped = public_key.replace(/\n/g, String.raw`\n`);
+//     var r = {
+//         "public_key": escaped,
+//         "body": crypto.encrypt_k(message, public_key)
+//     };
+//     send_message(current_chat, JSON.stringify(r));
     
-}
+// }
+
+
+// if (current_chat in master_keys["keys"]) {
+//     console.log("REEEEEEEEEEEEEEE");
+
+// }
+// console.log(master_keys);
 
 input_window.focus();
 main();
