@@ -238,7 +238,6 @@ function init_scr() {
         var content = compose_box.getContent();
         if (content != "") {
             compose_window.reset();
-            screen.render();
             current_chat = content;
             // console.log(imessage.handleForName(content).name);
             imessage.handleForName(content).then(handle => {
@@ -246,11 +245,16 @@ function init_scr() {
                     if (!conversations.hasOwnProperty(content)) {
                         people.push(content);
                         new_person(content);
+                        hide_element(no_messages);
+                        hide_element(no_chats);
+                        chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + content + "{/bold}");
                         conversations[content] = [];
+                        screen.render();
                     }
 
                 }
             });
+            screen.render();
             // input_box.focus();
         }
     });
