@@ -25,6 +25,9 @@ var no_chats;
 var input_window;
 var input_box;
 
+var compose_window;
+var compose_box;
+
 var settings = {
     foreground: "#45ff30",
     background: "black",
@@ -132,7 +135,7 @@ function init_scr() {
         parent: screen,
         top: 3,
         width: "50%",
-        height: screen.height - 3,
+        height: screen.height - 7,
         label: "{" + settings.foreground + "-fg}{bold}People{/bold}",
         tags: true,
         border: {
@@ -186,8 +189,8 @@ function init_scr() {
         keys: true,
         vi: true,
         top: screen.height - 4,
-        left: "50%",
-        width: "50%",
+        left: screen.width / 2 + 1,
+        width: screen.width / 2 - 1,
         style: {
             bg: "green",
             scrollbar: {
@@ -287,14 +290,79 @@ function init_scr() {
         input_window.submit();
     });
 
-    input_window.focus();
+    compose_window = blessed.form({
+        parent: screen,
+        mouse: true,
+        keys: true,
+        vi: true,
+        top: screen.height - 4,
+        left: "0%",
+        width: screen.width / 2 - 1,
+        style: {
+            bg: "green",
+            scrollbar: {
+                inverse: true
+            }
+        },
+        // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}{/" + settings.foreground + "-fg}",
+        label: "Compose",
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: settings.foreground
+            },
+            fg: settings.foreground,
+            bg: settings.background
+        },
+        scrollable: true,
+        scrollbar: {
+            ch: " "
+        },
+    });
+    
+    compose_box = blessed.textbox({
+        parent: compose_window,
+        readOnFocus: true,
+        mouse: true,
+        keys: true,
+        style: {
+            bg: settings.background
+        },
+        height: 2,
+        width: "100%",
+        left: 1,
+        top: 0,
+        name: "compose_box"
+    });
+    
+    compose_box.on("focus", function() {
+        compose_box.readInput();
+    });
+    
+    compose_window.on("submit", function(data) {
+        var content = compose_box.getContent();
+        if (content != "") {
+            compose_window.reset();
+            screen.render();
+            input_box.focus();
+        }
+    });
+    
+    compose_box.key("enter", function() {
+        compose_window.submit();
+    });
+
+    // input_window.focus();
+    compose_window.focus();
 
     if (message_count <= 0) {
         no_messages = blessed.box({
             parent: people_window,
             left: "center",
             height: 3,
-            top: people_window.height / 2 - 4,
+            top: people_window.height / 2 - 2,
             width: "90%",
             content: "{center}No new messages{/center}",
             tags: true,
