@@ -6,61 +6,26 @@ const crypto = require("./crypto.js");
 const fs = require("fs");
 const path = require("path");
 
-var master_keys = {
-    "keys": {
+var globals = require("./globals");
 
-    }
-};
-
-var public_path;
-var private_path;
-
-var screen;
-var people_window;
-var chat_window;
-
-var no_messages;
-var no_chats;
-
-var input_window;
-var input_box;
-
-var compose_window;
-var compose_box;
-
-var settings = {
-    foreground: "#45ff30",
-    background: "black",
-    blue: "#429bf4",
-    white: "#e0e0e0",
-};
-
-var current_chat = "";
-var pending_send = { };
-
-var message_count = 0;
-var clicked_chat = false;
-var people = [ ];
-
-var conversations = { };
-var chat_messages = [ ];
-
+globals.test();
+console.log(master_keys);
 
 current_chat = "Matt Nappo";
 // ----- SETUP -----
 function init() {
-    screen = blessed.screen({
-        smartCSR: true,
-        debug: true,
-        title: "Message Term",
-        style: {
-            bg: settings.background
-        }
-    });
+    // screen = blessed.screen({
+    //     smartCSR: true,
+    //     debug: true,
+    //     title: "Message Term",
+    //     style: {
+    //         bg: settings.background
+    //     }
+    // });
     
-    screen.key(["C-x"], function(ch, key) { 
-        return process.exit(0);
-    });
+    // screen.key(["C-x"], function(ch, key) {
+    //     return process.exit(0);
+    // });
 }
     
 process.on("unhandledRejection", error => {
