@@ -33,6 +33,7 @@ var settings = {
 };
 
 var current_chat = "";
+var pending_send = { };
 
 var message_count = 0;
 var clicked_chat = false;
@@ -233,7 +234,6 @@ function init_scr() {
             var message = input_box.getContent();
             if (message != "") {
                 input_window.reset();
-                
                 if (!(current_chat in master_keys["keys"][current_chat])) {
                     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
                         if (err) console.log(err);
@@ -241,6 +241,10 @@ function init_scr() {
                         var r = {
                             "public_key": escaped,
                             "body": "--REQUEST PUBLIC KEY--"
+                        };
+                        pending_send = {
+                            to: current_chat,
+                            message: message
                         };
                         send_message(current_chat, JSON.stringify(r));
                     });
@@ -255,31 +259,27 @@ function init_scr() {
                     send_message(current_chat, JSON.stringify(r));
                     
                 }
-
-                
-
-                    /*
-                        really, im going to be encrypting with the other person's public key
-                        that they sent in an earlier message.
-                        Maybe I should have some sort of JSON object that stores all of the people in the
-                        people list's names and public keys. This would break if they change key mid-way in a conversation,
-                        or would it?
-
-                        This also gets into the issue of the compose button, because I need their public key in order
-                        to send an encrypted message to them. hmmmmmm.
-                        
-                        Maybe when I hit compose in the client, I send just my key and I find out a way to
-                        get the other person's key. Will this eliminate the need for sending the key in each message?
-                        idk?
-
-                        These are just some ideas that ill think about later.
-                    */
-                    
-                
                 input_box.focus();
             }
         }
     });
+
+    /*
+        really, im going to be encrypting with the other person's public key
+        that they sent in an earlier message.
+        Maybe I should have some sort of JSON object that stores all of the people in the
+        people list's names and public keys. This would break if they change key mid-way in a conversation,
+        or would it?
+
+        This also gets into the issue of the compose button, because I need their public key in order
+        to send an encrypted message to them. hmmmmmm.
+        
+        Maybe when I hit compose in the client, I send just my key and I find out a way to
+        get the other person's key. Will this eliminate the need for sending the key in each message?
+        idk?
+
+        These are just some ideas that ill think about later.
+    */
 
     input_box.key("enter", function() {
         input_window.submit();
@@ -495,6 +495,8 @@ imessage.listen().on("message", (msg) => {
                 var body = decoded_r["body"];
                 var their_public = decoded_r["public_key"];
                 if (body == "--REQUEST PUBLIC KEY--") {
+                    console.log('yeet');
+                    // console.log("yes");
                     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
                         if (err) console.log(err);
                         var escaped = public_key.replace(/\n/g, String.raw`\n`);
@@ -505,13 +507,18 @@ imessage.listen().on("message", (msg) => {
                         send_message(current_chat, JSON.stringify(r));
                     });
                 } else if (body == "--INCOMING PUBLIC KEY--") {
+                    
                     name_object.then(function(name) {
                         var new_key = {
                             name: name,
                             "key": their_public
                         };
                         master_keys["keys"][name] = their_public;
-                        console.log(master_keys);
+                        pending_send = {
+                            to: "",
+                            r: message
+                        };
+
                     });
                 } else {
                     var decrypted = crypto.decrypt_k(body, private_key);
@@ -525,19 +532,46 @@ imessage.listen().on("message", (msg) => {
     // }
 });
 
-function send_test(message) {
+// function send_test(message) {
+//     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
+//         if (err) console.log(err);
+//         var escaped = public_key.replace(/\n/g, String.raw`\n`);
+//         var r = {
+//             "public_key": escaped,
+//             "body": "--REQUEST PUBLIC KEY--"
+//         };
+//         send_message("Matt Nappo", JSON.stringify(r));
+//     });
+// }
+
+// send_test("hi");
+
+
+var message = "hi";
+current_chat = "Matt Nappo";
+console.log("okay");
+if (!(current_chat in master_keys["keys"])) {
     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
         if (err) console.log(err);
         var escaped = public_key.replace(/\n/g, String.raw`\n`);
         var r = {
             "public_key": escaped,
-            "body": crypto.encrypt_k(message, public_key)
+            "body": "--REQUEST PUBLIC KEY--"
         };
-        send_message("Matt Nappo", JSON.stringify(r));
+        send_message(current_chat, JSON.stringify(r));
     });
+} else {
+    forge_message(current_chat, message, true);
+    var public_key = master_keys["keys"][current_chat];
+    var escaped = public_key.replace(/\n/g, String.raw`\n`);
+    var r = {
+        "public_key": escaped,
+        "body": crypto.encrypt_k(message, public_key)
+    };
+    send_message(current_chat, JSON.stringify(r));
+    
 }
 
-// send_test("hi");
-
+input_window.focus();
 main();
 screen.render();
