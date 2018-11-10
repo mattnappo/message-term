@@ -46,7 +46,7 @@ var conversations = { };
 var chat_messages = [ ];
 
 
-current_chat = "Matt Nappo";
+// current_chat = "Matt Nappo";
 // ----- SETUP -----
 function init() {
     screen = blessed.screen({
@@ -183,14 +183,90 @@ function init_scr() {
         }
     });
 
+    compose_window = blessed.form({
+        parent: screen,
+        mouse: true,
+        keys: true,
+        vi: true,
+        top: screen.height - 4,
+        left: 0,
+        width: "50%",
+        style: {
+            bg: "green",
+            scrollbar: {
+                inverse: true
+            }
+        },
+        // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}{/" + settings.foreground + "-fg}",
+        label: "Compose",
+        border: {
+            type: "line"
+        },
+        style: {
+            border: {
+                fg: settings.foreground
+            },
+            fg: settings.foreground,
+            bg: settings.background
+        },
+        scrollable: true,
+        scrollbar: {
+            ch: " "
+        },
+    });
+    
+    compose_box = blessed.textbox({
+        parent: compose_window,
+        readOnFocus: true,
+        mouse: true,
+        keys: true,
+        style: {
+            bg: settings.background
+        },
+        height: 2,
+        width: compose_window.width,
+        left: 1,
+        top: 0,
+        name: "compose_box"
+    });
+    
+    compose_box.on("focus", function() {
+        compose_box.readInput();
+    });
+    
+    compose_window.on("submit", function(data) {
+        var content = compose_box.getContent();
+        if (content != "") {
+            compose_window.reset();
+            screen.render();
+            current_chat = content;
+            // console.log(imessage.handleForName(content).name);
+            imessage.handleForName(content).then(handle => {
+                if (handle != "") {
+                    if (!conversations.hasOwnProperty(content)) {
+                        people.push(content);
+                        new_person(content);
+                        conversations[content] = [];
+                    }
+
+                }
+            });
+            // input_box.focus();
+        }
+    });
+    
+    compose_box.key("enter", function() {
+        compose_window.submit();
+    });
+
     input_window = blessed.form({
         parent: screen,
         mouse: true,
         keys: true,
         vi: true,
         top: screen.height - 4,
-        left: screen.width / 2 + 1,
-        width: screen.width / 2 - 1,
+        left: "50%",
+        width: "50%",
         style: {
             bg: "green",
             scrollbar: {
@@ -290,69 +366,7 @@ function init_scr() {
         input_window.submit();
     });
 
-    compose_window = blessed.form({
-        parent: screen,
-        mouse: true,
-        keys: true,
-        vi: true,
-        top: screen.height - 4,
-        left: "0%",
-        width: screen.width / 2 - 1,
-        style: {
-            bg: "green",
-            scrollbar: {
-                inverse: true
-            }
-        },
-        // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}{/" + settings.foreground + "-fg}",
-        label: "Compose",
-        border: {
-            type: "line"
-        },
-        style: {
-            border: {
-                fg: settings.foreground
-            },
-            fg: settings.foreground,
-            bg: settings.background
-        },
-        scrollable: true,
-        scrollbar: {
-            ch: " "
-        },
-    });
     
-    compose_box = blessed.textbox({
-        parent: compose_window,
-        readOnFocus: true,
-        mouse: true,
-        keys: true,
-        style: {
-            bg: settings.background
-        },
-        height: 2,
-        width: "100%",
-        left: 1,
-        top: 0,
-        name: "compose_box"
-    });
-    
-    compose_box.on("focus", function() {
-        compose_box.readInput();
-    });
-    
-    compose_window.on("submit", function(data) {
-        var content = compose_box.getContent();
-        if (content != "") {
-            compose_window.reset();
-            screen.render();
-            input_box.focus();
-        }
-    });
-    
-    compose_box.key("enter", function() {
-        compose_window.submit();
-    });
 
     // input_window.focus();
     compose_window.focus();
@@ -526,6 +540,7 @@ try {
 
 
 function main() {
+
 }
     
 
