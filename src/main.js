@@ -6,28 +6,17 @@ const crypto = require("./crypto.js");
 const fs = require("fs");
 const path = require("path");
 
-var globals = require("./globals");
+var components = require("./screen.js");
+var globals = require("./globals.js");
+
+console.log(components.f);
 
 globals.test();
 console.log(master_keys);
 
 current_chat = "Matt Nappo";
 // ----- SETUP -----
-function init() {
-    // screen = blessed.screen({
-    //     smartCSR: true,
-    //     debug: true,
-    //     title: "Message Term",
-    //     style: {
-    //         bg: settings.background
-    //     }
-    // });
-    
-    // screen.key(["C-x"], function(ch, key) {
-    //     return process.exit(0);
-    // });
-}
-    
+
 process.on("unhandledRejection", error => {
     console.log("unhandledRejection", error.message);
 });
@@ -42,7 +31,7 @@ function hide_element(element) {
 
 function show_key_error() {
     var errorbox = blessed.box({
-        parent: screen,
+        parent: components.screen,
         top: "25%",
         left: "25%",
         width: "50%",
@@ -61,7 +50,7 @@ function show_key_error() {
     });
 
     var errorbox = blessed.box({
-        parent: screen,
+        parent: components.screen,
         top: "50%",
         left: "25%",
         width: "50%",
@@ -73,12 +62,12 @@ function show_key_error() {
             bg: settings.background
         }
     });
-    screen.render();
+    components.screen.render();
 }
 
 function init_scr() {
     var header = blessed.box({
-        parent: screen,
+        parent: components.screen,
         top: 0,
         height: 3,
         width: "100%",
@@ -97,10 +86,10 @@ function init_scr() {
     });
 
     people_window = blessed.list({
-        parent: screen,
+        parent: components.screen,
         top: 3,
         width: "50%",
-        height: screen.height - 7,
+        height: components.screen.height - 7,
         label: "{" + settings.foreground + "-fg}{bold}People{/bold}",
         tags: true,
         border: {
@@ -116,11 +105,11 @@ function init_scr() {
     });
 
     chat_window = blessed.box({
-        parent: screen,
+        parent: components.screen,
         top: 3,
         left: "50%",
         width: "50%",
-        height: screen.height - 7,
+        height: components.screen.height - 7,
         label: "{" + settings.foreground + "-fg}{bold}Conversations{/bold}",
         tags: true,
         border: {
@@ -149,13 +138,13 @@ function init_scr() {
     });
 
     input_window = blessed.form({
-        parent: screen,
+        parent: components.screen,
         mouse: true,
         keys: true,
         vi: true,
-        top: screen.height - 4,
-        left: screen.width / 2 + 1,
-        width: screen.width / 2 - 1,
+        top: components.screen.height - 4,
+        left: components.screen.width / 2 + 1,
+        width: components.screen.width / 2 - 1,
         style: {
             bg: "green",
             scrollbar: {
@@ -256,13 +245,13 @@ function init_scr() {
     });
 
     compose_window = blessed.form({
-        parent: screen,
+        parent: components.screen,
         mouse: true,
         keys: true,
         vi: true,
-        top: screen.height - 4,
+        top: components.screen.height - 4,
         left: "0%",
-        width: screen.width / 2 - 1,
+        width: components.screen.width / 2 - 1,
         style: {
             bg: "green",
             scrollbar: {
@@ -310,7 +299,7 @@ function init_scr() {
         var content = compose_box.getContent();
         if (content != "") {
             compose_window.reset();
-            screen.render();
+            components.screen.render();
             input_box.focus();
         }
     });
@@ -393,7 +382,7 @@ function add_message(message, previous_height) {
         }
     });
 
-    screen.render();
+    components.screen.render();
     return new_message;
 }
     
@@ -460,7 +449,7 @@ function new_person(person) {
         current_chat = person;
         update_messages();
     });
-    screen.render();
+    components.screen.render();
 }
 
 function count(obj) {
@@ -488,7 +477,6 @@ try {
 } catch (err) {
     show_key_error();
 }
-
 
 function main() {
 }
@@ -556,7 +544,7 @@ imessage.listen().on("message", (msg) => {
                     var decrypted = crypto.decrypt_k(body, private_key);
                     name_object.then(function(name) {
                         forge_message(name, decrypted);
-                        screen.render();
+                        components.screen.render();
                     });
                 }
             } catch (err) { }
@@ -616,4 +604,4 @@ imessage.listen().on("message", (msg) => {
 
 input_window.focus();
 main();
-screen.render();
+components.screen.render();

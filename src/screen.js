@@ -1,4 +1,6 @@
-var { common } = require("common.js");
+// var { common } = require("common.js");
+const blessed = require("blessed");
+var settings = require("./globals.js").settings;
 
 var screen = blessed.screen({
     smartCSR: true,
@@ -14,3 +16,4 @@ screen.key(["C-x"], function(ch, key) {
 });
 
 module.exports.screen = screen;
+module.exports.f = "f";
