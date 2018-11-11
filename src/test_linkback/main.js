@@ -1,3 +1,6 @@
 var components = require("./components")
-console.log(components.windows.ggg)
 components.windows.inner()
+
+
+// var inner_file = require("./components/windows")
+// inner_file.inner()
