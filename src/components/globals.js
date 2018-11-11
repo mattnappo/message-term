@@ -21,10 +21,6 @@ module.exports.people = [ ];
 module.exports.conversations = { };
 module.exports.chat_messages = [ ];
 
-module.exports.test = function() {
-    console.log("Imported successfully!");
-};
-
-module.exports = {
-    settings: {}
-}
+// module.exports.test = function() {
+//     console.log("Imported successfully!");
+// };

@@ -6,5 +6,5 @@
 // globals.test();
 
 
-var components = require("./components.js");
-components.test.testerrrr();
+var components = require("./components");
+components.globals.test()

@@ -3,5 +3,6 @@ function bar() {
 }
 
 module.exports = {
-    bar
+    bar: bar,
+    mybar: "mybar"
 }

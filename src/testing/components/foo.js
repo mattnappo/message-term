@@ -3,5 +3,6 @@ function foo() {
 }
 
 module.exports = {
-    foo
+    foo: foo,
+    myfoo: "myfoo"
 }

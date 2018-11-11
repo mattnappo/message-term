@@ -1,18 +1,21 @@
-var { settings, blessed } = require("../");
+var components = require("..")
 
-var screen = blessed.screen({
-    smartCSR: true,
-    debug: true,
-    title: "Message Term",
-    style: {
-        bg: settings.background
-    }
-});
+components.test();
+// var blessed = require("blessed");
 
-screen.key(["C-x"], function(ch, key) {
-    return process.exit(0);
-});
+// var screen = blessed.screen({
+//     smartCSR: true,
+//     debug: true,
+//     title: "Message Term",
+//     style: {
+//         bg: settings.background
+//     }
+// });
 
-module.exports = {
-    screen
-};
+// screen.key(["C-x"], function(ch, key) {
+//     return process.exit(0);
+// });
+
+// module.exports = {
+//     screen
+// };
