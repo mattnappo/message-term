@@ -1,4 +1,4 @@
-var components = require("./../../globals")
+var globals = require("./../../globals")
 module.exports.inner = function() {
-    console.log(components.foo)
+    console.log(globals.foo)
 }
