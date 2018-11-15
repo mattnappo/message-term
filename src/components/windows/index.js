@@ -1,3 +1,3 @@
 module.exports = {
-    screen: require("./screen.js")
+    screen: require("./screen")
 }

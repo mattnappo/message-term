@@ -1,6 +1,6 @@
 var { settings, blessed }  = require("../globals");
 
-var screen = blessed.screen({
+module.exports.screen = blessed.screen({
     smartCSR: true,
     debug: true,
     title: "Message Term",
@@ -9,8 +9,10 @@ var screen = blessed.screen({
     }
 });
 
-screen.key(["C-x"], function(ch, key) {
+module.exports.screen.key(["C-x"], function(ch, key) {
     return process.exit(0);
 });
 
-module.exports.screen = screen;
+module.exports.inner = function() {
+    console.log("Linked inner!");
+};
