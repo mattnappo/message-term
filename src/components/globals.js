@@ -1,3 +1,5 @@
+module.exports.blessed = require("blessed");
+
 module.exports.master_keys = {
     "keys": {
 

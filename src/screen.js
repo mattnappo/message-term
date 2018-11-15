@@ -16,4 +16,3 @@ screen.key(["C-x"], function(ch, key) {
 });
 
 module.exports.screen = screen;
-module.exports.f = "f";

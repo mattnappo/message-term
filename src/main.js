@@ -6,7 +6,7 @@ const crypto = require("./crypto.js");
 const fs = require("fs");
 const path = require("path");
 
-var components = require("./screen.js");
+var components = require("./components/");
 var globals = require("./globals.js");
 
 console.log(components.f);

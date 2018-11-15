@@ -1,21 +1,16 @@
-var components = require("..")
+var { settings, blessed }  = require("../globals");
 
-components.test();
-// var blessed = require("blessed");
+var screen = blessed.screen({
+    smartCSR: true,
+    debug: true,
+    title: "Message Term",
+    style: {
+        bg: settings.background
+    }
+});
 
-// var screen = blessed.screen({
-//     smartCSR: true,
-//     debug: true,
-//     title: "Message Term",
-//     style: {
-//         bg: settings.background
-//     }
-// });
+screen.key(["C-x"], function(ch, key) {
+    return process.exit(0);
+});
 
-// screen.key(["C-x"], function(ch, key) {
-//     return process.exit(0);
-// });
-
-// module.exports = {
-//     screen
-// };
+module.exports.screen = screen;
