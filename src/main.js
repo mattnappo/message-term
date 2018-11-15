@@ -6,8 +6,45 @@ const crypto = require("./crypto");
 const fs = require("fs");
 const path = require("path");
 
+
+var master_keys = {
+    "keys": {
+
+    }
+};
+
+var settings = {
+    foreground: "#45ff30",
+    background: "black",
+    blue: "#429bf4",
+    white: "#e0e0e0",
+};
+
+var current_chat = "";
+var pending_send = { };
+
+var message_count = 0;
+var clicked_chat = false;
+var people = [ ];
+
+var conversations = { };
+var chat_messages = [ ];
+
+var test = function() {
+    console.log("Imported successfully!");
+};
+
+
+module.exports.test = function() {
+    console.log("Imported successfully!");
+};
+
+
+
 var components = require("./components/").windows;
-var settings = require("./components/globals").settings;
+// var settings = require("./components/globals").settings;
+// var globals = require("./components/globals");
+
 console.log(components.screen.screen.inner())
 components.screen.inner()
 var screen = blessed.screen({
