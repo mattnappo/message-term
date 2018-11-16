@@ -135,24 +135,24 @@ function init_scr() {
     //     },
     // })
     
-    compose_box = blessed.textbox({
-        parent: windows.compose_window,
-        readOnFocus: true,
-        mouse: true,
-        keys: true,
-        style: {
-            bg: settings.background
-        },
-        height: 2,
-        width: windows.compose_window.width,
-        left: 1,
-        top: 0,
-        name: "compose_box"
-    })
+    // compose_box = blessed.textbox({
+    //     parent: windows.compose_window,
+    //     readOnFocus: true,
+    //     mouse: true,
+    //     keys: true,
+    //     style: {
+    //         bg: settings.background
+    //     },
+    //     height: 2,
+    //     width: windows.compose_window.width,
+    //     left: 1,
+    //     top: 0,
+    //     name: "compose_box"
+    // })
     
-    compose_box.on("focus", function() {
-        compose_box.readInput()
-    })
+    // compose_box.on("focus", function() {
+    //     compose_box.readInput()
+    // })
     
     windows.compose_window.on("submit", function(data) {
         var content = compose_box.getContent()
