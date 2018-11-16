@@ -8,7 +8,7 @@ const path = require("path")
 
 // var globals = require("./components/")
 var windows = require("./components").windows
-console.log(require("./components/windows/windows.people_window").thing)
+// console.log(require("./components/windows/windows.people_window").thing)
  
 var master_keys = {
     "keys": {
@@ -28,7 +28,7 @@ var no_chats
 var input_window
 var input_box
 
-var compose_window
+// var windows.compose_window
 var compose_box
 
 var settings = {
@@ -103,40 +103,40 @@ function init_scr() {
     
 
     
-    compose_window = blessed.form({
-        parent: windows.screen,
-        mouse: true,
-        keys: true,
-        vi: true,
-        top: windows.screen.height - 4,
-        left: 0,
-        width: "50%",
-        style: {
-            bg: "green",
-            scrollbar: {
-                inverse: true
-            }
-        },
-        // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}{/" + settings.foreground + "-fg}",
-        label: "Compose",
-        border: {
-            type: "line"
-        },
-        style: {
-            border: {
-                fg: settings.foreground
-            },
-            fg: settings.foreground,
-            bg: settings.background
-        },
-        scrollable: true,
-        scrollbar: {
-            ch: " "
-        },
-    })
+    // windows.compose_window = blessed.form({
+    //     parent: windows.screen,
+    //     mouse: true,
+    //     keys: true,
+    //     vi: true,
+    //     top: windows.screen.height - 4,
+    //     left: 0,
+    //     width: "50%",
+    //     style: {
+    //         bg: "green",
+    //         scrollbar: {
+    //             inverse: true
+    //         }
+    //     },
+    //     // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}{/" + settings.foreground + "-fg}",
+    //     label: "Compose",
+    //     border: {
+    //         type: "line"
+    //     },
+    //     style: {
+    //         border: {
+    //             fg: settings.foreground
+    //         },
+    //         fg: settings.foreground,
+    //         bg: settings.background
+    //     },
+    //     scrollable: true,
+    //     scrollbar: {
+    //         ch: " "
+    //     },
+    // })
     
     compose_box = blessed.textbox({
-        parent: compose_window,
+        parent: windows.compose_window,
         readOnFocus: true,
         mouse: true,
         keys: true,
@@ -144,7 +144,7 @@ function init_scr() {
             bg: settings.background
         },
         height: 2,
-        width: compose_window.width,
+        width: windows.compose_window.width,
         left: 1,
         top: 0,
         name: "compose_box"
@@ -154,10 +154,10 @@ function init_scr() {
         compose_box.readInput()
     })
     
-    compose_window.on("submit", function(data) {
+    windows.compose_window.on("submit", function(data) {
         var content = compose_box.getContent()
         if (content != "") {
-            compose_window.reset()
+            windows.compose_window.reset()
             current_chat = content
             // console.log(imessage.handleForName(content).name)
             imessage.handleForName(content).then(handle => {
@@ -180,7 +180,7 @@ function init_scr() {
     })
     
     compose_box.key("enter", function() {
-        compose_window.submit()
+        windows.compose_window.submit()
     })
 
     input_window = blessed.form({
@@ -293,7 +293,7 @@ function init_scr() {
     
 
     // input_window.focus()
-    compose_window.focus()
+    windows.compose_window.focus()
 
     if (message_count <= 0) {
         no_messages = blessed.box({
