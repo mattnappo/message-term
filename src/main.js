@@ -6,10 +6,8 @@ const crypto = require("./crypto")
 const fs = require("fs")
 const path = require("path")
 
-// var globals = require("./components/")
 var windows = require("./components").windows
-// console.log(require("./components/windows/windows.people_window").thing)
- 
+
 var master_keys = {
     "keys": {
 
@@ -19,17 +17,8 @@ var master_keys = {
 var public_path
 var private_path
 
-// var windows.people_window
-// var windows.chat_window
-
 var no_messages
 var no_chats
-
-// var windows.input_window
-// var windows.input_box
-
-// var windows.compose_window
-// var windows.compose_box
 
 var settings = {
     foreground: "#45ff30",
@@ -100,198 +89,67 @@ function show_key_error() {
     windows.screen.render()
 }
 
-function init_scr() {
-    
 
-    
-    // windows.compose_window = blessed.form({
-    //     parent: windows.screen,
-    //     mouse: true,
-    //     keys: true,
-    //     vi: true,
-    //     top: windows.screen.height - 4,
-    //     left: 0,
-    //     width: "50%",
-    //     style: {
-    //         bg: "green",
-    //         scrollbar: {
-    //             inverse: true
-    //         }
-    //     },
-    //     // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}{/" + settings.foreground + "-fg}",
-    //     label: "Compose",
-    //     border: {
-    //         type: "line"
-    //     },
-    //     style: {
-    //         border: {
-    //             fg: settings.foreground
-    //         },
-    //         fg: settings.foreground,
-    //         bg: settings.background
-    //     },
-    //     scrollable: true,
-    //     scrollbar: {
-    //         ch: " "
-    //     },
-    // })
-    
-    // windows.compose_box = blessed.textbox({
-    //     parent: windows.compose_window,
-    //     readOnFocus: true,
-    //     mouse: true,
-    //     keys: true,
-    //     style: {
-    //         bg: settings.background
-    //     },
-    //     height: 2,
-    //     width: windows.compose_window.width,
-    //     left: 1,
-    //     top: 0,
-    //     name: "windows.compose_box"
-    // })
-    
-    // windows.compose_box.on("focus", function() {
-    //     windows.compose_box.readInput()
-    // })
-    
-    windows.compose_window.on("submit", function(data) {
-        var content = windows.compose_box.getContent()
-        if (content != "") {
-            windows.compose_window.reset()
-            current_chat = content
-            // console.log(imessage.handleForName(content).name)
-            imessage.handleForName(content).then(handle => {
-                if (handle != "") {
-                    if (!conversations.hasOwnProperty(content)) {
-                        people.push(content)
-                        new_person(content)
-                        hide_element(no_messages)
-                        hide_element(no_chats)
-                        windows.chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + content + "{/bold}")
-                        conversations[content] = []
-                        windows.screen.render()
-                    }
-
+windows.compose_window.on("submit", function(data) {
+    var content = windows.compose_box.getContent()
+    if (content != "") {
+        windows.compose_window.reset()
+        current_chat = content
+        imessage.handleForName(content).then(handle => {
+            if (handle != "") {
+                if (!conversations.hasOwnProperty(content)) {
+                    people.push(content)
+                    new_person(content)
+                    hide_element(no_messages)
+                    hide_element(no_chats)
+                    windows.chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + content + "{/bold}")
+                    conversations[content] = []
+                    windows.screen.render()
                 }
-            })
-            windows.screen.render()
-            // windows.input_box.focus()
-        }
-    })
-    
-    // windows.compose_box.key("enter", function() {
-    //     windows.compose_window.submit()
-    // })
 
-    // windows.input_window = blessed.form({
-    //     parent: windows.screen,
-    //     mouse: true,
-    //     keys: true,
-    //     vi: true,
-    //     top: windows.screen.height - 4,
-    //     left: "50%",
-    //     width: "50%",
-    //     style: {
-    //         bg: "green",
-    //         scrollbar: {
-    //             inverse: true
-    //         }
-    //     },
-    //     // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}{/" + settings.foreground + "-fg}",
-    //     label: "Message",
-    //     border: {
-    //         type: "line"
-    //     },
-    //     style: {
-    //         border: {
-    //             fg: settings.foreground
-    //         },
-    //         fg: settings.foreground,
-    //         bg: settings.background
-    //     },
-    //     scrollable: true,
-    //     scrollbar: {
-    //         ch: " "
-    //     },
-    // })
-  
-    // windows.input_box = blessed.textbox({
-    //     parent: windows.input_window,
-    //     readOnFocus: true,
-    //     mouse: true,
-    //     keys: true,
-    //     style: {
-    //         bg: settings.background
-    //     },
-    //     height: 2,
-    //     width: "100%",
-    //     left: 1,
-    //     top: 0,
-    //     name: "windows.input_box"
-    // })
+            }
+        })
+        windows.screen.render()
+    }
+})
 
-    // windows.input_box.on("focus", function() {
-    //     windows.input_box.readInput()
-    // })
-
-    windows.input_window.on("submit", function(data) {
-        if (current_chat != "") {
-            var message = windows.input_box.getContent()
-            if (message != "") {
-                windows.input_window.reset()
-                if (!(current_chat in master_keys["keys"])) {
-                    fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-                        if (err) console.log(err)
-                        var escaped = public_key.replace(/\n/g, String.raw`\n`)
-                        var r = {
-                            "public_key": escaped,
-                            "body": "--REQUEST PUBLIC KEY--"
-                        }
-                        pending_send = {
-                            to: current_chat,
-                            message: message
-                        }
-                        send_message(current_chat, JSON.stringify(r))
-                    })
-                } else {
-                    forge_message(current_chat, message, true)
-                    var public_key = master_keys["keys"][current_chat]
+windows.input_window.on("submit", function(data) {
+    if (current_chat != "") {
+        var message = windows.input_box.getContent()
+        if (message != "") {
+            windows.input_window.reset()
+            if (!(current_chat in master_keys["keys"])) {
+                fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
+                    if (err) console.log(err)
                     var escaped = public_key.replace(/\n/g, String.raw`\n`)
                     var r = {
                         "public_key": escaped,
-                        "body": crypto.encrypt_k(message, public_key)
+                        "body": "--REQUEST PUBLIC KEY--"
+                    }
+                    pending_send = {
+                        to: current_chat,
+                        message: message
                     }
                     send_message(current_chat, JSON.stringify(r))
-                    
+                })
+            } else {
+                forge_message(current_chat, message, true)
+                var public_key = master_keys["keys"][current_chat]
+                var escaped = public_key.replace(/\n/g, String.raw`\n`)
+                var r = {
+                    "public_key": escaped,
+                    "body": crypto.encrypt_k(message, public_key)
                 }
-                windows.input_box.focus()
+                send_message(current_chat, JSON.stringify(r))
+                
             }
+            windows.input_box.focus()
         }
-    })
+    }
+})
 
-    /*
-        really, im going to be encrypting with the other person's public key
-        that they sent in an earlier message.
-        Maybe I should have some sort of JSON object that stores all of the people in the
-        people list's names and public keys. This would break if they change key mid-way in a conversation,
-        or would it?
 
-        This also gets into the issue of the compose button, because I need their public key in order
-        to send an encrypted message to them. hmmmmmm.
-        
-        Maybe when I hit compose in the client, I send just my key and I find out a way to
-        get the other person's key. Will this eliminate the need for sending the key in each message?
-        idk?
-
-        These are just some ideas that ill think about later.
-    */
-
-    
-
-    
-
-    // windows.input_window.focus()
+function init_scr() {
     windows.compose_window.focus()
 
     if (message_count <= 0) {
@@ -525,56 +383,6 @@ imessage.listen().on("message", (msg) => {
         })
     // }
 })
-
-// function send_test(message) {
-//     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-//         if (err) console.log(err)
-//         var escaped = public_key.replace(/\n/g, String.raw`\n`)
-//         var r = {
-//             "public_key": escaped,
-//             "body": "--REQUEST PUBLIC KEY--"
-//         }
-//         send_message("Matt Nappo", JSON.stringify(r))
-//     })
-// }
-
-// send_test("hi")
-
-
-// var message = "hi"
-// current_chat = "Matt Nappo"
-// if (!(current_chat in master_keys["keys"])) {
-//     console.log("REEEEEEEEEEEEEEE")
-//     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-//         if (err) console.log(err)
-//         var escaped = public_key.replace(/\n/g, String.raw`\n`)
-//         var r = {
-//             "public_key": escaped,
-//             "body": "--REQUEST PUBLIC KEY--"
-//         }
-//         send_message(current_chat, JSON.stringify(r))
-//     })
-// }
-
-// if (current_chat in master_keys["keys"]) {
-//     console.log("HERE AFTER")
-//     forge_message(current_chat, message, true)
-//     var public_key = master_keys["keys"][current_chat]
-//     var escaped = public_key.replace(/\n/g, String.raw`\n`)
-//     var r = {
-//         "public_key": escaped,
-//         "body": crypto.encrypt_k(message, public_key)
-//     }
-//     send_message(current_chat, JSON.stringify(r))
-    
-// }
-
-
-// if (current_chat in master_keys["keys"]) {
-//     console.log("REEEEEEEEEEEEEEE")
-
-// }
-// console.log(master_keys)
 
 windows.input_window.focus()
 
