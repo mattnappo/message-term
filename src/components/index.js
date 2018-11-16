@@ -1,3 +1,4 @@
 module.exports = {
-    windows: require("./windows/")
+    windows: require("./windows/"),
+    globals: require("./globals")
 }

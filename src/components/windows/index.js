@@ -1,4 +1,3 @@
 module.exports = {
-    screen: require("./screen").screen,
-    test: require("./screen").test
+    screen: require("./screen").screen
 }

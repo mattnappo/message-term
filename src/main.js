@@ -6,9 +6,9 @@ const crypto = require("./crypto")
 const fs = require("fs")
 const path = require("path")
 
-var components = require("./components/")
+// var globals = require("./components/")
 var windows = require("./components").windows
-
+ 
 var master_keys = {
     "keys": {
 
@@ -17,7 +17,6 @@ var master_keys = {
 
 var public_path
 var private_path
-
 
 var people_window
 var chat_window
@@ -48,15 +47,12 @@ var people = [ ]
 var conversations = { }
 var chat_messages = [ ]
 
-// current_chat = "Matt Nappo"
 // ----- SETUP -----
-function init() {
-    // windows.screen = windows.screen
-}
     
 process.on("unhandledRejection", error => {
     console.log("unhandledRejection", error.message)
 })
+
 // process.on("uncaughtException", function (err) {
 //     console.error(err)
 // })

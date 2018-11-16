@@ -20,8 +20,6 @@ To generate a new key, run ```npm run keymanage```
 
 ## Features to be added
  * Bug fixes
- * A compose button
  * Better key exchange
  * Themes
  * Stronger keys (with passphrases)
- * Better error handling
