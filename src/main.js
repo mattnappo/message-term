@@ -1,67 +1,67 @@
 // ----- INIT CODE -----
-const imessage = require("osa-imessage");
-const blessed = require("blessed");
-const crypto = require("./crypto");
+const imessage = require("osa-imessage")
+const blessed = require("blessed")
+const crypto = require("./crypto")
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("fs")
+const path = require("path")
 
 var master_keys = {
     "keys": {
 
     }
-};
+}
 
-var public_path;
-var private_path;
+var public_path
+var private_path
 
-var screen;
-var people_window;
-var chat_window;
+var screen
+var people_window
+var chat_window
 
-var no_messages;
-var no_chats;
+var no_messages
+var no_chats
 
-var input_window;
-var input_box;
+var input_window
+var input_box
 
-var compose_window;
-var compose_box;
+var compose_window
+var compose_box
 
 var settings = {
     foreground: "#45ff30",
     background: "black",
     blue: "#429bf4",
     white: "#e0e0e0",
-};
+}
 
-var current_chat = "";
-var pending_send = { };
+var current_chat = ""
+var pending_send = { }
 
-var message_count = 0;
-var clicked_chat = false;
-var people = [ ];
+var message_count = 0
+var clicked_chat = false
+var people = [ ]
 
-var conversations = { };
-var chat_messages = [ ];
+var conversations = { }
+var chat_messages = [ ]
 
 
-// current_chat = "Matt Nappo";
+// current_chat = "Matt Nappo"
 // ----- SETUP -----
 function init() {
     screen = require("./components/windows/screen").screen
 }
     
 process.on("unhandledRejection", error => {
-    console.log("unhandledRejection", error.message);
-});
+    console.log("unhandledRejection", error.message)
+})
 // process.on("uncaughtException", function (err) {
-//     console.error(err);
-// });
+//     console.error(err)
+// })
 
 function hide_element(element) {
-    element.content = "";
-    element.border.type = "none";
+    element.content = ""
+    element.border.type = "none"
 }
 
 function show_key_error() {
@@ -82,7 +82,7 @@ function show_key_error() {
             fg: settings.foreground,
             bg: settings.background
         }
-    });
+    })
 
     var errorbox = blessed.box({
         parent: screen,
@@ -96,8 +96,8 @@ function show_key_error() {
             fg: settings.foreground,
             bg: settings.background
         }
-    });
-    screen.render();
+    })
+    screen.render()
 }
 
 function init_scr() {
@@ -118,7 +118,7 @@ function init_scr() {
             fg: settings.foreground,
             bg: settings.background
         }
-    });
+    })
 
     people_window = blessed.list({
         parent: screen,
@@ -137,7 +137,7 @@ function init_scr() {
             fg: settings.foreground,
             bg: settings.background
         }
-    });
+    })
 
     chat_window = blessed.box({
         parent: screen,
@@ -170,7 +170,7 @@ function init_scr() {
             fg: settings.foreground,
             bg: settings.background
         }
-    });
+    })
 
     compose_window = blessed.form({
         parent: screen,
@@ -202,7 +202,7 @@ function init_scr() {
         scrollbar: {
             ch: " "
         },
-    });
+    })
     
     compose_box = blessed.textbox({
         parent: compose_window,
@@ -217,40 +217,40 @@ function init_scr() {
         left: 1,
         top: 0,
         name: "compose_box"
-    });
+    })
     
     compose_box.on("focus", function() {
-        compose_box.readInput();
-    });
+        compose_box.readInput()
+    })
     
     compose_window.on("submit", function(data) {
-        var content = compose_box.getContent();
+        var content = compose_box.getContent()
         if (content != "") {
-            compose_window.reset();
-            current_chat = content;
-            // console.log(imessage.handleForName(content).name);
+            compose_window.reset()
+            current_chat = content
+            // console.log(imessage.handleForName(content).name)
             imessage.handleForName(content).then(handle => {
                 if (handle != "") {
                     if (!conversations.hasOwnProperty(content)) {
-                        people.push(content);
-                        new_person(content);
-                        hide_element(no_messages);
-                        hide_element(no_chats);
-                        chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + content + "{/bold}");
-                        conversations[content] = [];
-                        screen.render();
+                        people.push(content)
+                        new_person(content)
+                        hide_element(no_messages)
+                        hide_element(no_chats)
+                        chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + content + "{/bold}")
+                        conversations[content] = []
+                        screen.render()
                     }
 
                 }
-            });
-            screen.render();
-            // input_box.focus();
+            })
+            screen.render()
+            // input_box.focus()
         }
-    });
+    })
     
     compose_box.key("enter", function() {
-        compose_window.submit();
-    });
+        compose_window.submit()
+    })
 
     input_window = blessed.form({
         parent: screen,
@@ -282,7 +282,7 @@ function init_scr() {
         scrollbar: {
             ch: " "
         },
-    });
+    })
   
     input_box = blessed.textbox({
         parent: input_window,
@@ -297,46 +297,46 @@ function init_scr() {
         left: 1,
         top: 0,
         name: "input_box"
-    });
+    })
 
     input_box.on("focus", function() {
-        input_box.readInput();
-    });
+        input_box.readInput()
+    })
 
     input_window.on("submit", function(data) {
         if (current_chat != "") {
-            var message = input_box.getContent();
+            var message = input_box.getContent()
             if (message != "") {
-                input_window.reset();
+                input_window.reset()
                 if (!(current_chat in master_keys["keys"])) {
                     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-                        if (err) console.log(err);
-                        var escaped = public_key.replace(/\n/g, String.raw`\n`);
+                        if (err) console.log(err)
+                        var escaped = public_key.replace(/\n/g, String.raw`\n`)
                         var r = {
                             "public_key": escaped,
                             "body": "--REQUEST PUBLIC KEY--"
-                        };
+                        }
                         pending_send = {
                             to: current_chat,
                             message: message
-                        };
-                        send_message(current_chat, JSON.stringify(r));
-                    });
+                        }
+                        send_message(current_chat, JSON.stringify(r))
+                    })
                 } else {
-                    forge_message(current_chat, message, true);
-                    var public_key = master_keys["keys"][current_chat];
-                    var escaped = public_key.replace(/\n/g, String.raw`\n`);
+                    forge_message(current_chat, message, true)
+                    var public_key = master_keys["keys"][current_chat]
+                    var escaped = public_key.replace(/\n/g, String.raw`\n`)
                     var r = {
                         "public_key": escaped,
                         "body": crypto.encrypt_k(message, public_key)
-                    };
-                    send_message(current_chat, JSON.stringify(r));
+                    }
+                    send_message(current_chat, JSON.stringify(r))
                     
                 }
-                input_box.focus();
+                input_box.focus()
             }
         }
-    });
+    })
 
     /*
         really, im going to be encrypting with the other person's public key
@@ -356,13 +356,13 @@ function init_scr() {
     */
 
     input_box.key("enter", function() {
-        input_window.submit();
-    });
+        input_window.submit()
+    })
 
     
 
-    // input_window.focus();
-    compose_window.focus();
+    // input_window.focus()
+    compose_window.focus()
 
     if (message_count <= 0) {
         no_messages = blessed.box({
@@ -383,7 +383,7 @@ function init_scr() {
                 fg: settings.foreground,
                 bg: settings.background
             }
-        });
+        })
     }
 
     if (!clicked_chat) {  
@@ -405,7 +405,7 @@ function init_scr() {
                 fg: settings.foreground,
                 bg: settings.background
             }
-        });
+        })
     }
     
 }
@@ -413,8 +413,8 @@ function init_scr() {
 // ----- UI -----
 
 function add_message(message, previous_height) {
-    chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + message.sender + "{/bold}");
-    chat_window.render();
+    chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + message.sender + "{/bold}")
+    chat_window.render()
     var new_message = blessed.box({
         parent: chat_window,
         top: previous_height,
@@ -433,49 +433,49 @@ function add_message(message, previous_height) {
             fg: message.color,
             bg: settings.background
         }
-    });
+    })
 
-    screen.render();
-    return new_message;
+    screen.render()
+    return new_message
 }
     
 function encrypt_s(message, public_key) {
-    var encrypted = crypto.encrypt_k(message, public_key);
-    return encrypted;
+    var encrypted = crypto.encrypt_k(message, public_key)
+    return encrypted
 }
 
 function send_message(recipient, message) {
     imessage.handleForName(recipient).then(handle => {
-        imessage.send(handle, message);
-    });
+        imessage.send(handle, message)
+    })
 }
 
 function clear_chats() {
     for (var i = 0; i < chat_messages.length; i++) {
-        hide_element(chat_messages[i]);
+        hide_element(chat_messages[i])
     }
 }
 
 function update_messages() {
-    clear_chats();
-    var messages = conversations[current_chat];
-    var total_lines = 0;
+    clear_chats()
+    var messages = conversations[current_chat]
+    var total_lines = 0
     for (var i = 0; i < messages.length; i++) {
         if (i > 0) {
-            total_lines += messages[i - 1].lines + 2;
+            total_lines += messages[i - 1].lines + 2
         }
-        var msg = add_message(messages[i], total_lines);
-        chat_messages.push(msg);
+        var msg = add_message(messages[i], total_lines)
+        chat_messages.push(msg)
     }
 }
 
-var top = 0;
+var top = 0
 function new_person(person) {
     if (message_count == 1) {
-        top = 0;
-        hide_element(no_messages);
+        top = 0
+        hide_element(no_messages)
     } else {
-        top += 3;
+        top += 3
     }
     var person_box = blessed.box({
         parent: people_window,
@@ -495,40 +495,40 @@ function new_person(person) {
             fg: settings.foreground,
             bg: settings.background
         }
-    });
+    })
     
     person_box.on("click", function(data) {
-        if (!clicked_chat) hide_element(no_chats);
-        current_chat = person;
-        update_messages();
-    });
-    screen.render();
+        if (!clicked_chat) hide_element(no_chats)
+        current_chat = person
+        update_messages()
+    })
+    screen.render()
 }
 
 function count(obj) {
-    var count = 0;
+    var count = 0
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
-            ++count;
+            ++count
         }
     }
-    return count;
+    return count
 }
 
 // ----- MAIN CODE -----
 
-init();
+init()
 try {
-    var p = path.resolve(__dirname, "..", "keys", "keys.json");
-    var raw = fs.readFileSync(p, "utf8");
-    var contents = JSON.parse(raw);
-    var mainkey = contents["mainkey"];
+    var p = path.resolve(__dirname, "..", "keys", "keys.json")
+    var raw = fs.readFileSync(p, "utf8")
+    var contents = JSON.parse(raw)
+    var mainkey = contents["mainkey"]
         
-    public_path = path.resolve(__dirname, "..", "keys", mainkey, "public.pem");
-    private_path = path.resolve(__dirname, "..", "keys", mainkey, "private.pem");
-    init_scr();
+    public_path = path.resolve(__dirname, "..", "keys", mainkey, "public.pem")
+    private_path = path.resolve(__dirname, "..", "keys", mainkey, "private.pem")
+    init_scr()
 } catch (err) {
-    show_key_error();
+    show_key_error()
 }
 
 
@@ -538,125 +538,125 @@ function main() {
     
 
 function forge_message(name, message, to_recipient) {
-    message_count += 1;
+    message_count += 1
     if (!conversations.hasOwnProperty(name)) {
-        people.push(name);
-        new_person(name);
-        conversations[name] = [];
+        people.push(name)
+        new_person(name)
+        conversations[name] = []
     }
 
-    var conversation = conversations[name];
-    var len = conversation.length;
-    conversation[len] = {};
-    conversation[len].content = message;
-    conversation[len].sender = name;
-    conversation[len].lines = message.split(/\r\n|\r|\n/).length;
+    var conversation = conversations[name]
+    var len = conversation.length
+    conversation[len] = {}
+    conversation[len].content = message
+    conversation[len].sender = name
+    conversation[len].lines = message.split(/\r\n|\r|\n/).length
     
     if (to_recipient) {
-        conversation[len].color = settings.blue;
-        conversation[len].left = "53%";
+        conversation[len].color = settings.blue
+        conversation[len].left = "53%"
     } else {
-        conversation[len].color = settings.white;
+        conversation[len].color = settings.white
     }
     if (current_chat == name) {
-        update_messages();
+        update_messages()
     }
 }
 
 imessage.listen().on("message", (msg) => {
     // if (!msg.fromMe) {
         fs.readFile(private_path, {encoding: 'utf-8'}, function(err, private_key) {
-            if (err) console.log(err);
-            var name_object = imessage.nameForHandle(msg.handle);
+            if (err) console.log(err)
+            var name_object = imessage.nameForHandle(msg.handle)
             try {
-                var decoded_r = JSON.parse(msg.text);
-                var body = decoded_r["body"];
-                var their_public = decoded_r["public_key"];
+                var decoded_r = JSON.parse(msg.text)
+                var body = decoded_r["body"]
+                var their_public = decoded_r["public_key"]
                 if (body == "--REQUEST PUBLIC KEY--") {
                     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-                        if (err) console.log(err);
-                        var escaped = public_key.replace(/\n/g, String.raw`\n`);
+                        if (err) console.log(err)
+                        var escaped = public_key.replace(/\n/g, String.raw`\n`)
                         var r = {
                             "public_key": escaped,
                             "body": "--INCOMING PUBLIC KEY--"
-                        };
-                        send_message(current_chat, JSON.stringify(r));
-                    });
+                        }
+                        send_message(current_chat, JSON.stringify(r))
+                    })
                 } else if (body == "--INCOMING PUBLIC KEY--") {
                     name_object.then(function(name) {
-                        master_keys["keys"][name] = their_public;
+                        master_keys["keys"][name] = their_public
                         fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-                            if (err) console.log(err);
-                            var escaped = public_key.replace(/\n/g, String.raw`\n`);
+                            if (err) console.log(err)
+                            var escaped = public_key.replace(/\n/g, String.raw`\n`)
                             var r = {
                                 "public_key": escaped,
                                 "body": crypto.encrypt_k(pending_send[current_chat], their_public)
-                            };
-                            send_message(current_chat, JSON.stringify(r));
-                        });
-                    });
+                            }
+                            send_message(current_chat, JSON.stringify(r))
+                        })
+                    })
                 } else {
-                    var decrypted = crypto.decrypt_k(body, private_key);
+                    var decrypted = crypto.decrypt_k(body, private_key)
                     name_object.then(function(name) {
-                        forge_message(name, decrypted);
-                        screen.render();
-                    });
+                        forge_message(name, decrypted)
+                        screen.render()
+                    })
                 }
             } catch (err) { }
-        });
+        })
     // }
-});
+})
 
 // function send_test(message) {
 //     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-//         if (err) console.log(err);
-//         var escaped = public_key.replace(/\n/g, String.raw`\n`);
+//         if (err) console.log(err)
+//         var escaped = public_key.replace(/\n/g, String.raw`\n`)
 //         var r = {
 //             "public_key": escaped,
 //             "body": "--REQUEST PUBLIC KEY--"
-//         };
-//         send_message("Matt Nappo", JSON.stringify(r));
-//     });
+//         }
+//         send_message("Matt Nappo", JSON.stringify(r))
+//     })
 // }
 
-// send_test("hi");
+// send_test("hi")
 
 
-// var message = "hi";
-// current_chat = "Matt Nappo";
+// var message = "hi"
+// current_chat = "Matt Nappo"
 // if (!(current_chat in master_keys["keys"])) {
-//     console.log("REEEEEEEEEEEEEEE");
+//     console.log("REEEEEEEEEEEEEEE")
 //     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
-//         if (err) console.log(err);
-//         var escaped = public_key.replace(/\n/g, String.raw`\n`);
+//         if (err) console.log(err)
+//         var escaped = public_key.replace(/\n/g, String.raw`\n`)
 //         var r = {
 //             "public_key": escaped,
 //             "body": "--REQUEST PUBLIC KEY--"
-//         };
-//         send_message(current_chat, JSON.stringify(r));
-//     });
+//         }
+//         send_message(current_chat, JSON.stringify(r))
+//     })
 // }
 
 // if (current_chat in master_keys["keys"]) {
-//     console.log("HERE AFTER");
-//     forge_message(current_chat, message, true);
-//     var public_key = master_keys["keys"][current_chat];
-//     var escaped = public_key.replace(/\n/g, String.raw`\n`);
+//     console.log("HERE AFTER")
+//     forge_message(current_chat, message, true)
+//     var public_key = master_keys["keys"][current_chat]
+//     var escaped = public_key.replace(/\n/g, String.raw`\n`)
 //     var r = {
 //         "public_key": escaped,
 //         "body": crypto.encrypt_k(message, public_key)
-//     };
-//     send_message(current_chat, JSON.stringify(r));
+//     }
+//     send_message(current_chat, JSON.stringify(r))
     
 // }
 
 
 // if (current_chat in master_keys["keys"]) {
-//     console.log("REEEEEEEEEEEEEEE");
+//     console.log("REEEEEEEEEEEEEEE")
 
 // }
-// console.log(master_keys);
+// console.log(master_keys)
 
-input_window.focus();
-main();
-screen.render();
+input_window.focus()
+main()
+screen.render()

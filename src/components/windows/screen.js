@@ -8,10 +8,10 @@ var screen = blessed.screen({
     style: {
         bg: settings.background
     }
-});
+})
 
 screen.key(["C-x"], function(ch, key) { 
-    return process.exit(0);
-});
+    return process.exit(0)
+})
 
-module.exports.screen = screen;
+module.exports.screen = screen

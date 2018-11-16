@@ -28,7 +28,7 @@ compose_window = blessed.form({
     scrollbar: {
         ch: " "
     },
-});
+})
 
 compose_box = blessed.textbox({
     parent: compose_window,
@@ -43,16 +43,16 @@ compose_box = blessed.textbox({
     left: 1,
     top: 0,
     name: "compose_box"
-});
+})
 
 compose_box.on("focus", function() {
-    compose_box.readInput();
-});
+    compose_box.readInput()
+})
 
 compose_window.on("submit", function(data) {
     // DO SOMETHING
-});
+})
 
 compose_box.key("enter", function() {
-    compose_window.submit();
-});
+    compose_window.submit()
+})
