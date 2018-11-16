@@ -89,6 +89,7 @@ function show_key_error() {
     windows.screen.render()
 }
 
+// ----- HANDLERS -----
 
 windows.compose_window.on("submit", function(data) {
     var content = windows.compose_box.getContent()
@@ -148,6 +149,7 @@ windows.input_window.on("submit", function(data) {
     }
 })
 
+// ----- HANDLERS -----
 
 function init_scr() {
     windows.compose_window.focus()
