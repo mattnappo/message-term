@@ -496,7 +496,6 @@ function count(obj) {
 
 // ----- MAIN CODE -----
 
-init()
 try {
     var p = path.resolve(__dirname, "..", "keys", "keys.json")
     var raw = fs.readFileSync(p, "utf8")
@@ -509,12 +508,6 @@ try {
 } catch (err) {
     show_key_error()
 }
-
-
-function main() {
-
-}
-    
 
 function forge_message(name, message, to_recipient) {
     message_count += 1
@@ -637,5 +630,4 @@ imessage.listen().on("message", (msg) => {
 // console.log(master_keys)
 
 input_window.focus()
-main()
 windows.screen.render()
