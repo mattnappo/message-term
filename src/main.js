@@ -99,25 +99,6 @@ function show_key_error() {
 }
 
 function init_scr() {
-    var header = blessed.box({
-        parent: windows.screen,
-        top: 0,
-        height: 3,
-        width: "100%",
-        content: "{center}{bold}Message Term{/bold}{/center}",
-        tags: true,
-        border: {
-            type: "line"
-        },
-        style: {
-            border: {
-                fg: settings.foreground
-            },
-            fg: settings.foreground,
-            bg: settings.background
-        }
-    })
-
     people_window = blessed.list({
         parent: windows.screen,
         top: 3,
