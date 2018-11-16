@@ -20,7 +20,7 @@ var public_path
 var private_path
 
 // var windows.people_window
-var chat_window
+// var windows.chat_window
 
 var no_messages
 var no_chats
@@ -102,39 +102,7 @@ function show_key_error() {
 function init_scr() {
     
 
-    chat_window = blessed.box({
-        parent: windows.screen,
-        top: 3,
-        left: "50%",
-        width: "50%",
-        height: windows.screen.height - 7,
-        label: "{" + settings.foreground + "-fg}{bold}Conversations{/bold}",
-        tags: true,
-        border: {
-            type: "line"
-        },
-        mouse: true,
-        scrollable: true,
-        alwaysScroll: true,
-        scrollback: 100,
-        scrollbar: {
-            ch: " ",
-            track: {
-                bg: settings.background
-            },
-            style: {
-                inverse: true
-            }
-        },
-        style: {
-            border: {
-                fg: settings.foreground
-            },
-            fg: settings.foreground,
-            bg: settings.background
-        }
-    })
-
+    
     compose_window = blessed.form({
         parent: windows.screen,
         mouse: true,
@@ -199,7 +167,7 @@ function init_scr() {
                         new_person(content)
                         hide_element(no_messages)
                         hide_element(no_chats)
-                        chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + content + "{/bold}")
+                        windows.chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + content + "{/bold}")
                         conversations[content] = []
                         windows.screen.render()
                     }
@@ -352,7 +320,7 @@ function init_scr() {
 
     if (!clicked_chat) { 
         no_chats = blessed.box({
-            parent: chat_window,
+            parent: windows.chat_window,
             left: "center",
             top: "center",
             height: 3,
@@ -377,10 +345,10 @@ function init_scr() {
 // ----- UI -----
 
 function add_message(message, previous_height) {
-    chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + message.sender + "{/bold}")
-    chat_window.render()
+    windows.chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + message.sender + "{/bold}")
+    windows.chat_window.render()
     var new_message = blessed.box({
-        parent: chat_window,
+        parent: windows.chat_window,
         top: previous_height,
         left: message.left,
         height: message.lines + 2,
