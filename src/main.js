@@ -8,6 +8,7 @@ const path = require("path")
 
 // var globals = require("./components/")
 var windows = require("./components").windows
+console.log(require("./components/windows/windows.people_window").thing)
  
 var master_keys = {
     "keys": {
@@ -18,7 +19,7 @@ var master_keys = {
 var public_path
 var private_path
 
-var people_window
+// var windows.people_window
 var chat_window
 
 var no_messages
@@ -99,24 +100,7 @@ function show_key_error() {
 }
 
 function init_scr() {
-    people_window = blessed.list({
-        parent: windows.screen,
-        top: 3,
-        width: "50%",
-        height: windows.screen.height - 7,
-        label: "{" + settings.foreground + "-fg}{bold}People{/bold}",
-        tags: true,
-        border: {
-            type: "line"
-        },
-        style: {
-            border: {
-                fg: settings.foreground
-            },
-            fg: settings.foreground,
-            bg: settings.background
-        }
-    })
+    
 
     chat_window = blessed.box({
         parent: windows.screen,
@@ -345,10 +329,10 @@ function init_scr() {
 
     if (message_count <= 0) {
         no_messages = blessed.box({
-            parent: people_window,
+            parent: windows.people_window,
             left: "center",
             height: 3,
-            top: people_window.height / 2 - 2,
+            top: windows.people_window.height / 2 - 2,
             width: "90%",
             content: "{center}No new messages{/center}",
             tags: true,
@@ -363,9 +347,10 @@ function init_scr() {
                 bg: settings.background
             }
         })
+        
     }
 
-    if (!clicked_chat) {  
+    if (!clicked_chat) { 
         no_chats = blessed.box({
             parent: chat_window,
             left: "center",
@@ -457,7 +442,7 @@ function new_person(person) {
         top += 3
     }
     var person_box = blessed.box({
-        parent: people_window,
+        parent: windows.people_window,
         left: "center",
         top: top,
         height: 3,

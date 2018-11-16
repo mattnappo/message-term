@@ -2,12 +2,12 @@ const blessed = require("blessed")
 var screen = require("./screen").screen
 var settings = require("../globals").settings
 
-var header = blessed.box({
+var people_window = blessed.list({
     parent: screen,
-    top: 0,
-    height: 3,
-    width: "100%",
-    content: "{center}{bold}Message Term{/bold}{/center}",
+    top: 3,
+    width: "50%",
+    height: screen.height - 7,
+    label: "{" + settings.foreground + "-fg}{bold}People{/bold}",
     tags: true,
     border: {
         type: "line"
@@ -21,4 +21,5 @@ var header = blessed.box({
     }
 })
 
-module.exports.header = header
+module.exports.people_window = people_window
+module.exports.thing = "thing"
