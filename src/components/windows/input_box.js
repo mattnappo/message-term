@@ -21,4 +21,8 @@ input_box.on("focus", function() {
     input_box.readInput()
 })
 
+input_box.key("enter", function() {
+    input_window.submit()
+})
+
 module.exports.input_box = input_box

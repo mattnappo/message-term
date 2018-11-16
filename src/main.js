@@ -25,11 +25,11 @@ var private_path
 var no_messages
 var no_chats
 
-var input_window
-var input_box
+// var windows.input_window
+// var windows.input_box
 
 // var windows.compose_window
-var compose_box
+// var windows.compose_box
 
 var settings = {
     foreground: "#45ff30",
@@ -136,7 +136,7 @@ function init_scr() {
     //     },
     // })
     
-    // compose_box = blessed.textbox({
+    // windows.compose_box = blessed.textbox({
     //     parent: windows.compose_window,
     //     readOnFocus: true,
     //     mouse: true,
@@ -148,15 +148,15 @@ function init_scr() {
     //     width: windows.compose_window.width,
     //     left: 1,
     //     top: 0,
-    //     name: "compose_box"
+    //     name: "windows.compose_box"
     // })
     
-    // compose_box.on("focus", function() {
-    //     compose_box.readInput()
+    // windows.compose_box.on("focus", function() {
+    //     windows.compose_box.readInput()
     // })
     
     windows.compose_window.on("submit", function(data) {
-        var content = compose_box.getContent()
+        var content = windows.compose_box.getContent()
         if (content != "") {
             windows.compose_window.reset()
             current_chat = content
@@ -176,15 +176,15 @@ function init_scr() {
                 }
             })
             windows.screen.render()
-            // input_box.focus()
+            // windows.input_box.focus()
         }
     })
     
-    // compose_box.key("enter", function() {
+    // windows.compose_box.key("enter", function() {
     //     windows.compose_window.submit()
     // })
 
-    // input_window = blessed.form({
+    // windows.input_window = blessed.form({
     //     parent: windows.screen,
     //     mouse: true,
     //     keys: true,
@@ -216,8 +216,8 @@ function init_scr() {
     //     },
     // })
   
-    // input_box = blessed.textbox({
-    //     parent: input_window,
+    // windows.input_box = blessed.textbox({
+    //     parent: windows.input_window,
     //     readOnFocus: true,
     //     mouse: true,
     //     keys: true,
@@ -228,18 +228,18 @@ function init_scr() {
     //     width: "100%",
     //     left: 1,
     //     top: 0,
-    //     name: "input_box"
+    //     name: "windows.input_box"
     // })
 
-    // input_box.on("focus", function() {
-    //     input_box.readInput()
+    // windows.input_box.on("focus", function() {
+    //     windows.input_box.readInput()
     // })
 
-    input_window.on("submit", function(data) {
+    windows.input_window.on("submit", function(data) {
         if (current_chat != "") {
-            var message = input_box.getContent()
+            var message = windows.input_box.getContent()
             if (message != "") {
-                input_window.reset()
+                windows.input_window.reset()
                 if (!(current_chat in master_keys["keys"])) {
                     fs.readFile(public_path, {encoding: 'utf-8'}, function(err, public_key) {
                         if (err) console.log(err)
@@ -265,7 +265,7 @@ function init_scr() {
                     send_message(current_chat, JSON.stringify(r))
                     
                 }
-                input_box.focus()
+                windows.input_box.focus()
             }
         }
     })
@@ -287,13 +287,11 @@ function init_scr() {
         These are just some ideas that ill think about later.
     */
 
-    input_box.key("enter", function() {
-        input_window.submit()
-    })
+    
 
     
 
-    // input_window.focus()
+    // windows.input_window.focus()
     windows.compose_window.focus()
 
     if (message_count <= 0) {
@@ -370,11 +368,6 @@ function add_message(message, previous_height) {
 
     windows.screen.render()
     return new_message
-}
-    
-function encrypt_s(message, public_key) {
-    var encrypted = crypto.encrypt_k(message, public_key)
-    return encrypted
 }
 
 function send_message(recipient, message) {
@@ -583,6 +576,6 @@ imessage.listen().on("message", (msg) => {
 // }
 // console.log(master_keys)
 
-input_window.focus()
+windows.input_window.focus()
 
 windows.screen.render()

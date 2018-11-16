@@ -8,8 +8,7 @@ var compose_box = blessed.textbox({
     mouse: true,
     keys: true,
     style: {
-        // bg: settings.background
-        bg: "red"
+        bg: settings.background
     },
     height: 2,
     width: compose_window.width,
