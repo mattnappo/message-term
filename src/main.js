@@ -172,10 +172,10 @@ function init_scr() {
                 bg: settings.background
             }
         })
-        
+        windows.screen.render()
     }
 
-    if (!clicked_chat) { 
+    if (!clicked_chat) {
         no_chats = blessed.box({
             parent: windows.chat_window,
             left: "center",
