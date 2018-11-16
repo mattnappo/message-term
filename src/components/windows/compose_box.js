@@ -22,4 +22,8 @@ compose_box.on("focus", function() {
     compose_box.readInput()
 })
 
+compose_box.key("enter", function() {
+    compose_window.submit()
+})
+
 module.exports.compose_box = compose_box

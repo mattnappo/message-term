@@ -54,9 +54,9 @@ process.on("unhandledRejection", error => {
     console.log("unhandledRejection", error.message)
 })
 
-// process.on("uncaughtException", function (err) {
-//     console.error(err)
-// })
+process.on("uncaughtException", function (err) {
+    console.error(err)
+})
 
 function hide_element(element) {
     element.content = ""
@@ -96,6 +96,7 @@ function show_key_error() {
             bg: settings.background
         }
     })
+    
     windows.screen.render()
 }
 
@@ -179,41 +180,41 @@ function init_scr() {
         }
     })
     
-    compose_box.key("enter", function() {
-        windows.compose_window.submit()
-    })
+    // compose_box.key("enter", function() {
+    //     windows.compose_window.submit()
+    // })
 
-    input_window = blessed.form({
-        parent: windows.screen,
-        mouse: true,
-        keys: true,
-        vi: true,
-        top: windows.screen.height - 4,
-        left: "50%",
-        width: "50%",
-        style: {
-            bg: "green",
-            scrollbar: {
-                inverse: true
-            }
-        },
-        // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}{/" + settings.foreground + "-fg}",
-        label: "Message",
-        border: {
-            type: "line"
-        },
-        style: {
-            border: {
-                fg: settings.foreground
-            },
-            fg: settings.foreground,
-            bg: settings.background
-        },
-        scrollable: true,
-        scrollbar: {
-            ch: " "
-        },
-    })
+    // input_window = blessed.form({
+    //     parent: windows.screen,
+    //     mouse: true,
+    //     keys: true,
+    //     vi: true,
+    //     top: windows.screen.height - 4,
+    //     left: "50%",
+    //     width: "50%",
+    //     style: {
+    //         bg: "green",
+    //         scrollbar: {
+    //             inverse: true
+    //         }
+    //     },
+    //     // label: "{" + settings.foreground + "-fg}{bold}Message{/bold}{/" + settings.foreground + "-fg}",
+    //     label: "Message",
+    //     border: {
+    //         type: "line"
+    //     },
+    //     style: {
+    //         border: {
+    //             fg: settings.foreground
+    //         },
+    //         fg: settings.foreground,
+    //         bg: settings.background
+    //     },
+    //     scrollable: true,
+    //     scrollbar: {
+    //         ch: " "
+    //     },
+    // })
   
     input_box = blessed.textbox({
         parent: input_window,
@@ -583,4 +584,5 @@ imessage.listen().on("message", (msg) => {
 // console.log(master_keys)
 
 input_window.focus()
+
 windows.screen.render()
