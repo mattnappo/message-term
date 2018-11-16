@@ -1,7 +1,7 @@
 // ----- INIT CODE -----
 const imessage = require("osa-imessage");
 const blessed = require("blessed");
-const crypto = require("./crypto.js");
+const crypto = require("./crypto");
 
 const fs = require("fs");
 const path = require("path");
@@ -49,18 +49,7 @@ var chat_messages = [ ];
 // current_chat = "Matt Nappo";
 // ----- SETUP -----
 function init() {
-    screen = blessed.screen({
-        smartCSR: true,
-        debug: true,
-        title: "Message Term",
-        style: {
-            bg: settings.background
-        }
-    });
-    
-    screen.key(["C-x"], function(ch, key) { 
-        return process.exit(0);
-    });
+    screen = require("./components/windows/screen").screen
 }
     
 process.on("unhandledRejection", error => {
