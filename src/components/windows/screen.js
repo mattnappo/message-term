@@ -1,12 +1,12 @@
 const blessed = require("blessed")
-var settings = require("./../globals")
+var globals = require("../globals")
 
 var screen = blessed.screen({
     smartCSR: true,
     debug: true,
     title: "Message Term",
     style: {
-        bg: settings.background
+        bg: globals.settings.background
     }
 })
 
@@ -15,3 +15,6 @@ screen.key(["C-x"], function(ch, key) {
 })
 
 module.exports.screen = screen
+module.exports.test = function() {
+    console.log("💛 💙 💜 ❤️ 💚 💛 💙 💜 ❤️ 💚")
+}

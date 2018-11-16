@@ -6,6 +6,9 @@ const crypto = require("./crypto")
 const fs = require("fs")
 const path = require("path")
 
+var components = require("./components/")
+var windows = require("./components").windows
+
 var master_keys = {
     "keys": {
 
@@ -15,7 +18,7 @@ var master_keys = {
 var public_path
 var private_path
 
-var screen
+
 var people_window
 var chat_window
 
@@ -45,11 +48,10 @@ var people = [ ]
 var conversations = { }
 var chat_messages = [ ]
 
-
 // current_chat = "Matt Nappo"
 // ----- SETUP -----
 function init() {
-    screen = require("./components/windows/screen").screen
+    // windows.screen = windows.screen
 }
     
 process.on("unhandledRejection", error => {
@@ -66,7 +68,7 @@ function hide_element(element) {
 
 function show_key_error() {
     var errorbox = blessed.box({
-        parent: screen,
+        parent: windows.screen,
         top: "25%",
         left: "25%",
         width: "50%",
@@ -85,7 +87,7 @@ function show_key_error() {
     })
 
     var errorbox = blessed.box({
-        parent: screen,
+        parent: windows.screen,
         top: "50%",
         left: "25%",
         width: "50%",
@@ -97,12 +99,12 @@ function show_key_error() {
             bg: settings.background
         }
     })
-    screen.render()
+    windows.screen.render()
 }
 
 function init_scr() {
     var header = blessed.box({
-        parent: screen,
+        parent: windows.screen,
         top: 0,
         height: 3,
         width: "100%",
@@ -121,10 +123,10 @@ function init_scr() {
     })
 
     people_window = blessed.list({
-        parent: screen,
+        parent: windows.screen,
         top: 3,
         width: "50%",
-        height: screen.height - 7,
+        height: windows.screen.height - 7,
         label: "{" + settings.foreground + "-fg}{bold}People{/bold}",
         tags: true,
         border: {
@@ -140,11 +142,11 @@ function init_scr() {
     })
 
     chat_window = blessed.box({
-        parent: screen,
+        parent: windows.screen,
         top: 3,
         left: "50%",
         width: "50%",
-        height: screen.height - 7,
+        height: windows.screen.height - 7,
         label: "{" + settings.foreground + "-fg}{bold}Conversations{/bold}",
         tags: true,
         border: {
@@ -173,11 +175,11 @@ function init_scr() {
     })
 
     compose_window = blessed.form({
-        parent: screen,
+        parent: windows.screen,
         mouse: true,
         keys: true,
         vi: true,
-        top: screen.height - 4,
+        top: windows.screen.height - 4,
         left: 0,
         width: "50%",
         style: {
@@ -238,12 +240,12 @@ function init_scr() {
                         hide_element(no_chats)
                         chat_window.setLabel("{" + settings.foreground + "-fg}{bold}Conversations: " + content + "{/bold}")
                         conversations[content] = []
-                        screen.render()
+                        windows.screen.render()
                     }
 
                 }
             })
-            screen.render()
+            windows.screen.render()
             // input_box.focus()
         }
     })
@@ -253,11 +255,11 @@ function init_scr() {
     })
 
     input_window = blessed.form({
-        parent: screen,
+        parent: windows.screen,
         mouse: true,
         keys: true,
         vi: true,
-        top: screen.height - 4,
+        top: windows.screen.height - 4,
         left: "50%",
         width: "50%",
         style: {
@@ -435,7 +437,7 @@ function add_message(message, previous_height) {
         }
     })
 
-    screen.render()
+    windows.screen.render()
     return new_message
 }
     
@@ -502,7 +504,7 @@ function new_person(person) {
         current_chat = person
         update_messages()
     })
-    screen.render()
+    windows.screen.render()
 }
 
 function count(obj) {
@@ -599,7 +601,7 @@ imessage.listen().on("message", (msg) => {
                     var decrypted = crypto.decrypt_k(body, private_key)
                     name_object.then(function(name) {
                         forge_message(name, decrypted)
-                        screen.render()
+                        windows.screen.render()
                     })
                 }
             } catch (err) { }
@@ -659,4 +661,4 @@ imessage.listen().on("message", (msg) => {
 
 input_window.focus()
 main()
-screen.render()
+windows.screen.render()
