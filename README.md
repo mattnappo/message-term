@@ -1,6 +1,6 @@
 # Message Term
 
-An curses-based encrypted iMessage client for OSX.
+A curses-based encrypted iMessage client for OSX.
 
 ## Requirements
 
